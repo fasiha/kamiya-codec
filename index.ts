@@ -46,7 +46,7 @@ const tteRaw: Array<[String, String[]]> = [
 let tte: Map<String, String[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
-export function conjugate(verb: String, conj: Conjugation) {
+export function conjugateTypeI(verb: String, conj: Conjugation) {
   {
     const specialHit = specialCases.get(verb);
     if (specialHit && specialHit.has(conj)) { return specialHit.get(conj); }
@@ -66,4 +66,19 @@ export function conjugate(verb: String, conj: Conjugation) {
   const tteHit = tte.get((verb === '行く' || verb === 'いく') ? 'つ' : tail);
   if (!tteHit) { throw new Error('Unknown verb ending. Is it in dictionary form?'); }
   return head + tteHit[tidx];
+}
+
+export function conjugateTypeII(verb: String, conj: Conjugation) {
+  const head = verb.slice(0, -1);
+  switch (conj) {
+  case Conjugation.Negative: return head;
+  case Conjugation.Conjunctive: return head;
+  case Conjugation.Dictionary: return verb;
+  case Conjugation.ConditionalImperative: throw new Error('TODO FIXME!');
+  case Conjugation.Volitional: return head + 'よう';
+  case Conjugation.Te: return head + 'て';
+  case Conjugation.Ta: return head + 'た';
+  case Conjugation.Tara: return head + 'たら';
+  case Conjugation.Tari: return head + 'たり';
+  }
 }

@@ -1,12 +1,19 @@
 "use strict";
-const {conjugate, Conjugation} = require('../index');
+const {conjugateTypeI, conjugateTypeII, Conjugation} = require('../index');
 const test = require('tape');
 
-test('check some conjugations', t => {
-  t.equal(conjugate('買う', Conjugation.Negative), '買わ');
-  t.equal(conjugate('買う', Conjugation.Conjunctive), '買い');
-  t.equal(conjugate('買う', Conjugation.Te), '買って');
-  t.equal(conjugate('行く', Conjugation.Te), '行って');
-  t.equal(conjugate('いく', Conjugation.Te), 'いって');
+test('check some type I (godan) conjugations', t => {
+  t.equal(conjugateTypeI('買う', Conjugation.Negative), '買わ');
+  t.equal(conjugateTypeI('買う', Conjugation.Conjunctive), '買い');
+  t.equal(conjugateTypeI('買う', Conjugation.Te), '買って');
+  t.equal(conjugateTypeI('行く', Conjugation.Te), '行って');
+  t.equal(conjugateTypeI('いく', Conjugation.Te), 'いって');
+  t.end();
+});
+
+test('check some type II (ichidan) conjugations', t => {
+  t.equal(conjugateTypeII('食べる', Conjugation.Te), '食べて');
+  t.equal(conjugateTypeII('食べる', Conjugation.Tari), '食べたり');
+  t.equal(conjugateTypeII('見る', Conjugation.Volitional), '見よう');
   t.end();
 })
