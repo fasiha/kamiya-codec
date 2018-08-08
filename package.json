@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tape tests/*"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Ahmed Fasih",
+  "license": "Unlicense",
   "devDependencies": {
     "@types/node": "^10.5.6",
     "tape": "^4.9.1",
