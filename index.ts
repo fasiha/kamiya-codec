@@ -43,7 +43,7 @@ const tteRaw: Array<[String, String[]]> = [
   ['る', ['って', 'った', 'ったら', 'ったり']], // same as above and below
   ['う', ['って', 'った', 'ったら', 'ったり']],
 ];
-let tte: Map < String, String[] >= new Map([]);
+let tte: Map<String, String[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
 export function conjugate(verb: String, conj: Conjugation) {
@@ -55,7 +55,7 @@ export function conjugate(verb: String, conj: Conjugation) {
   const tail = verb.slice(-1);
   const idx = conjToIdx.get(conj);
   if (typeof idx === 'undefined') { throw new Error('Conjugation not yet implemented'); }
-  if (idx <= 4) {
+  if (idx < 5) {
     if (tail === 'う') {
       if (idx === 0) { return head + 'わ'; }
       return head + lookup('あ', idx);
@@ -63,7 +63,7 @@ export function conjugate(verb: String, conj: Conjugation) {
     return head + lookup(tail, idx);
   }
   const tidx = idx - 5;
-  const tteHit = (verb === '行く' || verb === 'いく') ? tte.get('つ') : tte.get(tail);
+  const tteHit = tte.get((verb === '行く' || verb === 'いく') ? 'つ' : tail);
   if (!tteHit) { throw new Error('Unknown verb ending. Is it in dictionary form?'); }
   return head + tteHit[tidx];
 }
