@@ -63,7 +63,7 @@ export function conjugate(verb: String, conj: Conjugation) {
     return head + lookup(tail, idx);
   }
   const tidx = idx - 5;
-  const tteHit = tte.get(tail);
+  const tteHit = (verb === '行く' || verb === 'いく') ? tte.get('つ') : tte.get(tail);
   if (!tteHit) { throw new Error('Unknown verb ending. Is it in dictionary form?'); }
   return head + tteHit[tidx];
 }
