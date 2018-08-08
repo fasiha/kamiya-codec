@@ -50,6 +50,11 @@ for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
 export function conjugateTypeI(verb: String, conj: Conjugation): String {
   {
+    if (verb === 'する') {
+      return conjugateSuru(verb, conj);
+    } else if (verb === 'くる' || verb === '来る') {
+      return conjugateKuru(verb, conj);
+    }
     const specialHit = specialCases.get(verb);
     if (specialHit && specialHit.has(conj)) { return specialHit.get(conj) || ''; }
     // The above inner-most `get` is guaranteed to be not-undefined, so the empty string will never be returned, but
@@ -73,6 +78,11 @@ export function conjugateTypeI(verb: String, conj: Conjugation): String {
 }
 
 export function conjugateTypeII(verb: String, conj: Conjugation): String {
+  if (verb === 'する') {
+    return conjugateSuru(verb, conj);
+  } else if (verb === 'くる' || verb === '来る') {
+    return conjugateKuru(verb, conj);
+  }
   const head = verb.slice(0, -1);
   switch (conj) {
   case Conjugation.Negative: return head;
@@ -85,6 +95,46 @@ export function conjugateTypeII(verb: String, conj: Conjugation): String {
   case Conjugation.Ta: return head + 'た';
   case Conjugation.Tara: return head + 'たら';
   case Conjugation.Tari: return head + 'たり';
+  default: throw new Error('Unhandled conjugation');
+  }
+}
+
+function conjugateKuru(verb: String, conj: Conjugation) {
+  let ret = '';
+  switch (conj) {
+  case Conjugation.Negative: ret = 'こ'; break;
+  case Conjugation.Conjunctive: ret = 'き'; break;
+  case Conjugation.Dictionary: ret = 'くる'; break;
+  case Conjugation.Conditional: ret = 'これ'; break;
+  case Conjugation.Imperative: ret = 'こい'; break;
+  case Conjugation.Volitional: ret = 'こよう'; break;
+  case Conjugation.Te: ret = 'きて'; break;
+  case Conjugation.Ta: ret = 'きた'; break;
+  case Conjugation.Tara: ret = 'きたら'; break;
+  case Conjugation.Tari: ret = 'きたり'; break;
+  default: throw new Error('Unhandled conjugation');
+  }
+  const head = verb.slice(0, -1);
+  if (head === 'く') {
+    return ret;
+  } else if (head === '来') {
+    return '来' + ret.slice(1);
+  }
+  throw new Error('Expected input to be 来る or くる');
+}
+
+function conjugateSuru(verb: String, conj: Conjugation) {
+  switch (conj) {
+  case Conjugation.Negative: return 'し';
+  case Conjugation.Conjunctive: return 'し';
+  case Conjugation.Dictionary: return 'する';
+  case Conjugation.Conditional: return 'すれ';
+  case Conjugation.Imperative: return 'せよ'; // しろ ok too
+  case Conjugation.Volitional: return 'しよう';
+  case Conjugation.Te: return 'して';
+  case Conjugation.Ta: return 'した';
+  case Conjugation.Tara: return 'したら';
+  case Conjugation.Tari: return 'したり';
   default: throw new Error('Unhandled conjugation');
   }
 }

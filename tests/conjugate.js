@@ -18,11 +18,29 @@ test('check some type II (ichidan) conjugations', t => {
   t.equal(conjugateTypeII('見る', Conjugation.Conditional), '見れ');
   t.equal(conjugateTypeII('見る', Conjugation.Imperative), '見ろ');
   t.end();
-})
+});
 
 test('Make sure splitting Conditional/Imperative is functional for Type I', t => {
   t.equal(conjugateTypeI('泳ぐ', Conjugation.Conditional), '泳げ');
   t.equal(conjugateTypeI('泳ぐ', Conjugation.Imperative), '泳げ');
   t.equal(conjugateTypeI('泳ぐ', Conjugation.Volitional), '泳ご');
+  t.end();
+});
+
+test('Kuru', t => {
+  for (const fn of [conjugateTypeI, conjugateTypeII]) {
+    t.equal(fn('くる', Conjugation.Negative), 'こ');
+    t.equal(fn('来る', Conjugation.Negative), '来');
+    t.equal(fn('くる', Conjugation.Tari), 'きたり');
+    t.equal(fn('来る', Conjugation.Tari), '来たり');
+  }
+  t.end();
+});
+
+test('Suru', t => {
+  for (const fn of [conjugateTypeI, conjugateTypeII]) {
+    t.equal(fn('する', Conjugation.Negative), 'し');
+    t.equal(fn('する', Conjugation.Tari), 'したり');
+  }
   t.end();
 });
