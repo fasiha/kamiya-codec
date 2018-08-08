@@ -4,7 +4,8 @@ export enum Conjugation {
   Negative,
   Conjunctive,
   Dictionary,
-  ConditionalImperative,
+  Conditional,
+  Imperative,
   Volitional,
   Te,
   Ta,
@@ -16,7 +17,8 @@ const specialCasesRaw: Array<[String, Conjugation, String]> = [
   ['ある', Conjugation.Negative, ''], // fully negative conjugation would be ''+nai
   ['ござる', Conjugation.Conjunctive, 'ござい'],
   ['いらっしゃる', Conjugation.Conjunctive, 'いらっしゃい'],
-  ['いらっしゃる', Conjugation.ConditionalImperative, 'いらっしゃい'],
+  ['いらっしゃる', Conjugation.Conditional, 'いらっしゃい'],
+  ['いらっしゃる', Conjugation.Imperative, 'いらっしゃい'],
 ];
 let specialCases: Map<String, Map<Conjugation, String>> = new Map([]);
 for (const [verb, conj, result] of specialCasesRaw) {
@@ -28,7 +30,7 @@ for (const [verb, conj, result] of specialCasesRaw) {
   }
 }
 const conjToIdx: Map<Conjugation, number> = new Map([
-  Conjugation.Negative, Conjugation.Conjunctive, Conjugation.Dictionary, Conjugation.ConditionalImperative,
+  Conjugation.Negative, Conjugation.Conjunctive, Conjugation.Dictionary, Conjugation.Conditional,
   Conjugation.Volitional, Conjugation.Te, Conjugation.Ta, Conjugation.Tara, Conjugation.Tari
 ].map((x, i) => [x, i]) as Array<[Conjugation, number]>);
 
@@ -53,7 +55,7 @@ export function conjugateTypeI(verb: String, conj: Conjugation) {
   }
   const head = verb.slice(0, -1);
   const tail = verb.slice(-1);
-  const idx = conjToIdx.get(conj);
+  const idx = conjToIdx.get(conj === Conjugation.Imperative ? Conjugation.Conditional : conj);
   if (typeof idx === 'undefined') { throw new Error('Conjugation not yet implemented'); }
   if (idx < 5) {
     if (tail === 'う') {
@@ -74,11 +76,13 @@ export function conjugateTypeII(verb: String, conj: Conjugation) {
   case Conjugation.Negative: return head;
   case Conjugation.Conjunctive: return head;
   case Conjugation.Dictionary: return verb;
-  case Conjugation.ConditionalImperative: throw new Error('TODO FIXME!');
+  case Conjugation.Conditional: return head + 'れ';
+  case Conjugation.Imperative: return head + 'ろ'; // よ also legitimate here.
   case Conjugation.Volitional: return head + 'よう';
   case Conjugation.Te: return head + 'て';
   case Conjugation.Ta: return head + 'た';
   case Conjugation.Tara: return head + 'たら';
   case Conjugation.Tari: return head + 'たり';
+  default: throw new Error('Unhandled conjugation');
   }
 }
