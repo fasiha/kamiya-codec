@@ -1,5 +1,5 @@
 "use strict";
-const verbToRowGuess = require('../index').verbToRowGuess;
+const guessVerbToRow = require('../guessVerbToRow').guessVerbToRow;
 const test = require('tape');
 
 const kus = ["く", "書く　咲く　行く　働く　着く".split('　')];
@@ -18,11 +18,11 @@ const examples = [kus, gus, sus, tus, nus, bus, mus, rus, us, irus, erus, conver
 
 test('check type I (godan) and type II (ichidan) verbs', t => {
   for (const [key, verbs] of examples) {
-    for (const verb of verbs) { t.equal(key, verbToRowGuess(verb)); }
+    for (const verb of verbs) { t.equal(key, guessVerbToRow(verb)); }
   }
   t.end();
 });
 test('fail for nonsense', t => {
-  t.throws(() => verbToRowGuess('blabla'));
+  t.throws(() => guessVerbToRow('blabla'));
   t.end();
 })
