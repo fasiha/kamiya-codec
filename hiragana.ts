@@ -23,7 +23,7 @@ vec.forEach((row, rowidx) => {
     if (char.length > 0) { charToVecIndex.set(char, rowidx) }
   });
 });
-export function lookup(character: String, vowel: number) {
+export function lookup(character: String, vowel: number): String {
   if (vowel < 0 || vowel > 4) { throw new Error('vowel must be between 0 and 4'); }
   const idx = charToVecIndex.get(character);
   if (typeof idx === 'undefined') { throw new Error('unknown character'); }

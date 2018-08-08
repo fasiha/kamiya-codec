@@ -48,10 +48,12 @@ const tteRaw: Array<[String, String[]]> = [
 let tte: Map<String, String[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
-export function conjugateTypeI(verb: String, conj: Conjugation) {
+export function conjugateTypeI(verb: String, conj: Conjugation): String {
   {
     const specialHit = specialCases.get(verb);
-    if (specialHit && specialHit.has(conj)) { return specialHit.get(conj); }
+    if (specialHit && specialHit.has(conj)) { return specialHit.get(conj) || ''; }
+    // The above inner-most `get` is guaranteed to be not-undefined, so the empty string will never be returned, but
+    // TypeScript 3.0.1 doesn't treat `Map.has` as a type guard 😣.
   }
   const head = verb.slice(0, -1);
   const tail = verb.slice(-1);
@@ -70,7 +72,7 @@ export function conjugateTypeI(verb: String, conj: Conjugation) {
   return head + tteHit[tidx];
 }
 
-export function conjugateTypeII(verb: String, conj: Conjugation) {
+export function conjugateTypeII(verb: String, conj: Conjugation): String {
   const head = verb.slice(0, -1);
   switch (conj) {
   case Conjugation.Negative: return head;
