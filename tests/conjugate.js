@@ -1,5 +1,5 @@
 "use strict";
-const {conjugateTypeI, conjugateTypeII, Conjugation} = require('../index');
+const {conjugateTypeI, conjugateTypeII, Conjugation, Auxiliary, conjugateAuxiliary} = require('../index');
 const test = require('tape');
 
 test('check some type I (godan) conjugations', t => {
@@ -42,5 +42,17 @@ test('Suru', t => {
     t.equal(fn('する', Conjugation.Negative), 'し');
     t.equal(fn('する', Conjugation.Tari), 'したり');
   }
+  t.end();
+});
+
+test('Masu', t => {
+  t.equal(conjugateAuxiliary('行く', Auxiliary.Masu, Conjugation.Negative), '行きません');
+  t.equal(conjugateAuxiliary('行く', Auxiliary.Masu, Conjugation.Ta), '行きました');
+  t.end();
+});
+
+test('Nai', t => {
+  t.equal(conjugateAuxiliary('買う', Auxiliary.Nai, Conjugation.Dictionary), '買わない');
+  t.equal(conjugateAuxiliary('買う', Auxiliary.Nai, Conjugation.Ta), '買わなかった');
   t.end();
 });

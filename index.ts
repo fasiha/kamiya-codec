@@ -138,3 +138,58 @@ function conjugateSuru(verb: String, conj: Conjugation) {
   default: throw new Error('Unhandled conjugation');
   }
 }
+
+export function typeIToPotential(verb: String): String { return conjugateTypeI(verb, Conjugation.Conditional) + 'る'; }
+
+export enum Auxiliary {
+  Potential,
+  Masu,
+  Nai,
+  Tai,
+  Tagaru,
+  Hoshii,
+  Rashii,
+  Souda,
+  SeruSaseru,
+  ReruRareu
+}
+
+export function conjugate(verb: String, conj: Conjugation, typeII: boolean = false): String {
+  return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
+}
+
+export function conjugateAuxiliary(verb: String, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): String {
+  if (aux === Auxiliary.Masu) {
+    const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    switch (conj) {
+    case Conjugation.Negative: return base + 'ません';
+    case Conjugation.Dictionary: return base + 'ます';
+    case Conjugation.Conditional: return base + 'ますれば';
+    case Conjugation.Imperative: return base + 'ませ';
+    case Conjugation.Volitional: return base + 'ましょう';
+    case Conjugation.Te: return base + 'まして';
+    case Conjugation.Ta: return base + 'ました';
+    case Conjugation.Tara: return base + 'ましたら';
+    // case Conjugation.Tari:
+    // case Conjugation.Conjunctive:
+    default: throw new Error('Unhandled conjugation');
+    }
+  } else if (aux === Auxiliary.Nai) {
+    const base = conjugate(verb, Conjugation.Negative, typeII);
+    switch (conj) {
+    case Conjugation.Negative: return base + 'なくはない';
+    case Conjugation.Conjunctive: return base + 'なく';
+    case Conjugation.Dictionary: return base + 'ない';
+    case Conjugation.Conditional: return base + 'なければ';
+    // case Conjugation.Imperative: return base + 'ませ';
+    // case Conjugation.Volitional: return base +'ましょう';
+    case Conjugation.Te: return base + 'なくて';
+    case Conjugation.Ta: return base + 'なかった';
+    case Conjugation.Tara: return base + 'なかったら';
+    // case Conjugation.Tari:
+    default: throw new Error('Unhandled conjugation');
+    }
+  } else {
+    throw new Error('Unhandled auxiliary');
+  }
+}
