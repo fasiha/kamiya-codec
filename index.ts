@@ -163,6 +163,7 @@ export function conjugateAuxiliary(verb: String, aux: Auxiliary, conj: Conjugati
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     switch (conj) {
     case Conjugation.Negative: return base + 'ません';
+    // case Conjugation.Conjunctive:
     case Conjugation.Dictionary: return base + 'ます';
     case Conjugation.Conditional: return base + 'ますれば';
     case Conjugation.Imperative: return base + 'ませ';
@@ -171,7 +172,6 @@ export function conjugateAuxiliary(verb: String, aux: Auxiliary, conj: Conjugati
     case Conjugation.Ta: return base + 'ました';
     case Conjugation.Tara: return base + 'ましたら';
     // case Conjugation.Tari:
-    // case Conjugation.Conjunctive:
     default: throw new Error('Unhandled conjugation');
     }
   } else if (aux === Auxiliary.Nai) {
@@ -186,6 +186,21 @@ export function conjugateAuxiliary(verb: String, aux: Auxiliary, conj: Conjugati
     case Conjugation.Te: return base + 'なくて';
     case Conjugation.Ta: return base + 'なかった';
     case Conjugation.Tara: return base + 'なかったら';
+    // case Conjugation.Tari:
+    default: throw new Error('Unhandled conjugation');
+    }
+  } else if (aux === Auxiliary.Tai) {
+    const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    switch (conj) {
+    case Conjugation.Negative: return base + 'たくない';
+    case Conjugation.Conjunctive: return base + 'たく';
+    case Conjugation.Dictionary: return base + 'たい';
+    case Conjugation.Conditional: return base + 'たければ';
+    // case Conjugation.Imperative: return base + 'ませ';
+    // case Conjugation.Volitional: return base +'ましょう';
+    case Conjugation.Te: return base + 'たくて';
+    case Conjugation.Ta: return base + 'たかった';
+    case Conjugation.Tara: return base + 'たかったら';
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }

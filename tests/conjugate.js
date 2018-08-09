@@ -56,3 +56,9 @@ test('Nai', t => {
   t.equal(conjugateAuxiliary('買う', Auxiliary.Nai, Conjugation.Ta), '買わなかった');
   t.end();
 });
+
+test('Tai', t => {
+  t.equal(conjugateAuxiliary('習う', Auxiliary.Tai, Conjugation.Dictionary), '習いたい');
+  t.equal(conjugateAuxiliary('習う', Auxiliary.Tai, Conjugation.Te), '習いたくて');
+  t.end();
+});
