@@ -62,3 +62,13 @@ test('Tai', t => {
   t.equal(conjugateAuxiliary('習う', Auxiliary.Tai, Conjugation.Te), '習いたくて');
   t.end();
 });
+
+test('Tagaru', t => {
+  t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Negative), '遊びたがら');
+  t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Conjunctive), '遊びたがり');
+  t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Dictionary), '遊びたがる');
+  t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Te), '遊びたがって');
+  t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Ta), '遊びたがった');
+  t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Tara), '遊びたがったら');
+  t.end();
+});

@@ -13,14 +13,14 @@ export enum Conjugation {
   Tari
 }
 
-const specialCasesRaw: Array<[String, Conjugation, String]> = [
+const specialCasesRaw: Array<[string, Conjugation, string]> = [
   ['ある', Conjugation.Negative, ''], // fully negative conjugation would be ''+nai
   ['ござる', Conjugation.Conjunctive, 'ござい'],
   ['いらっしゃる', Conjugation.Conjunctive, 'いらっしゃい'],
   ['いらっしゃる', Conjugation.Conditional, 'いらっしゃい'],
   ['いらっしゃる', Conjugation.Imperative, 'いらっしゃい'],
 ];
-let specialCases: Map<String, Map<Conjugation, String>> = new Map([]);
+let specialCases: Map<string, Map<Conjugation, string>> = new Map([]);
 for (const [verb, conj, result] of specialCasesRaw) {
   let outer = specialCases.get(verb);
   if (outer) {
@@ -34,7 +34,7 @@ const conjToIdx: Map<Conjugation, number> = new Map([
   Conjugation.Volitional, Conjugation.Te, Conjugation.Ta, Conjugation.Tara, Conjugation.Tari
 ].map((x, i) => [x, i]) as Array<[Conjugation, number]>);
 
-const tteRaw: Array<[String, String[]]> = [
+const tteRaw: Array<[string, string[]]> = [
   ['く', ['いて', 'いた', 'いたら', 'いたり']],
   ['ぐ', ['いで', 'いだ', 'いだら', 'いだり']],
   ['す', ['して', 'しだ', 'しだら', 'しだり']],
@@ -45,10 +45,10 @@ const tteRaw: Array<[String, String[]]> = [
   ['る', ['って', 'った', 'ったら', 'ったり']], // same as above and below
   ['う', ['って', 'った', 'ったら', 'ったり']],
 ];
-let tte: Map<String, String[]> = new Map([]);
+let tte: Map<string, string[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
-export function conjugateTypeI(verb: String, conj: Conjugation): String {
+export function conjugateTypeI(verb: string, conj: Conjugation): string {
   {
     if (verb === 'する') {
       return conjugateSuru(verb, conj);
@@ -77,7 +77,7 @@ export function conjugateTypeI(verb: String, conj: Conjugation): String {
   return head + tteHit[tidx];
 }
 
-export function conjugateTypeII(verb: String, conj: Conjugation): String {
+export function conjugateTypeII(verb: string, conj: Conjugation): string {
   if (verb === 'する') {
     return conjugateSuru(verb, conj);
   } else if (verb === 'くる' || verb === '来る') {
@@ -99,7 +99,7 @@ export function conjugateTypeII(verb: String, conj: Conjugation): String {
   }
 }
 
-function conjugateKuru(verb: String, conj: Conjugation) {
+function conjugateKuru(verb: string, conj: Conjugation) {
   let ret = '';
   switch (conj) {
   case Conjugation.Negative: ret = 'こ'; break;
@@ -123,7 +123,7 @@ function conjugateKuru(verb: String, conj: Conjugation) {
   throw new Error('Expected input to be 来る or くる');
 }
 
-function conjugateSuru(verb: String, conj: Conjugation) {
+function conjugateSuru(verb: string, conj: Conjugation) {
   switch (conj) {
   case Conjugation.Negative: return 'し';
   case Conjugation.Conjunctive: return 'し';
@@ -139,7 +139,7 @@ function conjugateSuru(verb: String, conj: Conjugation) {
   }
 }
 
-export function typeIToPotential(verb: String): String { return conjugateTypeI(verb, Conjugation.Conditional) + 'る'; }
+export function typeIToPotential(verb: string): string { return conjugateTypeI(verb, Conjugation.Conditional) + 'る'; }
 
 export enum Auxiliary {
   Potential,
@@ -154,11 +154,11 @@ export enum Auxiliary {
   ReruRareu
 }
 
-export function conjugate(verb: String, conj: Conjugation, typeII: boolean = false): String {
+export function conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string {
   return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
 }
 
-export function conjugateAuxiliary(verb: String, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): String {
+export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string {
   if (aux === Auxiliary.Masu) {
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     switch (conj) {
@@ -204,6 +204,16 @@ export function conjugateAuxiliary(verb: String, aux: Auxiliary, conj: Conjugati
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
+  } else if (aux === Auxiliary.Tagaru) {
+    switch (conj) {
+    case Conjugation.Conditional:
+    case Conjugation.Imperative:
+    case Conjugation.Volitional:
+    case Conjugation.Tari: throw new Error('Unhandled conjugation');
+    }
+    const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    const tagaruConj = conjugateTypeI('たがる', conj);
+    return base + tagaruConj;
   } else {
     throw new Error('Unhandled auxiliary');
   }
