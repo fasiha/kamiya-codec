@@ -72,3 +72,13 @@ test('Tagaru', t => {
   t.equal(conjugateAuxiliary('遊ぶ', Auxiliary.Tagaru, Conjugation.Tara), '遊びたがったら');
   t.end();
 });
+
+test('Hoshii', t => {
+  t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Negative, true), '見てほしくない');
+  t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Conjunctive, true), '見てほしく');
+  t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Dictionary, true), '見てほしい');
+  t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Conditional, true), '見てほしければ');
+  t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Tara, true), '見てほしかったら');
+
+  t.end();
+});

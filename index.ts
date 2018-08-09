@@ -214,6 +214,21 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     const tagaruConj = conjugateTypeI('たがる', conj);
     return base + tagaruConj;
+  } else if (aux === Auxiliary.Hoshii) {
+    const base = conjugate(verb, Conjugation.Te, typeII);
+    switch (conj) {
+    case Conjugation.Negative: return base + 'ほしくない';
+    case Conjugation.Conjunctive: return base + 'ほしく';
+    case Conjugation.Dictionary: return base + 'ほしい';
+    case Conjugation.Conditional: return base + 'ほしければ';
+    // case Conjugation.Imperative: return base + 'ませ';
+    // case Conjugation.Volitional: return base +'ましょう';
+    case Conjugation.Te: return base + 'ほしくて';
+    case Conjugation.Ta: return base + 'ほしかった';
+    case Conjugation.Tara: return base + 'ほしかったら';
+    // case Conjugation.Tari:
+    default: throw new Error('Unhandled conjugation');
+    }
   } else {
     throw new Error('Unhandled auxiliary');
   }
