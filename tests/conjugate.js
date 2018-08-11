@@ -91,3 +91,13 @@ test('Rashii', t => {
   t.ok(has(conjugateAuxiliary('帰る', Auxiliary.Rashii, Conjugation.Negative), '帰らないらしい'));
   t.end();
 });
+
+test('Souda, both Hearsay and Conjecture', t => {
+  let ret = conjugateAuxiliary('来る', Auxiliary.SoudaHearsay, Conjugation.Dictionary);
+  t.ok(has(ret, '来るそうだ'));
+  t.ok(has(ret, '来たそうだ'));
+  t.ok(has(conjugateAuxiliary('倒れる', Auxiliary.SoudaConjecture, Conjugation.Dictionary, true), '倒れそうだ'));
+  t.ok(has(conjugateAuxiliary('倒れる', Auxiliary.SoudaConjecture, Conjugation.Conditional, true), '倒れそうなら'));
+  t.ok(has(conjugateAuxiliary('倒れる', Auxiliary.SoudaConjecture, Conjugation.Ta, true), '倒れそうだった'));
+  t.end();
+});

@@ -149,7 +149,8 @@ export enum Auxiliary {
   Tagaru,
   Hoshii,
   Rashii,
-  Souda,
+  SoudaHearsay,
+  SoudaConjecture,
   SeruSaseru,
   ReruRareu
 }
@@ -239,12 +240,46 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
       return [neg + 'らしい'];
     case Conjugation.Conjunctive: return append('らしく');
     case Conjugation.Dictionary: return append('らしい');
-    // case Conjugation.Conditional: return base + 'ほしければ';
-    // case Conjugation.Imperative: return base + 'ませ';
-    // case Conjugation.Volitional: return base +'ましょう';
+    // case Conjugation.Conditional:
+    // case Conjugation.Imperative:
+    // case Conjugation.Volitional:
     case Conjugation.Te: return append('らしくて');
-    // case Conjugation.Ta: return base + 'ほしかった';
-    // case Conjugation.Tara: return base + 'ほしかったら';
+    // case Conjugation.Ta:
+    // case Conjugation.Tara:
+    // case Conjugation.Tari:
+    default: throw new Error('Unhandled conjugation');
+    }
+  } else if (aux === Auxiliary.SoudaHearsay) {
+    const base1 = conjugate(verb, Conjugation.Ta, typeII)[0];
+    const base2 = verb; // dictionary form
+    console.log(base1, base2);
+    const append = (suffix: string) => [base1, base2].map(prefix => prefix + suffix);
+    switch (conj) {
+    // case Conjugation.Negative:
+    // case Conjugation.Conjunctive:
+    case Conjugation.Dictionary: return append('そうだ');
+    // case Conjugation.Conditional:
+    // case Conjugation.Imperative:
+    // case Conjugation.Volitional:
+    // case Conjugation.Te:
+    // case Conjugation.Ta:
+    // case Conjugation.Tara:
+    // case Conjugation.Tari:
+    default: throw new Error('Unhandled conjugation');
+    }
+  } else if (aux === Auxiliary.SoudaConjecture) {
+    const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    const append = (suffix: string) => [base + suffix];
+    switch (conj) {
+    // case Conjugation.Negative:
+    // case Conjugation.Conjunctive:
+    case Conjugation.Dictionary: return append('そうだ');
+    case Conjugation.Conditional: return append('そうなら');
+    // case Conjugation.Imperative:
+    // case Conjugation.Volitional:
+    // case Conjugation.Te:
+    case Conjugation.Ta: return append('そうだった');
+    // case Conjugation.Tara:
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
