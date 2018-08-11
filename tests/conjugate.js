@@ -79,6 +79,14 @@ test('Hoshii', t => {
   t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Dictionary, true), '見てほしい');
   t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Conditional, true), '見てほしければ');
   t.equal(conjugateAuxiliary('見る', Auxiliary.Hoshii, Conjugation.Tara, true), '見てほしかったら');
+  t.end();
+});
 
+test('Rashii', t => {
+  const has = (vec, key) => vec.indexOf(key) >= 0;
+  t.ok(has(conjugateAuxiliary('帰る', Auxiliary.Rashii, Conjugation.Conjunctive), '帰るらしく'));
+  t.ok(has(conjugateAuxiliary('帰る', Auxiliary.Rashii, Conjugation.Dictionary), '帰るらしい'));
+  t.ok(has(conjugateAuxiliary('帰る', Auxiliary.Rashii, Conjugation.Te), '帰るらしくて'));
+  t.ok(has(conjugateAuxiliary('帰る', Auxiliary.Rashii, Conjugation.Negative), '帰らないらしい'));
   t.end();
 });

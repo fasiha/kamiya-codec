@@ -158,7 +158,8 @@ export function conjugate(verb: string, conj: Conjugation, typeII: boolean = fal
   return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
 }
 
-export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string {
+export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string|
+    string[] {
   if (aux === Auxiliary.Masu) {
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     switch (conj) {
@@ -226,6 +227,25 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     case Conjugation.Te: return base + 'ほしくて';
     case Conjugation.Ta: return base + 'ほしかった';
     case Conjugation.Tara: return base + 'ほしかったら';
+    // case Conjugation.Tari:
+    default: throw new Error('Unhandled conjugation');
+    }
+  } else if (aux === Auxiliary.Rashii) {
+    const base1 = conjugate(verb, Conjugation.Ta, typeII);
+    const base2 = verb;
+    const append = (suffix: string) => [base1, base2].map(prefix => prefix + suffix);
+    switch (conj) {
+    case Conjugation.Negative:
+      const neg = conjugateAuxiliary(verb, Auxiliary.Nai, Conjugation.Dictionary);
+      return [neg + 'らしい'];
+    case Conjugation.Conjunctive: return append('らしく');
+    case Conjugation.Dictionary: return append('らしい');
+    // case Conjugation.Conditional: return base + 'ほしければ';
+    // case Conjugation.Imperative: return base + 'ませ';
+    // case Conjugation.Volitional: return base +'ましょう';
+    case Conjugation.Te: return append('らしくて');
+    // case Conjugation.Ta: return base + 'ほしかった';
+    // case Conjugation.Tara: return base + 'ほしかったら';
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
