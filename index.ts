@@ -48,7 +48,7 @@ const tteRaw: Array<[string, string[]]> = [
 let tte: Map<string, string[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
-export function conjugateTypeI(verb: string, conj: Conjugation): string {
+export function conjugateTypeI(verb: string, conj: Conjugation): string[] {
   {
     if (verb === 'する') {
       return conjugateSuru(verb, conj);
@@ -56,7 +56,7 @@ export function conjugateTypeI(verb: string, conj: Conjugation): string {
       return conjugateKuru(verb, conj);
     }
     const specialHit = specialCases.get(verb);
-    if (specialHit && specialHit.has(conj)) { return specialHit.get(conj) || ''; }
+    if (specialHit && specialHit.has(conj)) { return [specialHit.get(conj) || '']; }
     // The above inner-most `get` is guaranteed to be not-undefined, so the empty string will never be returned, but
     // TypeScript 3.0.1 doesn't treat `Map.has` as a type guard 😣.
   }
@@ -66,18 +66,18 @@ export function conjugateTypeI(verb: string, conj: Conjugation): string {
   if (typeof idx === 'undefined') { throw new Error('Conjugation not yet implemented'); }
   if (idx < 5) {
     if (tail === 'う') {
-      if (idx === 0) { return head + 'わ'; }
-      return head + lookup('あ', idx);
+      if (idx === 0) { return [head + 'わ']; }
+      return [head + lookup('あ', idx)];
     }
-    return head + lookup(tail, idx);
+    return [head + lookup(tail, idx)];
   }
   const tidx = idx - 5;
   const tteHit = tte.get((verb === '行く' || verb === 'いく') ? 'つ' : tail);
   if (!tteHit) { throw new Error('Unknown verb ending. Is it in dictionary form?'); }
-  return head + tteHit[tidx];
+  return [head + tteHit[tidx]];
 }
 
-export function conjugateTypeII(verb: string, conj: Conjugation): string {
+export function conjugateTypeII(verb: string, conj: Conjugation): string[] {
   if (verb === 'する') {
     return conjugateSuru(verb, conj);
   } else if (verb === 'くる' || verb === '来る') {
@@ -85,21 +85,21 @@ export function conjugateTypeII(verb: string, conj: Conjugation): string {
   }
   const head = verb.slice(0, -1);
   switch (conj) {
-  case Conjugation.Negative: return head;
-  case Conjugation.Conjunctive: return head;
-  case Conjugation.Dictionary: return verb;
-  case Conjugation.Conditional: return head + 'れ';
-  case Conjugation.Imperative: return head + 'ろ'; // よ also legitimate here.
-  case Conjugation.Volitional: return head + 'よう';
-  case Conjugation.Te: return head + 'て';
-  case Conjugation.Ta: return head + 'た';
-  case Conjugation.Tara: return head + 'たら';
-  case Conjugation.Tari: return head + 'たり';
+  case Conjugation.Negative: return [head];
+  case Conjugation.Conjunctive: return [head];
+  case Conjugation.Dictionary: return [verb];
+  case Conjugation.Conditional: return [head + 'れ'];
+  case Conjugation.Imperative: return [head + 'ろ', head + 'よ'];
+  case Conjugation.Volitional: return [head + 'よう'];
+  case Conjugation.Te: return [head + 'て'];
+  case Conjugation.Ta: return [head + 'た'];
+  case Conjugation.Tara: return [head + 'たら'];
+  case Conjugation.Tari: return [head + 'たり'];
   default: throw new Error('Unhandled conjugation');
   }
 }
 
-function conjugateKuru(verb: string, conj: Conjugation) {
+function conjugateKuru(verb: string, conj: Conjugation): string[] {
   let ret = '';
   switch (conj) {
   case Conjugation.Negative: ret = 'こ'; break;
@@ -116,25 +116,25 @@ function conjugateKuru(verb: string, conj: Conjugation) {
   }
   const head = verb.slice(0, -1);
   if (head === 'く') {
-    return ret;
+    return [ret];
   } else if (head === '来') {
-    return '来' + ret.slice(1);
+    return ['来' + ret.slice(1)];
   }
   throw new Error('Expected input to be 来る or くる');
 }
 
-function conjugateSuru(verb: string, conj: Conjugation) {
+function conjugateSuru(verb: string, conj: Conjugation): string[] {
   switch (conj) {
-  case Conjugation.Negative: return 'し';
-  case Conjugation.Conjunctive: return 'し';
-  case Conjugation.Dictionary: return 'する';
-  case Conjugation.Conditional: return 'すれ';
-  case Conjugation.Imperative: return 'せよ'; // しろ ok too
-  case Conjugation.Volitional: return 'しよう';
-  case Conjugation.Te: return 'して';
-  case Conjugation.Ta: return 'した';
-  case Conjugation.Tara: return 'したら';
-  case Conjugation.Tari: return 'したり';
+  case Conjugation.Negative: return ['し'];
+  case Conjugation.Conjunctive: return ['し'];
+  case Conjugation.Dictionary: return ['する'];
+  case Conjugation.Conditional: return ['すれ'];
+  case Conjugation.Imperative: return ['せよ']; // しろ ok too
+  case Conjugation.Volitional: return ['しよう'];
+  case Conjugation.Te: return ['して'];
+  case Conjugation.Ta: return ['した'];
+  case Conjugation.Tara: return ['したら'];
+  case Conjugation.Tari: return ['したり'];
   default: throw new Error('Unhandled conjugation');
   }
 }
@@ -154,54 +154,53 @@ export enum Auxiliary {
   ReruRareu
 }
 
-export function conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string {
+export function conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[] {
   return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
 }
 
-export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string|
-    string[] {
+export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
   if (aux === Auxiliary.Masu) {
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     switch (conj) {
-    case Conjugation.Negative: return base + 'ません';
+    case Conjugation.Negative: return [base + 'ません'];
     // case Conjugation.Conjunctive:
-    case Conjugation.Dictionary: return base + 'ます';
-    case Conjugation.Conditional: return base + 'ますれば';
-    case Conjugation.Imperative: return base + 'ませ';
-    case Conjugation.Volitional: return base + 'ましょう';
-    case Conjugation.Te: return base + 'まして';
-    case Conjugation.Ta: return base + 'ました';
-    case Conjugation.Tara: return base + 'ましたら';
+    case Conjugation.Dictionary: return [base + 'ます'];
+    case Conjugation.Conditional: return [base + 'ますれば'];
+    case Conjugation.Imperative: return [base + 'ませ'];
+    case Conjugation.Volitional: return [base + 'ましょう'];
+    case Conjugation.Te: return [base + 'まして'];
+    case Conjugation.Ta: return [base + 'ました'];
+    case Conjugation.Tara: return [base + 'ましたら'];
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
   } else if (aux === Auxiliary.Nai) {
     const base = conjugate(verb, Conjugation.Negative, typeII);
     switch (conj) {
-    case Conjugation.Negative: return base + 'なくはない';
-    case Conjugation.Conjunctive: return base + 'なく';
-    case Conjugation.Dictionary: return base + 'ない';
-    case Conjugation.Conditional: return base + 'なければ';
-    // case Conjugation.Imperative: return base + 'ませ';
-    // case Conjugation.Volitional: return base +'ましょう';
-    case Conjugation.Te: return base + 'なくて';
-    case Conjugation.Ta: return base + 'なかった';
-    case Conjugation.Tara: return base + 'なかったら';
+    case Conjugation.Negative: return [base + 'なくはない'];
+    case Conjugation.Conjunctive: return [base + 'なく'];
+    case Conjugation.Dictionary: return [base + 'ない'];
+    case Conjugation.Conditional: return [base + 'なければ'];
+    // case Conjugation.Imperative:
+    // case Conjugation.Volitional:
+    case Conjugation.Te: return [base + 'なくて'];
+    case Conjugation.Ta: return [base + 'なかった'];
+    case Conjugation.Tara: return [base + 'なかったら'];
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
   } else if (aux === Auxiliary.Tai) {
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     switch (conj) {
-    case Conjugation.Negative: return base + 'たくない';
-    case Conjugation.Conjunctive: return base + 'たく';
-    case Conjugation.Dictionary: return base + 'たい';
-    case Conjugation.Conditional: return base + 'たければ';
-    // case Conjugation.Imperative: return base + 'ませ';
-    // case Conjugation.Volitional: return base +'ましょう';
-    case Conjugation.Te: return base + 'たくて';
-    case Conjugation.Ta: return base + 'たかった';
-    case Conjugation.Tara: return base + 'たかったら';
+    case Conjugation.Negative: return [base + 'たくない'];
+    case Conjugation.Conjunctive: return [base + 'たく'];
+    case Conjugation.Dictionary: return [base + 'たい'];
+    case Conjugation.Conditional: return [base + 'たければ'];
+    // case Conjugation.Imperative:
+    // case Conjugation.Volitional:
+    case Conjugation.Te: return [base + 'たくて'];
+    case Conjugation.Ta: return [base + 'たかった'];
+    case Conjugation.Tara: return [base + 'たかったら'];
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
@@ -214,19 +213,19 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     }
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     const tagaruConj = conjugateTypeI('たがる', conj);
-    return base + tagaruConj;
+    return [base[0] + tagaruConj[0]];
   } else if (aux === Auxiliary.Hoshii) {
     const base = conjugate(verb, Conjugation.Te, typeII);
     switch (conj) {
-    case Conjugation.Negative: return base + 'ほしくない';
-    case Conjugation.Conjunctive: return base + 'ほしく';
-    case Conjugation.Dictionary: return base + 'ほしい';
-    case Conjugation.Conditional: return base + 'ほしければ';
-    // case Conjugation.Imperative: return base + 'ませ';
-    // case Conjugation.Volitional: return base +'ましょう';
-    case Conjugation.Te: return base + 'ほしくて';
-    case Conjugation.Ta: return base + 'ほしかった';
-    case Conjugation.Tara: return base + 'ほしかったら';
+    case Conjugation.Negative: return [base + 'ほしくない'];
+    case Conjugation.Conjunctive: return [base + 'ほしく'];
+    case Conjugation.Dictionary: return [base + 'ほしい'];
+    case Conjugation.Conditional: return [base + 'ほしければ'];
+    // case Conjugation.Imperative:
+    // case Conjugation.Volitional:
+    case Conjugation.Te: return [base + 'ほしくて'];
+    case Conjugation.Ta: return [base + 'ほしかった'];
+    case Conjugation.Tara: return [base + 'ほしかったら'];
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
