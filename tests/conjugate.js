@@ -101,3 +101,16 @@ test('Souda, both Hearsay and Conjecture', t => {
   t.ok(has(conjugateAuxiliary('倒れる', Auxiliary.SoudaConjecture, Conjugation.Ta, true), '倒れそうだった'));
   t.end();
 });
+
+test('Saseru/seru', t => {
+  t.ok(has(conjugateAuxiliary('歩く', Auxiliary.SeruSaseru, Conjugation.Dictionary), '歩かせる'));
+  t.ok(has(conjugateAuxiliary('歩く', Auxiliary.SeruSaseru, Conjugation.Negative), '歩かせ'));
+  t.ok(has(conjugateAuxiliary('食べる', Auxiliary.SeruSaseru, Conjugation.Dictionary, true), '食べさせる'));
+  t.ok(has(conjugateAuxiliary('食べる', Auxiliary.SeruSaseru, Conjugation.Imperative, true), '食べさせろ'));
+  t.ok(has(conjugateAuxiliary('食べる', Auxiliary.SeruSaseru, Conjugation.Imperative, true), '食べさせよ'));
+  t.ok(has(conjugateAuxiliary('来る', Auxiliary.SeruSaseru, Conjugation.Dictionary), '来させる'));
+  t.ok(has(conjugateAuxiliary('来る', Auxiliary.SeruSaseru, Conjugation.Conditional), '来させれ'));
+  t.ok(has(conjugateAuxiliary('する', Auxiliary.SeruSaseru, Conjugation.Dictionary), 'させる'));
+  t.ok(has(conjugateAuxiliary('する', Auxiliary.SeruSaseru, Conjugation.Volitional), 'させよう'));
+  t.end();
+});

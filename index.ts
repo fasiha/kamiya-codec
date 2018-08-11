@@ -283,6 +283,19 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
+  } else if (aux === Auxiliary.SeruSaseru) {
+    if (conj === Conjugation.Tara || conj === Conjugation.Tari) { throw new Error('Unhandled conjugation'); }
+    let newverb;
+    if (verb === '来る' || verb === 'くる') {
+      newverb = verb[0] + 'させる';
+    } else if (verb === 'する') {
+      newverb = 'させる';
+    } else if (typeII) {
+      newverb = conjugateTypeII(verb, Conjugation.Negative)[0] + 'させる';
+    } else { // type I
+      newverb = conjugateTypeI(verb, Conjugation.Negative)[0] + 'せる';
+    }
+    return conjugateTypeII(newverb, conj);
   } else {
     throw new Error('Unhandled auxiliary');
   }
