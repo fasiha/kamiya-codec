@@ -152,6 +152,7 @@ export enum Auxiliary {
   SoudaHearsay,
   SoudaConjecture,
   SeruSaseru,
+  ShortenedCausative,
   ReruRareu
 }
 
@@ -283,7 +284,7 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     // case Conjugation.Tari:
     default: throw new Error('Unhandled conjugation');
     }
-  } else if (aux === Auxiliary.SeruSaseru) {
+  } else if (aux === Auxiliary.SeruSaseru || aux === Auxiliary.ShortenedCausative) {
     if (conj === Conjugation.Tara || conj === Conjugation.Tari) { throw new Error('Unhandled conjugation'); }
     let newverb;
     if (verb === '来る' || verb === 'くる') {
@@ -294,6 +295,10 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
       newverb = conjugateTypeII(verb, Conjugation.Negative)[0] + 'させる';
     } else { // type I
       newverb = conjugateTypeI(verb, Conjugation.Negative)[0] + 'せる';
+    }
+    if (aux === Auxiliary.ShortenedCausative) {
+      newverb = newverb.slice(0, -2) + 'す';
+      return conjugateTypeI(newverb, conj);
     }
     return conjugateTypeII(newverb, conj);
   } else {

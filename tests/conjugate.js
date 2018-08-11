@@ -114,3 +114,11 @@ test('Saseru/seru', t => {
   t.ok(has(conjugateAuxiliary('する', Auxiliary.SeruSaseru, Conjugation.Volitional), 'させよう'));
   t.end();
 });
+
+test('Shortened causative seru', t => {
+  t.ok(has(conjugateAuxiliary('歩く', Auxiliary.ShortenedCausative, Conjugation.Dictionary), '歩かす'));
+  t.ok(has(conjugateAuxiliary('食べる', Auxiliary.ShortenedCausative, Conjugation.Dictionary, true), '食べさす'));
+  t.ok(has(conjugateAuxiliary('来る', Auxiliary.ShortenedCausative, Conjugation.Dictionary), '来さす'));
+  t.ok(has(conjugateAuxiliary('する', Auxiliary.ShortenedCausative, Conjugation.Dictionary), 'さす'));
+  t.end();
+});
