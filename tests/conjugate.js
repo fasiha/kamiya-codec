@@ -148,3 +148,11 @@ test('Causative-passive', t => {
   t.ok(has(conjugateAuxiliary('歩く', Auxiliary.ShortenedCausativePassive, Conjugation.Ta), '歩かされた'));
   t.end();
 });
+
+test('Potential', t => {
+  t.ok(has(conjugateAuxiliary('書く', Auxiliary.Potential, Conjugation.Dictionary), '書ける'));
+  t.ok(has(conjugateAuxiliary('読む', Auxiliary.Potential, Conjugation.Dictionary), '読める'));
+  t.ok(has(conjugateAuxiliary('読む', Auxiliary.Potential, Conjugation.Negative), '読め'));
+  t.ok(has(conjugateAuxiliary('読む', Auxiliary.Potential, Conjugation.Te), '読めて'));
+  t.end();
+});

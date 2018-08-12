@@ -139,8 +139,6 @@ function conjugateSuru(verb: string, conj: Conjugation): string[] {
   }
 }
 
-export function typeIToPotential(verb: string): string { return conjugateTypeI(verb, Conjugation.Conditional) + 'る'; }
-
 export enum Auxiliary {
   Potential,
   Masu,
@@ -163,7 +161,10 @@ export function conjugate(verb: string, conj: Conjugation, typeII: boolean = fal
 }
 
 export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
-  if (aux === Auxiliary.Masu) {
+  if (aux === Auxiliary.Potential) {
+    const newverb = conjugateTypeI(verb, Conjugation.Conditional)[0] + 'る';
+    return conjugateTypeII(newverb, conj);
+  } else if (aux === Auxiliary.Masu) {
     const base = conjugate(verb, Conjugation.Conjunctive, typeII);
     switch (conj) {
     case Conjugation.Negative: return [base + 'ません'];
