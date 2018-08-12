@@ -1,13 +1,25 @@
 {
   "name": "kamiya-codec",
   "version": "1.0.0",
-  "description": "",
+  "description": "Japanese verb conjugator library based on Taeko Kamiya's *The Handbook of Japanese Verbs*",
   "main": "index.js",
   "scripts": {
-    "test": "tape tests/*"
+    "test": "tape tests/*",
+    "build": "tsc -p ."
   },
-  "keywords": [],
+  "keywords": [
+    "Japanese",
+    "verb",
+    "conjugation",
+    "conjugator"
+  ],
   "author": "Ahmed Fasih",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fasiha/kamiya-codec.git"
+  },
+  "homepage": "https://github.com/fasiha/kamiya-codec",
+  "bugs": "https://github.com/fasiha/kamiya-codec/issues",
   "license": "Unlicense",
   "devDependencies": {
     "@types/node": "^10.5.6",
