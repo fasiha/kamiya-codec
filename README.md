@@ -42,13 +42,13 @@ codec.conjugateAuxiliary('書く', codec.Auxiliary.Tai, codec.Conjugation.Negati
 
 Conjugates a `verb` in dictionary form with a given conjugation (see below for list of allowed values). Returns an array of strings (guaranteed to be at least one element long, which is the most common case).
 
-This library doesn't yet have a good way to tell type II (<ruby>五段<rt>godan</rt></ruby>) verbs from type I (<ruby>一段<rt>ichidan</rt></ruby>) ones, so all functions including `conjugate` accept a `typeII` boolean to let you specify that the incoming verb is or isn't type II. (I'm not very fond of opaque names like type I and type II but to maximally take advantage of Taeko Kamiya's book, we use her notation.)
+This library doesn't yet have a perfect way to tell type I (<ruby>五段<rt>godan</rt></ruby>) verbs from type II (<ruby>一段<rt>ichidan</rt></ruby>) ones, so all functions including `conjugate` accept a `typeII` boolean to let you specify that the incoming verb is or isn't type II. (I'm not very fond of opaque names like type I and type II but to maximally take advantage of Taeko Kamiya's book, we use her notation.)
 
 ### `conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[]`
 
 Given a `verb` as well as an `aux`iliary verb (see below for list of allowed values), plus the `conj`ugation and the optional `typeII` boolean, apply the auxiliary to the verb and conjugate the result.
 
-### enum Conjugation
+### `enum Conjugation`
 Conjugations must be one of the following:
 ```
 {
@@ -65,7 +65,7 @@ Conjugations must be one of the following:
 }
 ```
 
-### enum Auxiliary 
+### `enum Auxiliary`
 Auxiliaries must be one of the following:
 ```
 {
