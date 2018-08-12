@@ -322,6 +322,9 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
   } else if (aux === Auxiliary.CausativePassive) {
     const newverb = conjugateAuxiliary(verb, Auxiliary.SeruSaseru, Conjugation.Negative, typeII)[0] + 'られる';
     return conjugateTypeII(newverb, conj);
+  } else if (aux === Auxiliary.ShortenedCausativePassive) {
+    const newverb = conjugateAuxiliary(verb, Auxiliary.ShortenedCausative, Conjugation.Negative, typeII)[0] + 'れる';
+    return conjugateTypeII(newverb, conj);
   } else {
     throw new Error('Unhandled auxiliary');
   }
