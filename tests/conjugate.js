@@ -122,3 +122,11 @@ test('Shortened causative seru', t => {
   t.ok(has(conjugateAuxiliary('する', Auxiliary.ShortenedCausative, Conjugation.Dictionary), 'さす'));
   t.end();
 });
+
+test('Rareru/reru', t => {
+  t.ok(has(conjugateAuxiliary('読む', Auxiliary.ReruRareu, Conjugation.Dictionary), '読まれる'));
+  t.ok(has(conjugateAuxiliary('ほめる', Auxiliary.ReruRareu, Conjugation.Dictionary, true), 'ほめられる'));
+  t.ok(has(conjugateAuxiliary('来る', Auxiliary.ReruRareu, Conjugation.Dictionary), '来られる'));
+  t.ok(has(conjugateAuxiliary('する', Auxiliary.ReruRareu, Conjugation.Dictionary), 'される'));
+  t.end();
+});

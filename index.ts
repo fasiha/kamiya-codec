@@ -301,6 +301,22 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
       return conjugateTypeI(newverb, conj);
     }
     return conjugateTypeII(newverb, conj);
+  } else if (aux === Auxiliary.ReruRareu) {
+    if (conj === Conjugation.Conditional || conj === Conjugation.Imperative || conj === Conjugation.Volitional ||
+        conj === Conjugation.Tara || conj === Conjugation.Tari) {
+      throw new Error('Unhandled conjugation');
+    }
+    let newverb;
+    if (verb === '来る' || verb === 'くる') {
+      newverb = verb[0] + 'られる';
+    } else if (verb === 'する') {
+      newverb = 'される';
+    } else if (typeII) {
+      newverb = conjugateTypeII(verb, Conjugation.Negative)[0] + 'られる';
+    } else { // type I
+      newverb = conjugateTypeI(verb, Conjugation.Negative)[0] + 'れる';
+    }
+    return conjugateTypeII(newverb, conj);
   } else {
     throw new Error('Unhandled auxiliary');
   }
