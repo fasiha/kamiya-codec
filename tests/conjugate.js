@@ -130,3 +130,12 @@ test('Rareru/reru', t => {
   t.ok(has(conjugateAuxiliary('する', Auxiliary.ReruRareu, Conjugation.Dictionary), 'される'));
   t.end();
 });
+
+test('Causative-passive', t => {
+  t.ok(has(conjugateAuxiliary('書く', Auxiliary.CausativePassive, Conjugation.Negative), '書かせられ'));
+  t.ok(has(conjugateAuxiliary('書く', Auxiliary.CausativePassive, Conjugation.Conjunctive), '書かせられ'));
+  t.ok(has(conjugateAuxiliary('書く', Auxiliary.CausativePassive, Conjugation.Dictionary), '書かせられる'));
+  t.ok(has(conjugateAuxiliary('書く', Auxiliary.CausativePassive, Conjugation.Te), '書かせられて'));
+  t.ok(has(conjugateAuxiliary('書く', Auxiliary.CausativePassive, Conjugation.Ta), '書かせられた'));
+  t.end();
+});
