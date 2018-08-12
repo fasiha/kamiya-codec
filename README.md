@@ -5,7 +5,7 @@
 A JavaScript/TypeScript library to conjugate Japanese verbs and auxiliary verbs based on Taeko Kamiya's *The Handbook of Japanese Verbs* (Kodansha, 2001). The idea is, you have a verb—書く, say (to write)—and maybe an auxiliary like たい (wanting to do something), and finally a conjugation, like *negative*. Then,
 ```js
 var codec = require('kamiya-codec');
-conjugateAuxiliary('書く', Auxiliary.Tai, Conjugation.Negative)
+codec.conjugateAuxiliary('書く', codec.Auxiliary.Tai, codec.Conjugation.Negative)
 // [ '書きたくない' ]
 ```
 gives us what we want: 書きたくない, or, “doesn’t want to write”.
@@ -32,7 +32,7 @@ where, in the above, each line is one command, and the `$` represents your termi
 Then you can start a new Node.js shell (run `node` in the terminal) or create a new JavaScript or TypeScript program to exercise this library:
 ```js
 var codec = require('./index');
-conjugateAuxiliary('書く', Auxiliary.Tai, Conjugation.Negative)
+codec.conjugateAuxiliary('書く', codec.Auxiliary.Tai, codec.Conjugation.Negative)
 // [ '書きたくない' ]
 ```
 
