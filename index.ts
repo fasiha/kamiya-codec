@@ -13,6 +13,23 @@ export enum Conjugation {
   Tari
 }
 
+export enum Auxiliary {
+  Potential,
+  Masu,
+  Nai,
+  Tai,
+  Tagaru,
+  Hoshii,
+  Rashii,
+  SoudaHearsay,
+  SoudaConjecture,
+  SeruSaseru,
+  ShortenedCausative,
+  ReruRareu,
+  CausativePassive,
+  ShortenedCausativePassive
+}
+
 const specialCasesRaw: Array<[string, Conjugation, string]> = [
   ['ある', Conjugation.Negative, ''], // fully negative conjugation would be ''+nai
   ['ござる', Conjugation.Conjunctive, 'ござい'],
@@ -137,23 +154,6 @@ function conjugateSuru(verb: string, conj: Conjugation): string[] {
   case Conjugation.Tari: return ['したり'];
   default: throw new Error('Unhandled conjugation');
   }
-}
-
-export enum Auxiliary {
-  Potential,
-  Masu,
-  Nai,
-  Tai,
-  Tagaru,
-  Hoshii,
-  Rashii,
-  SoudaHearsay,
-  SoudaConjecture,
-  SeruSaseru,
-  ShortenedCausative,
-  ReruRareu,
-  CausativePassive,
-  ShortenedCausativePassive
 }
 
 export function conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[] {
