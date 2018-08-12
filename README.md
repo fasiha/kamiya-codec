@@ -1,9 +1,9 @@
 # kamiya-codec
 
-![Taeko Kamiya's "The Handbook of Japanese Verbs" cover](kamia-verbs-cover.jpg)
+![Taeko Kamiya's "The Handbook of Japanese Verbs" cover](kamiya-verbs-cover.jpg)
 
 A JavaScript/TypeScript library to conjugate Japanese verbs and auxiliary verbs based on Taeko Kamiya's *The Handbook of Japanese Verbs* (Kodansha, 2001). The idea is, you have a verb—書く, say (to write)—and maybe an auxiliary like たい (wanting to do something), and finally a conjugation, like *negative*. Then,
-```
+```js
 var codec = require('kamiya-codec');
 conjugateAuxiliary('書く', Auxiliary.Tai, Conjugation.Negative)
 // [ '書きたくない' ]
@@ -13,6 +13,10 @@ gives us what we want: 書きたくない, or, “doesn’t want to write”.
 This library will make most sense if you have the book for reference. It currently implements part I of the book (up to page 47).
 
 ## Install
+
+Node.js developers: `npm install --save kamiya-codec` will add this package to your current project.
+
+For everyone else who just want to poke around:
 
 1. Install [Git](https://git-scm.com/).
 1. Install [Node.js](https://nodejs.org/).
@@ -24,6 +28,13 @@ $ npm install
 $ npm run build
 ```
 where, in the above, each line is one command, and the `$` represents your terminal's prompt (not to be typed in: the first letters you type should be "git…"). This makes a copy of this repository on your computer (`git …`), changes into the new directory (`cd …`), installs a few JavaScript dependencies (`npm install`; `npm` is the Node.js package manager that was installed when you installed Node.js), and finally builds the TypeScript source code to Node.js-ready JavaScript (`npm run…`).
+
+Then you can start a new Node.js shell (run `node` in the terminal) or create a new JavaScript or TypeScript program to exercise this library:
+```js
+var codec = require('./index');
+conjugateAuxiliary('書く', Auxiliary.Tai, Conjugation.Negative)
+// [ '書きたくない' ]
+```
 
 ## Usage
 
@@ -76,4 +87,4 @@ Auxiliaries must be one of the following:
 ```
 
 ## Development
-Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests are currently happen to all be in JavaScript.
+Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
