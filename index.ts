@@ -256,7 +256,6 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
   } else if (aux === Auxiliary.SoudaHearsay) {
     const base1 = conjugate(verb, Conjugation.Ta, typeII)[0];
     const base2 = verb; // dictionary form
-    console.log(base1, base2);
     const append = (suffix: string) => [base1, base2].map(prefix => prefix + suffix);
     switch (conj) {
     // case Conjugation.Negative:

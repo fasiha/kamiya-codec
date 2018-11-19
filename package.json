@@ -1,6 +1,6 @@
 {
   "name": "kamiya-codec",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Japanese verb conjugator library based on Taeko Kamiya's *The Handbook of Japanese Verbs*",
   "main": "index.js",
   "scripts": {
