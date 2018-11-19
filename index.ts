@@ -146,7 +146,7 @@ function conjugateSuru(verb: string, conj: Conjugation): string[] {
   case Conjugation.Conjunctive: return ['し'];
   case Conjugation.Dictionary: return ['する'];
   case Conjugation.Conditional: return ['すれ'];
-  case Conjugation.Imperative: return ['せよ']; // しろ ok too
+  case Conjugation.Imperative: return ['しろ', 'せよ'];
   case Conjugation.Volitional: return ['しよう'];
   case Conjugation.Te: return ['して'];
   case Conjugation.Ta: return ['した'];
