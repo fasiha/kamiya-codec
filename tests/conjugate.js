@@ -10,6 +10,7 @@ test('check some type I (godan) conjugations', t => {
   t.ok(has(conjugateTypeI('買う', Conjugation.Te), '買って'));
   t.ok(has(conjugateTypeI('行く', Conjugation.Te), '行って'));
   t.ok(has(conjugateTypeI('いく', Conjugation.Te), 'いって'));
+  t.ok(has(conjugateTypeI('話す', Conjugation.Ta), '話した'));
   t.end();
 });
 
