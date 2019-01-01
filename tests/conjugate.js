@@ -36,6 +36,8 @@ test('Kuru', t => {
     t.ok(has(fn('来る', Conjugation.Negative), '来'));
     t.ok(has(fn('くる', Conjugation.Tari), 'きたり'));
     t.ok(has(fn('来る', Conjugation.Tari), '来たり'));
+    t.ok(has(fn('くる', Conjugation.Conditional), 'くれ'));
+    t.ok(has(fn('来る', Conjugation.Conditional), '来れ'));
   }
   t.end();
 });

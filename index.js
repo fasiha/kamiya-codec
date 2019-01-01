@@ -141,7 +141,7 @@ function conjugateKuru(verb, conj) {
             ret = 'くる';
             break;
         case Conjugation.Conditional:
-            ret = 'これ';
+            ret = 'くれ';
             break;
         case Conjugation.Imperative:
             ret = 'こい';
