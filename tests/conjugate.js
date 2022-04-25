@@ -118,6 +118,7 @@ test('Saseru/seru', t => {
   t.end();
 });
 
+// See section 3.26 in Kamiya
 test('Shortened causative seru', t => {
   t.ok(has(conjugateAuxiliary('歩く', Auxiliary.ShortenedCausative, Conjugation.Dictionary), '歩かす'));
   t.ok(has(conjugateAuxiliary('食べる', Auxiliary.ShortenedCausative, Conjugation.Dictionary, true), '食べさす'));
