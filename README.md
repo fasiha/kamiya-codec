@@ -18,7 +18,7 @@ Table of contents—
 
 ![Taeko Kamiya's "The Handbook of Japanese Verbs" and "The Handbook of Japanese Adjectives and Adverbs"](kamiya.jpg)
 
-A JavaScript/TypeScript library to conjugate Japanese
+A dependency-free browser/Node JavaScript/TypeScript library to conjugate Japanese
 - verbs,
 - auxiliary verbs, and
 - adjectives
