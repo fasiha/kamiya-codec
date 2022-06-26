@@ -91,28 +91,36 @@ Auxiliaries must be one of the following:
 
 `auxiliaries` is an array of all allowed values.
 
-### `deconjugate(conjugated: string, dictionaryForm: string, typeII: boolean): Deconjugated[]`
-Where 
+### `deconjugate`, `deconjugateAuxiliary`, and `verbDeconjugate`
+All three of these functions have the same calling convention, and largely similar return types:
+```ts
+function verbDeconjugate(
+    conjugated: string,
+    dictionaryForm: string,
+    typeII = false,
+    ): (DeconjugatedAuxiliary|Deconjugated)[]
+```
+except
+- `deconjugate` returns `Deconjugated[]`,
+- `deconjugateAuxiliary` returns `DeconjugatedAuxiliary[]`,
+- and as above, `verbDeconjugate` returns an array of `DeconjugatedAuxiliary`s or `Deconjugated`s.
+
+These return types are as follows:
 ```ts
 interface Deconjugated {
   conjugation: Conjugation;
   result: string[];
 }
-```
-Given a `conjugated` phrase, its dictionary form (ending in る or one of the other うくぐ⋯), and whether the verb is type I or II, returns an array of conjugations that seem to produce it.
-
-This is very brute-force.
-
-### `deconjugateAuxiliary(conjugated: string, dictionaryForm: string, typeII: boolean): DeconjugatedAuxiliary[]`
-Where
-```ts
 interface DeconjugatedAuxiliary {
-  conjugation: Conjugation;
   auxiliary: Auxiliary;
+  conjugation: Conjugation;
   result: string[]
 }
 ```
-Similar to above, finds all conjugation/auxiliary combinations that produce the given `conjugated` input given its dictionary form and type I vs II status. Very brute-force.
+
+Given a `conjugated` phrase, its dictionary form (ending in る or one of the other うくぐ⋯), and whether the verb is type I or II, returns an array of conjugations that seem to produce it.
+
+This is very brute-force. `verbDeconjugate` simply runs both the other ones.
 
 ## Usage for adjectives
 ### `adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[]`
@@ -138,7 +146,7 @@ Adjective conjugations must be one of the following:
 
 ### `adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`
 With
-```
+```ts
 interface AdjDeconjugated {
   conjugation: AdjConjugation;
   result: string[];
