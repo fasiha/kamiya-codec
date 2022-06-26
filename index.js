@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
@@ -407,6 +406,6 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false) {
 }
 exports.verbDeconjugate = verbDeconjugate;
 var adjective_1 = require("./adjective");
-Object.defineProperty(exports, "adjConjugations", { enumerable: true, get: function () { return adjective_1.adjConjugations; } });
-Object.defineProperty(exports, "adjConjugate", { enumerable: true, get: function () { return adjective_1.adjConjugate; } });
-Object.defineProperty(exports, "adjDeconjugate", { enumerable: true, get: function () { return adjective_1.adjDeconjugate; } });
+exports.adjConjugations = adjective_1.adjConjugations;
+exports.adjConjugate = adjective_1.adjConjugate;
+exports.adjDeconjugate = adjective_1.adjDeconjugate;
