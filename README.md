@@ -1,5 +1,21 @@
 # kamiya-codec
 
+Table of contents—
+- [kamiya-codec](#kamiya-codec)
+  - [Install](#install)
+  - [Usage for verbs](#usage-for-verbs)
+    - [`conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateverb-string-conj-conjugation-typeii-boolean--false-string)
+    - [`conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateauxiliaryverb-string-aux-auxiliary-conj-conjugation-typeii-boolean--false-string)
+    - [`type Conjugation` and `conjugations`](#type-conjugation-and-conjugations)
+    - [`type Auxiliary` and `auxiliaries`](#type-auxiliary-and-auxiliaries)
+    - [`deconjugate`, `deconjugateAuxiliary`, and `verbDeconjugate`](#deconjugate-deconjugateauxiliary-and-verbdeconjugate)
+  - [Usage for adjectives](#usage-for-adjectives)
+    - [`adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[]`](#adjconjugateadjective-string-conj-adjconjugation-iadjective-boolean-string)
+    - [`type AdjConjugation` and `adjConjugations`](#type-adjconjugation-and-adjconjugations)
+    - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
+  - [Development](#development)
+  - [Changelog](#changelog)
+
 ![Taeko Kamiya's "The Handbook of Japanese Verbs" and "The Handbook of Japanese Adjectives and Adverbs"](kamiya.jpg)
 
 A JavaScript/TypeScript library to conjugate Japanese
@@ -16,21 +32,6 @@ codec.conjugateAuxiliary('書く', 'Tai', 'Negative')
 gives us what we want: 書きたくない, or, “doesn’t want to write”.
 
 This library will make most sense if you have the book(s) for reference. It currently implements the first part of each book.
-
-Table of contents—
-- [kamiya-codec](#kamiya-codec)
-  - [Install](#install)
-  - [Usage for verbs](#usage-for-verbs)
-    - [`conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateverb-string-conj-conjugation-typeii-boolean--false-string)
-    - [`conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateauxiliaryverb-string-aux-auxiliary-conj-conjugation-typeii-boolean--false-string)
-    - [`type Conjugation` and `conjugations`](#type-conjugation-and-conjugations)
-    - [`type Auxiliary` and `auxiliaries`](#type-auxiliary-and-auxiliaries)
-    - [`deconjugate`, `deconjugateAuxiliary`, and `verbDeconjugate`](#deconjugate-deconjugateauxiliary-and-verbdeconjugate)
-  - [Usage for adjectives](#usage-for-adjectives)
-    - [`adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[]`](#adjconjugateadjective-string-conj-adjconjugation-iadjective-boolean-string)
-    - [`type AdjConjugation` and `adjConjugations`](#type-adjconjugation-and-adjconjugations)
-    - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
-  - [Development](#development)
 
 ## Install
 
@@ -171,3 +172,6 @@ this function attempts to deconjugate a string given its dictionary form and its
 
 ## Development
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
+
+## Changelog
+**2.0** converted from enums to discriminated unions; added adjectives; added brute force deconjugators.
