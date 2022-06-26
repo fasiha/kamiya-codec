@@ -1,16 +1,21 @@
 # kamiya-codec
 
-![Taeko Kamiya's "The Handbook of Japanese Verbs" cover](kamiya-verbs-cover.jpg)
+![Taeko Kamiya's "The Handbook of Japanese Verbs" and "The Handbook of Japanese Adjectives and Adverbs"](kamiya.jpg)
 
-A JavaScript/TypeScript library to conjugate Japanese verbs and auxiliary verbs based on Taeko Kamiya's *The Handbook of Japanese Verbs* (Kodansha, 2001). The idea is, you have a verb—書く, say (to write)—and maybe an auxiliary like たい (wanting to do something), and finally a conjugation, like *negative*. Then,
+A JavaScript/TypeScript library to conjugate Japanese
+- verbs,
+- auxiliary verbs, and
+- adjectives
+
+based on Taeko Kamiya's *The Handbook of Japanese Verbs* ([Kodansha](https://kodansha.us/book/the-handbook-of-japanese-verbs/)) and *The Handbook of Japanese Adjectives and Adverbs* ([Kodansha](https://kodansha.us/book/the-handbook-of-japanese-adjectives-and-adverbs/)). The idea is, you have a verb—書く, say (to write)—and maybe an auxiliary like たい (wanting to do something), and finally a conjugation, like *negative*. Then,
 ```js
 var codec = require('kamiya-codec');
-codec.conjugateAuxiliary('書く', codec.Auxiliary.Tai, codec.Conjugation.Negative)
+codec.conjugateAuxiliary('書く', 'Tai', 'Negative')
 // [ '書きたくない' ]
 ```
 gives us what we want: 書きたくない, or, “doesn’t want to write”.
 
-This library will make most sense if you have the book for reference. It currently implements part I of the book (up to page 47).
+This library will make most sense if you have the book(s) for reference. It currently implements the first part of each book.
 
 ## Install
 
@@ -32,11 +37,11 @@ where, in the above, each line is one command, and the `$` represents your termi
 Then you can start a new Node.js shell (run `node` in the terminal) or create a new JavaScript or TypeScript program to exercise this library:
 ```js
 var codec = require('./index');
-codec.conjugateAuxiliary('書く', codec.Auxiliary.Tai, codec.Conjugation.Negative)
+codec.conjugateAuxiliary('書く', 'Tai', 'Negative')
 // [ '書きたくない' ]
 ```
 
-## Usage
+## Usage for verbs
 
 ### `conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[]`
 
@@ -48,43 +53,106 @@ This library doesn't yet have a perfect way to tell type I (<ruby>五段<rt>goda
 
 Given a `verb` as well as an `aux`iliary verb (see below for list of allowed values), plus the `conj`ugation and the optional `typeII` boolean, apply the auxiliary to the verb and conjugate the result.
 
-### `enum Conjugation`
+### `type Conjugation` and `conjugations`
 Conjugations must be one of the following:
 ```
-{
-  Negative,
-  Conjunctive,
-  Dictionary,
-  Conditional,
-  Imperative,
-  Volitional,
-  Te,
-  Ta,
-  Tara,
-  Tari
+| "Negative"
+| "Conjunctive"
+| "Dictionary"
+| "Conditional"
+| "Imperative"
+| "Volitional"
+| "Te"
+| "Ta"
+| "Tara"
+| "Tari"
+```
+
+`conjugations` is an array containing all allowed values (for looping, etc.).
+
+### `type Auxiliary` and `auxiliaries`
+Auxiliaries must be one of the following:
+```
+| "Potential"
+| "Masu"
+| "Nai"
+| "Tai"
+| "Tagaru"
+| "Hoshii"
+| "Rashii"
+| "SoudaHearsay"
+| "SoudaConjecture"
+| "SeruSaseru"
+| "ShortenedCausative"
+| "ReruRareu"
+| "CausativePassive"
+| "ShortenedCausativePassive"
+```
+
+`auxiliaries` is an array of all allowed values.
+
+### `deconjugate`, `deconjugateAuxiliary`, and `verbDeconjugate`
+All three of these functions have the same calling convention, and largely similar return types:
+```ts
+function verbDeconjugate(
+    conjugated: string,
+    dictionaryForm: string,
+    typeII = false,
+    ): (DeconjugatedAuxiliary|Deconjugated)[]
+```
+except
+- `deconjugate` returns `Deconjugated[]`,
+- `deconjugateAuxiliary` returns `DeconjugatedAuxiliary[]`,
+- and as above, `verbDeconjugate` returns an array of `DeconjugatedAuxiliary`s or `Deconjugated`s.
+
+These return types are as follows:
+```ts
+interface Deconjugated {
+  conjugation: Conjugation;
+  result: string[];
+}
+interface DeconjugatedAuxiliary {
+  auxiliary: Auxiliary;
+  conjugation: Conjugation;
+  result: string[]
 }
 ```
 
-### `enum Auxiliary`
-Auxiliaries must be one of the following:
+Given a `conjugated` phrase, its dictionary form (ending in る or one of the other うくぐ⋯), and whether the verb is type I or II, returns an array of conjugations that seem to produce it.
+
+This is very brute-force. `verbDeconjugate` simply runs both the other ones.
+
+## Usage for adjectives
+### `adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[]`
+Given the dictionary form of an adjective (e.g., 楽しい or 簡単—note な adjectives should _not_ be given with な added on), a conjugation (see below), and whether this is an い-adjective or not, returns an array of strings with that conjugation.
+
+### `type AdjConjugation` and `adjConjugations`
+Adjective conjugations must be one of the following:
 ```
-{
-  Potential,
-  Masu,
-  Nai,
-  Tai,
-  Tagaru,
-  Hoshii,
-  Rashii,
-  SoudaHearsay,
-  SoudaConjecture,
-  SeruSaseru,
-  ShortenedCausative,
-  ReruRareu,
-  CausativePassive,
-  ShortenedCausativePassive
+| "Negative"
+| "Conditional"
+| "Tari"
+| "Present"
+| "Prenomial"
+| "Past"
+| "NegativePast"
+| "ConjunctiveTe"
+| "Adverbial"
+| "TaraConditional"
+| "Noun"
+```
+
+`adjConjugations` is an array of all valid values.
+
+### `adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`
+With
+```ts
+interface AdjDeconjugated {
+  conjugation: AdjConjugation;
+  result: string[];
 }
 ```
+this function attempts to deconjugate a string given its dictionary form and its い vs な status. Brute force.
 
 ## Development
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.

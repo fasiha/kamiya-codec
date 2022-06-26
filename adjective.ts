@@ -1,57 +1,61 @@
-export enum Conjugation {
-  Present,
-  Prenomial,
-  Negative,
-  Past,
-  NegativePast,
-  ConjunctiveTe,
-  Adverbial,
-  Conditional,
-  TaraConditional,
-  Tari,
-  Noun,
-}
+export const adjConjugations = [
+  'Present', 'Prenomial', 'Negative', 'Past', 'NegativePast', 'ConjunctiveTe', 'Adverbial', 'Conditional',
+  'TaraConditional', 'Tari', 'Noun'
+] as const;
+export type AdjConjugation = typeof adjConjugations[number];
 
 function never(x: never) { throw new Error('never?'); }
 
-export function conjugate(adjective: string, conj: Conjugation, iAdjective: boolean): string[] {
+export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[] {
   if (iAdjective) {
-    let stem = adjective.slice(0, 1);
+    let stem = adjective.slice(0, -1);
     if (adjective === 'いい' || adjective === '良い' || adjective === 'よい') {
       stem = adjective.startsWith('良') ? '良' : 'よ';
     }
     switch (conj) {
-    case Conjugation.Present: return [adjective];
-    case Conjugation.Prenomial: return [adjective];
-    case Conjugation.Negative: return [stem + 'くない'];
-    case Conjugation.Past: return [stem + 'くなかった'];
-    case Conjugation.NegativePast: return [stem + 'かった'];
-    case Conjugation.ConjunctiveTe: return [stem + 'く', stem + 'くて'];
-    case Conjugation.Adverbial: return [stem + 'く'];
-    case Conjugation.Conditional: return [stem + 'ければ'];
-    case Conjugation.TaraConditional: return [stem + 'かったら'];
-    case Conjugation.Tari: return [stem + 'かったり'];
-    case Conjugation.Noun: return [stem + 'さ'];
+    case 'Present': return [adjective];
+    case 'Prenomial': return [adjective];
+    case 'Negative': return [stem + 'くない'];
+    case 'Past': return [stem + 'かった'];
+    case 'NegativePast': return [stem + 'くなかった'];
+    case 'ConjunctiveTe': return [stem + 'く', stem + 'くて'];
+    case 'Adverbial': return [stem + 'く'];
+    case 'Conditional': return [stem + 'ければ'];
+    case 'TaraConditional': return [stem + 'かったら'];
+    case 'Tari': return [stem + 'かったり'];
+    case 'Noun': return [stem + 'さ'];
     default: never(conj);
     }
   }
   // na-adjective
   switch (conj) {
-  case Conjugation.Present: return [adjective + 'な'];
-  case Conjugation.Prenomial: return ['だ', 'です', 'でございます'].map(suffix => adjective + suffix);
-  case Conjugation.Negative:
-    return ['ではない', 'でない', 'じゃない', 'ではありません'].map(suffix => adjective + suffix);
-  case Conjugation.Past: return ['だった', 'でした'].map(suffix => adjective + suffix);
-  case Conjugation.NegativePast:
+  case 'Prenomial': return [adjective + 'な'];
+  case 'Present': return ['だ', 'です', 'でございます'].map(suffix => adjective + suffix);
+  case 'Negative': return ['ではない', 'でない', 'じゃない', 'ではありません'].map(suffix => adjective + suffix);
+  case 'Past': return ['だった', 'でした'].map(suffix => adjective + suffix);
+  case 'NegativePast':
     return ['ではなかった', 'でなかった', 'じゃなかった', 'ではありませんでした'].map(suffix => adjective + suffix);
-  case Conjugation.ConjunctiveTe: return ['で'].map(suffix => adjective + suffix);
-  case Conjugation.Adverbial: return ['に'].map(suffix => adjective + suffix);
-  case Conjugation.Conditional: return ['なら', 'ならば'].map(suffix => adjective + suffix);
-  case Conjugation.TaraConditional: return ['だったら'].map(suffix => adjective + suffix);
-  case Conjugation.Tari: return ['だったり', 'でしたり'].map(suffix => adjective + suffix);
-  case Conjugation.Noun: return ['さ'].map(suffix => adjective + suffix);
+  case 'ConjunctiveTe': return [adjective + 'で'];
+  case 'Adverbial': return [adjective + 'に'];
+  case 'Conditional': return ['なら', 'ならば'].map(suffix => adjective + suffix);
+  case 'TaraConditional': return ['だったら'].map(suffix => adjective + suffix);
+  case 'Tari': return ['だったり', 'でしたり'].map(suffix => adjective + suffix);
+  case 'Noun': return [adjective + 'さ'];
   default: never(conj);
   }
 
   throw new Error('unknown conjugation/iAdjective');
+}
+
+interface AdjDeconjugated {
+  conjugation: AdjConjugation;
+  result: string[];
+}
+export function adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[] {
+  const hits: AdjDeconjugated[] = [];
+  for (const conj of adjConjugations) {
+    const result = adjConjugate(dictionary, conj, iAdjective);
+    if (result.includes(conjugated)) { hits.push({conjugation: conj, result}) }
+  }
+  return hits;
 }

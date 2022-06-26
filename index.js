@@ -1,43 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.Auxiliary = exports.Conjugation = void 0;
+exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
-var Conjugation;
-(function (Conjugation) {
-    Conjugation[Conjugation["Negative"] = 0] = "Negative";
-    Conjugation[Conjugation["Conjunctive"] = 1] = "Conjunctive";
-    Conjugation[Conjugation["Dictionary"] = 2] = "Dictionary";
-    Conjugation[Conjugation["Conditional"] = 3] = "Conditional";
-    Conjugation[Conjugation["Imperative"] = 4] = "Imperative";
-    Conjugation[Conjugation["Volitional"] = 5] = "Volitional";
-    Conjugation[Conjugation["Te"] = 6] = "Te";
-    Conjugation[Conjugation["Ta"] = 7] = "Ta";
-    Conjugation[Conjugation["Tara"] = 8] = "Tara";
-    Conjugation[Conjugation["Tari"] = 9] = "Tari";
-})(Conjugation = exports.Conjugation || (exports.Conjugation = {}));
-var Auxiliary;
-(function (Auxiliary) {
-    Auxiliary[Auxiliary["Potential"] = 0] = "Potential";
-    Auxiliary[Auxiliary["Masu"] = 1] = "Masu";
-    Auxiliary[Auxiliary["Nai"] = 2] = "Nai";
-    Auxiliary[Auxiliary["Tai"] = 3] = "Tai";
-    Auxiliary[Auxiliary["Tagaru"] = 4] = "Tagaru";
-    Auxiliary[Auxiliary["Hoshii"] = 5] = "Hoshii";
-    Auxiliary[Auxiliary["Rashii"] = 6] = "Rashii";
-    Auxiliary[Auxiliary["SoudaHearsay"] = 7] = "SoudaHearsay";
-    Auxiliary[Auxiliary["SoudaConjecture"] = 8] = "SoudaConjecture";
-    Auxiliary[Auxiliary["SeruSaseru"] = 9] = "SeruSaseru";
-    Auxiliary[Auxiliary["ShortenedCausative"] = 10] = "ShortenedCausative";
-    Auxiliary[Auxiliary["ReruRareu"] = 11] = "ReruRareu";
-    Auxiliary[Auxiliary["CausativePassive"] = 12] = "CausativePassive";
-    Auxiliary[Auxiliary["ShortenedCausativePassive"] = 13] = "ShortenedCausativePassive";
-})(Auxiliary = exports.Auxiliary || (exports.Auxiliary = {}));
+exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
+exports.auxiliaries = [
+    'Potential', 'Masu', 'Nai', 'Tai', 'Tagaru', 'Hoshii', 'Rashii', 'SoudaHearsay', 'SoudaConjecture', 'SeruSaseru',
+    'ShortenedCausative', 'ReruRareu', 'CausativePassive', 'ShortenedCausativePassive'
+];
 const specialCasesRaw = [
-    ['ある', Conjugation.Negative, ''],
-    ['ござる', Conjugation.Conjunctive, 'ござい'],
-    ['いらっしゃる', Conjugation.Conjunctive, 'いらっしゃい'],
-    ['いらっしゃる', Conjugation.Conditional, 'いらっしゃい'],
-    ['いらっしゃる', Conjugation.Imperative, 'いらっしゃい'],
+    ['ある', 'Negative', ''],
+    ['ござる', 'Conjunctive', 'ござい'],
+    ['いらっしゃる', 'Conjunctive', 'いらっしゃい'],
+    ['いらっしゃる', 'Conditional', 'いらっしゃい'],
+    ['いらっしゃる', 'Imperative', 'いらっしゃい'],
 ];
 let specialCases = new Map([]);
 for (const [verb, conj, result] of specialCasesRaw) {
@@ -49,10 +24,7 @@ for (const [verb, conj, result] of specialCasesRaw) {
         specialCases.set(verb, new Map([[conj, result]]));
     }
 }
-const conjToIdx = new Map([
-    Conjugation.Negative, Conjugation.Conjunctive, Conjugation.Dictionary, Conjugation.Conditional,
-    Conjugation.Volitional, Conjugation.Te, Conjugation.Ta, Conjugation.Tara, Conjugation.Tari
-].map((x, i) => [x, i]));
+const conjToIdx = new Map(exports.conjugations.filter(x => x !== 'Imperative').map((x, i) => [x, i]));
 const tteRaw = [
     ['く', ['いて', 'いた', 'いたら', 'いたり']],
     ['ぐ', ['いで', 'いだ', 'いだら', 'いだり']],
@@ -85,7 +57,7 @@ function conjugateTypeI(verb, conj) {
     }
     const head = verb.slice(0, -1);
     const tail = verb.slice(-1);
-    const idx = conjToIdx.get(conj === Conjugation.Imperative ? Conjugation.Conditional : conj);
+    const idx = conjToIdx.get(conj === 'Imperative' ? 'Conditional' : conj);
     if (typeof idx === 'undefined') {
         throw new Error('Conjugation not yet implemented');
     }
@@ -115,16 +87,16 @@ function conjugateTypeII(verb, conj) {
     }
     const head = verb.slice(0, -1);
     switch (conj) {
-        case Conjugation.Negative: return [head];
-        case Conjugation.Conjunctive: return [head];
-        case Conjugation.Dictionary: return [verb];
-        case Conjugation.Conditional: return [head + 'れ'];
-        case Conjugation.Imperative: return [head + 'ろ', head + 'よ'];
-        case Conjugation.Volitional: return [head + 'よう'];
-        case Conjugation.Te: return [head + 'て'];
-        case Conjugation.Ta: return [head + 'た'];
-        case Conjugation.Tara: return [head + 'たら'];
-        case Conjugation.Tari: return [head + 'たり'];
+        case 'Negative': return [head];
+        case 'Conjunctive': return [head];
+        case 'Dictionary': return [verb];
+        case 'Conditional': return [head + 'れ'];
+        case 'Imperative': return [head + 'ろ', head + 'よ'];
+        case 'Volitional': return [head + 'よう'];
+        case 'Te': return [head + 'て'];
+        case 'Ta': return [head + 'た'];
+        case 'Tara': return [head + 'たら'];
+        case 'Tari': return [head + 'たり'];
         default: throw new Error('Unhandled conjugation');
     }
 }
@@ -132,34 +104,34 @@ exports.conjugateTypeII = conjugateTypeII;
 function conjugateKuru(verb, conj) {
     let ret = '';
     switch (conj) {
-        case Conjugation.Negative:
+        case 'Negative':
             ret = 'こ';
             break;
-        case Conjugation.Conjunctive:
+        case 'Conjunctive':
             ret = 'き';
             break;
-        case Conjugation.Dictionary:
+        case 'Dictionary':
             ret = 'くる';
             break;
-        case Conjugation.Conditional:
+        case 'Conditional':
             ret = 'くれ';
             break;
-        case Conjugation.Imperative:
+        case 'Imperative':
             ret = 'こい';
             break;
-        case Conjugation.Volitional:
+        case 'Volitional':
             ret = 'こよう';
             break;
-        case Conjugation.Te:
+        case 'Te':
             ret = 'きて';
             break;
-        case Conjugation.Ta:
+        case 'Ta':
             ret = 'きた';
             break;
-        case Conjugation.Tara:
+        case 'Tara':
             ret = 'きたら';
             break;
-        case Conjugation.Tari:
+        case 'Tari':
             ret = 'きたり';
             break;
         default: throw new Error('Unhandled conjugation');
@@ -175,160 +147,176 @@ function conjugateKuru(verb, conj) {
 }
 function conjugateSuru(verb, conj) {
     switch (conj) {
-        case Conjugation.Negative: return ['し'];
-        case Conjugation.Conjunctive: return ['し'];
-        case Conjugation.Dictionary: return ['する'];
-        case Conjugation.Conditional: return ['すれ'];
-        case Conjugation.Imperative: return ['しろ', 'せよ'];
-        case Conjugation.Volitional: return ['しよう'];
-        case Conjugation.Te: return ['して'];
-        case Conjugation.Ta: return ['した'];
-        case Conjugation.Tara: return ['したら'];
-        case Conjugation.Tari: return ['したり'];
+        case 'Negative': return ['し'];
+        case 'Conjunctive': return ['し'];
+        case 'Dictionary': return ['する'];
+        case 'Conditional': return ['すれ'];
+        case 'Imperative': return ['しろ', 'せよ'];
+        case 'Volitional': return ['しよう'];
+        case 'Te': return ['して'];
+        case 'Ta': return ['した'];
+        case 'Tara': return ['したら'];
+        case 'Tari': return ['したり'];
         default: throw new Error('Unhandled conjugation');
     }
 }
-function conjugate(verb, conj, typeII = false) {
+function conjugateStrict(verb, conj, typeII = false) {
     return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
+}
+function conjugate(verb, conj, typeII = false) {
+    const ret = conjugateStrict(verb, conj, typeII);
+    if (conj === 'Negative') {
+        ret.push(ret[0] + 'ない');
+    }
+    else if (conj === 'Conjunctive') {
+        ret.push(ret[0] + 'ます');
+    }
+    else if (conj === 'Conditional') {
+        ret.push(ret[0] + 'ば');
+    }
+    else if (conj === 'Volitional') {
+        ret.push(ret[0] + 'う');
+    }
+    return ret;
 }
 exports.conjugate = conjugate;
 function conjugateAuxiliary(verb, aux, conj, typeII = false) {
-    if (aux === Auxiliary.Potential) {
-        const newverb = conjugateTypeI(verb, Conjugation.Conditional)[0] + 'る';
+    if (aux === 'Potential') {
+        const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
         return conjugateTypeII(newverb, conj);
     }
-    else if (aux === Auxiliary.Masu) {
-        const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    else if (aux === 'Masu') {
+        const base = conjugate(verb, 'Conjunctive', typeII)[0];
         switch (conj) {
-            case Conjugation.Negative: return [base + 'ません'];
-            // case Conjugation.Conjunctive:
-            case Conjugation.Dictionary: return [base + 'ます'];
-            case Conjugation.Conditional: return [base + 'ますれば'];
-            case Conjugation.Imperative: return [base + 'ませ'];
-            case Conjugation.Volitional: return [base + 'ましょう'];
-            case Conjugation.Te: return [base + 'まして'];
-            case Conjugation.Ta: return [base + 'ました'];
-            case Conjugation.Tara: return [base + 'ましたら'];
-            // case Conjugation.Tari:
+            case 'Negative': return [base + 'ません', base + 'ませんでした'];
+            // case 'Conjunctive':
+            case 'Dictionary': return [base + 'ます'];
+            case 'Conditional': return [base + 'ますれば'];
+            case 'Imperative': return [base + 'ませ', base + 'まし']; // latter only for nasaru and ossharu
+            case 'Volitional': return [base + 'ましょう'];
+            case 'Te': return [base + 'まして'];
+            case 'Ta': return [base + 'ました'];
+            case 'Tara': return [base + 'ましたら'];
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.Nai) {
-        const base = conjugate(verb, Conjugation.Negative, typeII);
+    else if (aux === 'Nai') {
+        const base = conjugate(verb, 'Negative', typeII)[0];
         switch (conj) {
-            case Conjugation.Negative: return [base + 'なくはない'];
-            case Conjugation.Conjunctive: return [base + 'なく'];
-            case Conjugation.Dictionary: return [base + 'ない'];
-            case Conjugation.Conditional: return [base + 'なければ'];
-            // case Conjugation.Imperative:
-            // case Conjugation.Volitional:
-            case Conjugation.Te: return [base + 'なくて'];
-            case Conjugation.Ta: return [base + 'なかった'];
-            case Conjugation.Tara: return [base + 'なかったら'];
-            // case Conjugation.Tari:
+            case 'Negative': return [base + 'なくはない'];
+            case 'Conjunctive': return [base + 'なく'];
+            case 'Dictionary': return [base + 'ない'];
+            case 'Conditional': return [base + 'なければ'];
+            // case 'Imperative':
+            // case 'Volitional':
+            case 'Te': return [base + 'なくて'];
+            case 'Ta': return [base + 'なかった'];
+            case 'Tara': return [base + 'なかったら'];
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.Tai) {
-        const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    else if (aux === 'Tai') {
+        const base = conjugate(verb, 'Conjunctive', typeII)[0];
         switch (conj) {
-            case Conjugation.Negative: return [base + 'たくない'];
-            case Conjugation.Conjunctive: return [base + 'たく'];
-            case Conjugation.Dictionary: return [base + 'たい'];
-            case Conjugation.Conditional: return [base + 'たければ'];
-            // case Conjugation.Imperative:
-            // case Conjugation.Volitional:
-            case Conjugation.Te: return [base + 'たくて'];
-            case Conjugation.Ta: return [base + 'たかった'];
-            case Conjugation.Tara: return [base + 'たかったら'];
-            // case Conjugation.Tari:
+            case 'Negative': return [base + 'たくない'];
+            case 'Conjunctive': return [base + 'たく'];
+            case 'Dictionary': return [base + 'たい'];
+            case 'Conditional': return [base + 'たければ'];
+            // case 'Imperative':
+            // case 'Volitional':
+            case 'Te': return [base + 'たくて'];
+            case 'Ta': return [base + 'たかった'];
+            case 'Tara': return [base + 'たかったら'];
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.Tagaru) {
+    else if (aux === 'Tagaru') {
         switch (conj) {
-            case Conjugation.Conditional:
-            case Conjugation.Imperative:
-            case Conjugation.Volitional:
-            case Conjugation.Tari: throw new Error('Unhandled conjugation');
+            case 'Conditional':
+            case 'Imperative':
+            case 'Volitional':
+            case 'Tari': throw new Error('Unhandled conjugation');
         }
-        const base = conjugate(verb, Conjugation.Conjunctive, typeII);
-        const tagaruConj = conjugateTypeI('たがる', conj);
-        return [base[0] + tagaruConj[0]];
+        const bases = conjugate(verb, 'Conjunctive', typeII);
+        const tagaruConj = conjugate('たがる', conj, false);
+        return tagaruConj.map(suffix => bases[0] + suffix);
     }
-    else if (aux === Auxiliary.Hoshii) {
-        const base = conjugate(verb, Conjugation.Te, typeII);
+    else if (aux === 'Hoshii') {
+        const base = conjugate(verb, 'Te', typeII)[0];
         switch (conj) {
-            case Conjugation.Negative: return [base + 'ほしくない'];
-            case Conjugation.Conjunctive: return [base + 'ほしく'];
-            case Conjugation.Dictionary: return [base + 'ほしい'];
-            case Conjugation.Conditional: return [base + 'ほしければ'];
-            // case Conjugation.Imperative:
-            // case Conjugation.Volitional:
-            case Conjugation.Te: return [base + 'ほしくて'];
-            case Conjugation.Ta: return [base + 'ほしかった'];
-            case Conjugation.Tara: return [base + 'ほしかったら'];
-            // case Conjugation.Tari:
+            case 'Negative': return [base + 'ほしくない'];
+            case 'Conjunctive': return [base + 'ほしく'];
+            case 'Dictionary': return [base + 'ほしい'];
+            case 'Conditional': return [base + 'ほしければ'];
+            // case 'Imperative':
+            // case 'Volitional':
+            case 'Te': return [base + 'ほしくて'];
+            case 'Ta': return [base + 'ほしかった'];
+            case 'Tara': return [base + 'ほしかったら'];
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.Rashii) {
-        const base1 = conjugate(verb, Conjugation.Ta, typeII);
+    else if (aux === 'Rashii') {
+        const base1 = conjugate(verb, 'Ta', typeII)[0];
         const base2 = verb;
         const append = (suffix) => [base1, base2].map(prefix => prefix + suffix);
         switch (conj) {
-            case Conjugation.Negative:
-                const neg = conjugateAuxiliary(verb, Auxiliary.Nai, Conjugation.Dictionary);
+            case 'Negative':
+                const neg = conjugateAuxiliary(verb, 'Nai', 'Dictionary')[0];
                 return [neg + 'らしい'];
-            case Conjugation.Conjunctive: return append('らしく');
-            case Conjugation.Dictionary: return append('らしい');
-            // case Conjugation.Conditional:
-            // case Conjugation.Imperative:
-            // case Conjugation.Volitional:
-            case Conjugation.Te: return append('らしくて');
-            // case Conjugation.Ta:
-            // case Conjugation.Tara:
-            // case Conjugation.Tari:
+            case 'Conjunctive': return append('らしく');
+            case 'Dictionary': return append('らしい');
+            // case 'Conditional':
+            // case 'Imperative':
+            // case 'Volitional':
+            case 'Te': return append('らしくて');
+            // case 'Ta':
+            // case 'Tara':
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.SoudaHearsay) {
-        const base1 = conjugate(verb, Conjugation.Ta, typeII)[0];
+    else if (aux === 'SoudaHearsay') {
+        const base1 = conjugate(verb, 'Ta', typeII)[0];
         const base2 = verb; // dictionary form
         const append = (suffix) => [base1, base2].map(prefix => prefix + suffix);
         switch (conj) {
-            // case Conjugation.Negative:
-            // case Conjugation.Conjunctive:
-            case Conjugation.Dictionary: return append('そうだ');
-            // case Conjugation.Conditional:
-            // case Conjugation.Imperative:
-            // case Conjugation.Volitional:
-            // case Conjugation.Te:
-            // case Conjugation.Ta:
-            // case Conjugation.Tara:
-            // case Conjugation.Tari:
+            // case 'Negative':
+            // case 'Conjunctive':
+            case 'Dictionary': return append('そうだ');
+            // case 'Conditional':
+            // case 'Imperative':
+            // case 'Volitional':
+            // case 'Te':
+            // case 'Ta':
+            // case 'Tara':
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.SoudaConjecture) {
-        const base = conjugate(verb, Conjugation.Conjunctive, typeII);
+    else if (aux === 'SoudaConjecture') {
+        const base = conjugate(verb, 'Conjunctive', typeII)[0];
         const append = (suffix) => [base + suffix];
         switch (conj) {
-            // case Conjugation.Negative:
-            // case Conjugation.Conjunctive:
-            case Conjugation.Dictionary: return append('そうだ');
-            case Conjugation.Conditional: return append('そうなら');
-            // case Conjugation.Imperative:
-            // case Conjugation.Volitional:
-            // case Conjugation.Te:
-            case Conjugation.Ta: return append('そうだった');
-            // case Conjugation.Tara:
-            // case Conjugation.Tari:
+            // case 'Negative':
+            // case 'Conjunctive':
+            case 'Dictionary': return append('そうだ');
+            case 'Conditional': return append('そうなら');
+            // case 'Imperative':
+            // case 'Volitional':
+            // case 'Te':
+            case 'Ta': return append('そうだった');
+            // case 'Tara':
+            // case 'Tari':
             default: throw new Error('Unhandled conjugation');
         }
     }
-    else if (aux === Auxiliary.SeruSaseru || aux === Auxiliary.ShortenedCausative) {
-        if (conj === Conjugation.Tara || conj === Conjugation.Tari) {
+    else if (aux === 'SeruSaseru' || aux === 'ShortenedCausative') {
+        if (conj === 'Tara' || conj === 'Tari') {
             throw new Error('Unhandled conjugation');
         }
         let newverb;
@@ -339,20 +327,20 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
             newverb = 'させる';
         }
         else if (typeII) {
-            newverb = conjugateTypeII(verb, Conjugation.Negative)[0] + 'させる';
+            newverb = conjugateTypeII(verb, 'Negative')[0] + 'させる';
         }
         else { // type I
-            newverb = conjugateTypeI(verb, Conjugation.Negative)[0] + 'せる';
+            newverb = conjugateTypeI(verb, 'Negative')[0] + 'せる';
         }
-        if (aux === Auxiliary.ShortenedCausative) {
+        if (aux === 'ShortenedCausative') {
             newverb = newverb.slice(0, -2) + 'す';
-            return conjugateTypeI(newverb, conj);
+            return conjugate(newverb, conj, false);
         }
-        return conjugateTypeII(newverb, conj);
+        return conjugate(newverb, conj, true);
     }
-    else if (aux === Auxiliary.ReruRareu) {
-        if (conj === Conjugation.Conditional || conj === Conjugation.Imperative || conj === Conjugation.Volitional ||
-            conj === Conjugation.Tara || conj === Conjugation.Tari) {
+    else if (aux === 'ReruRareu') {
+        if (conj === 'Conditional' || conj === 'Imperative' || conj === 'Volitional' || conj === 'Tara' ||
+            conj === 'Tari') {
             throw new Error('Unhandled conjugation');
         }
         let newverb;
@@ -363,23 +351,62 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
             newverb = 'される';
         }
         else if (typeII) {
-            newverb = conjugateTypeII(verb, Conjugation.Negative)[0] + 'られる';
+            newverb = conjugateTypeII(verb, 'Negative')[0] + 'られる';
         }
         else { // type I
-            newverb = conjugateTypeI(verb, Conjugation.Negative)[0] + 'れる';
+            newverb = conjugateTypeI(verb, 'Negative')[0] + 'れる';
         }
-        return conjugateTypeII(newverb, conj);
+        return conjugate(newverb, conj, true);
     }
-    else if (aux === Auxiliary.CausativePassive) {
-        const newverb = conjugateAuxiliary(verb, Auxiliary.SeruSaseru, Conjugation.Negative, typeII)[0] + 'られる';
-        return conjugateTypeII(newverb, conj);
+    else if (aux === 'CausativePassive') {
+        const newverb = conjugateAuxiliary(verb, 'SeruSaseru', 'Negative', typeII)[0] + 'られる';
+        return conjugate(newverb, conj, true);
     }
-    else if (aux === Auxiliary.ShortenedCausativePassive) {
-        const newverb = conjugateAuxiliary(verb, Auxiliary.ShortenedCausative, Conjugation.Negative, typeII)[0] + 'れる';
-        return conjugateTypeII(newverb, conj);
+    else if (aux === 'ShortenedCausativePassive') {
+        const newverb = conjugateAuxiliary(verb, 'ShortenedCausative', 'Negative', typeII)[0] + 'れる';
+        return conjugate(newverb, conj, true);
     }
     else {
         throw new Error('Unhandled auxiliary');
     }
 }
 exports.conjugateAuxiliary = conjugateAuxiliary;
+function deconjugate(conjugated, dictionaryForm, typeII = false) {
+    const hits = [];
+    for (const conjugation of exports.conjugations) {
+        try {
+            const result = conjugate(dictionaryForm, conjugation, typeII);
+            if (result.includes(conjugated)) {
+                hits.push({ conjugation, result });
+            }
+        }
+        catch (_a) { }
+    }
+    return hits;
+}
+exports.deconjugate = deconjugate;
+function deconjugateAuxiliary(conjugated, dictionaryForm, typeII = false) {
+    const hits = [];
+    for (const aux of exports.auxiliaries) {
+        for (const conj of exports.conjugations) {
+            try {
+                const result = conjugateAuxiliary(dictionaryForm, aux, conj, typeII);
+                if (result.includes(conjugated)) {
+                    hits.push({ conjugation: conj, auxiliary: aux, result });
+                }
+            }
+            catch (_a) { }
+        }
+    }
+    return hits;
+}
+exports.deconjugateAuxiliary = deconjugateAuxiliary;
+function verbDeconjugate(conjugated, dictionaryForm, typeII = false) {
+    return deconjugate(conjugated, dictionaryForm, typeII)
+        .concat(deconjugateAuxiliary(conjugated, dictionaryForm, typeII));
+}
+exports.verbDeconjugate = verbDeconjugate;
+var adjective_1 = require("./adjective");
+Object.defineProperty(exports, "adjConjugations", { enumerable: true, get: function () { return adjective_1.adjConjugations; } });
+Object.defineProperty(exports, "adjConjugate", { enumerable: true, get: function () { return adjective_1.adjConjugate; } });
+Object.defineProperty(exports, "adjDeconjugate", { enumerable: true, get: function () { return adjective_1.adjDeconjugate; } });
