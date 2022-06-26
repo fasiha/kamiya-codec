@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.guessVerbToRow = void 0;
 const typeIEndings = new Set('くぐすつぬぶむう'.split(''));
 const esEndings = new Set('えけげせぜてでねへべぺめれ'.split(''));
 const isEndings = new Set('いきぎしじちにひびぴみり'.split(''));

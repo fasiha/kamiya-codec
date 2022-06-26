@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.lookup = void 0;
 const split = (s) => s.split('');
 const vec = [
     split('あいうえお'),

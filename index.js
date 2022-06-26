@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.Auxiliary = exports.Conjugation = void 0;
 const hiragana_1 = require("./hiragana");
 var Conjugation;
 (function (Conjugation) {
