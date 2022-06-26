@@ -44,22 +44,6 @@ const tteRaw: Array<[string, string[]]> = [
 let tte: Map<string, string[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
-export function conjugate(verb: string, conj: Conjugation, typeII = false): string[] {
-  const ret = conjugateStrict(verb, conj, typeII);
-
-  if (conj === 'Negative') {
-    ret.push(ret[0] + 'ない');
-  } else if (conj === 'Conjunctive') {
-    ret.push(ret[0] + 'ます');
-  } else if (conj === 'Conditional') {
-    ret.push(ret[0] + 'ば');
-  } else if (conj === 'Volitional') {
-    ret.push(ret[0] + 'う');
-  }
-
-  return ret;
-}
-
 export function conjugateTypeI(verb: string, conj: Conjugation): string[] {
   {
     if (verb === 'する') {
@@ -151,8 +135,24 @@ function conjugateSuru(verb: string, conj: Conjugation): string[] {
   }
 }
 
-export function conjugateStrict(verb: string, conj: Conjugation, typeII: boolean = false): string[] {
+function conjugateStrict(verb: string, conj: Conjugation, typeII: boolean = false): string[] {
   return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
+}
+
+export function conjugate(verb: string, conj: Conjugation, typeII = false): string[] {
+  const ret = conjugateStrict(verb, conj, typeII);
+
+  if (conj === 'Negative') {
+    ret.push(ret[0] + 'ない');
+  } else if (conj === 'Conjunctive') {
+    ret.push(ret[0] + 'ます');
+  } else if (conj === 'Conditional') {
+    ret.push(ret[0] + 'ば');
+  } else if (conj === 'Volitional') {
+    ret.push(ret[0] + 'う');
+  }
+
+  return ret;
 }
 
 export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
@@ -162,11 +162,11 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
   } else if (aux === 'Masu') {
     const base = conjugate(verb, 'Conjunctive', typeII)[0];
     switch (conj) {
-    case 'Negative': return [base + 'ません'];
+    case 'Negative': return [base + 'ません', base + 'ませんでした'];
     // case 'Conjunctive':
     case 'Dictionary': return [base + 'ます'];
     case 'Conditional': return [base + 'ますれば'];
-    case 'Imperative': return [base + 'ませ'];
+    case 'Imperative': return [base + 'ませ', base + 'まし']; // latter only for nasaru and ossharu
     case 'Volitional': return [base + 'ましょう'];
     case 'Te': return [base + 'まして'];
     case 'Ta': return [base + 'ました'];
@@ -212,8 +212,8 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     case 'Tari': throw new Error('Unhandled conjugation');
     }
     const bases = conjugate(verb, 'Conjunctive', typeII);
-    const tagaruConj = conjugateTypeI('たがる', conj);
-    return [bases[0] + tagaruConj[0]];
+    const tagaruConj = conjugate('たがる', conj, false);
+    return tagaruConj.map(suffix => bases[0] + suffix);
   } else if (aux === 'Hoshii') {
     const base = conjugate(verb, 'Te', typeII)[0];
     switch (conj) {
@@ -293,9 +293,9 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     }
     if (aux === 'ShortenedCausative') {
       newverb = newverb.slice(0, -2) + 'す';
-      return conjugateTypeI(newverb, conj);
+      return conjugate(newverb, conj, false);
     }
-    return conjugateTypeII(newverb, conj);
+    return conjugate(newverb, conj, true);
   } else if (aux === 'ReruRareu') {
     if (conj === 'Conditional' || conj === 'Imperative' || conj === 'Volitional' || conj === 'Tara' ||
         conj === 'Tari') {
@@ -311,13 +311,13 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     } else { // type I
       newverb = conjugateTypeI(verb, 'Negative')[0] + 'れる';
     }
-    return conjugateTypeII(newverb, conj);
+    return conjugate(newverb, conj, true);
   } else if (aux === 'CausativePassive') {
     const newverb = conjugateAuxiliary(verb, 'SeruSaseru', 'Negative', typeII)[0] + 'られる';
-    return conjugateTypeII(newverb, conj);
+    return conjugate(newverb, conj, true);
   } else if (aux === 'ShortenedCausativePassive') {
     const newverb = conjugateAuxiliary(verb, 'ShortenedCausative', 'Negative', typeII)[0] + 'れる';
-    return conjugateTypeII(newverb, conj);
+    return conjugate(newverb, conj, true);
   } else {
     throw new Error('Unhandled auxiliary');
   }

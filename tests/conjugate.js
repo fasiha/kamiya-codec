@@ -1,5 +1,5 @@
 "use strict";
-const {conjugateTypeI, conjugateTypeII, conjugateAuxiliary} = require('../index');
+const {conjugateTypeI, conjugateTypeII, conjugate, conjugateAuxiliary} = require('../index');
 const test = require('tape');
 
 const has = (vec, key) => vec.indexOf(key) >= 0;
@@ -160,3 +160,25 @@ test('Potential', t => {
   t.ok(has(conjugateAuxiliary('読む', 'Potential', 'Te'), '読めて'));
   t.end();
 });
+
+test('Check that nai/masu/etc. multiple choice endings are there', t => {
+  // v1 of this package was quite strict about returning a single string in an array, but we want to support
+  // conjugations that can have more than one conjugation. Let's check some.
+  t.ok(has(conjugateAuxiliary('あるく', 'SeruSaseru', 'Conjunctive'), 'あるかせます'));
+  t.ok(has(conjugateAuxiliary('あるく', 'SeruSaseru', 'Conditional'), 'あるかせれば'));
+
+  t.ok(has(conjugateAuxiliary('食べる', 'SeruSaseru', 'Negative', true), '食べさせない'));
+  t.ok(has(conjugateAuxiliary('食べる', 'SeruSaseru', 'Conjunctive', true), '食べさせます'));
+  t.ok(has(conjugateAuxiliary('食べる', 'SeruSaseru', 'Conditional', true), '食べさせれば'));
+
+  t.ok(has(conjugateAuxiliary('する', 'SeruSaseru', 'Conditional'), 'させれば'));
+
+  t.ok(has(conjugateAuxiliary('いく', 'Masu', 'Negative'), 'いきません'));
+  t.ok(has(conjugateAuxiliary('いく', 'Masu', 'Negative'), 'いきませんでした'));
+
+  t.ok(has(conjugate('くる', 'Negative'), 'こない'));
+  t.ok(has(conjugate('食べる', 'Conditional', true), '食べれば'));
+  t.ok(has(conjugate('買う', 'Negative'), '買わない'));
+
+  t.end();
+})
