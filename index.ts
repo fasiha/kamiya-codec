@@ -44,8 +44,8 @@ const tteRaw: Array<[string, string[]]> = [
 let tte: Map<string, string[]> = new Map([]);
 for (const [tail, quad] of tteRaw) { tte.set(tail, quad); }
 
-export function conjugateTypeI(verb: string, conj: Conjugation): string[] {
-  const ret = conjugateTypeIStrict(verb, conj);
+export function conjugate(verb: string, conj: Conjugation, typeII = false): string[] {
+  const ret = conjugateStrict(verb, conj, typeII);
 
   if (conj === 'Negative') {
     ret.push(ret[0] + 'ない');
@@ -60,7 +60,7 @@ export function conjugateTypeI(verb: string, conj: Conjugation): string[] {
   return ret;
 }
 
-export function conjugateTypeIStrict(verb: string, conj: Conjugation): string[] {
+export function conjugateTypeI(verb: string, conj: Conjugation): string[] {
   {
     if (verb === 'する') {
       return conjugateSuru(verb, conj);
@@ -151,7 +151,7 @@ function conjugateSuru(verb: string, conj: Conjugation): string[] {
   }
 }
 
-export function conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[] {
+export function conjugateStrict(verb: string, conj: Conjugation, typeII: boolean = false): string[] {
   return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
 }
 
@@ -234,7 +234,7 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     const base2 = verb;
     const append = (suffix: string) => [base1, base2].map(prefix => prefix + suffix);
     switch (conj) {
-    case 'Negative': const neg = conjugateAuxiliary(verb, 'Nai', 'Dictionary'); return [neg + 'らしい'];
+    case 'Negative': const neg = conjugateAuxiliary(verb, 'Nai', 'Dictionary')[0]; return [neg + 'らしい'];
     case 'Conjunctive': return append('らしく');
     case 'Dictionary': return append('らしい');
     // case 'Conditional':

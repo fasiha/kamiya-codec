@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeIStrict = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
+exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugateStrict = exports.conjugateTypeII = exports.conjugateTypeI = exports.conjugate = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
@@ -40,8 +40,8 @@ let tte = new Map([]);
 for (const [tail, quad] of tteRaw) {
     tte.set(tail, quad);
 }
-function conjugateTypeI(verb, conj) {
-    const ret = conjugateTypeIStrict(verb, conj);
+function conjugate(verb, conj, typeII = false) {
+    const ret = conjugateStrict(verb, conj, typeII);
     if (conj === 'Negative') {
         ret.push(ret[0] + 'ない');
     }
@@ -56,8 +56,8 @@ function conjugateTypeI(verb, conj) {
     }
     return ret;
 }
-exports.conjugateTypeI = conjugateTypeI;
-function conjugateTypeIStrict(verb, conj) {
+exports.conjugate = conjugate;
+function conjugateTypeI(verb, conj) {
     {
         if (verb === 'する') {
             return conjugateSuru(verb, conj);
@@ -94,7 +94,7 @@ function conjugateTypeIStrict(verb, conj) {
     }
     return [head + tteHit[tidx]];
 }
-exports.conjugateTypeIStrict = conjugateTypeIStrict;
+exports.conjugateTypeI = conjugateTypeI;
 function conjugateTypeII(verb, conj) {
     if (verb === 'する') {
         return conjugateSuru(verb, conj);
@@ -177,10 +177,10 @@ function conjugateSuru(verb, conj) {
         default: throw new Error('Unhandled conjugation');
     }
 }
-function conjugate(verb, conj, typeII = false) {
+function conjugateStrict(verb, conj, typeII = false) {
     return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
 }
-exports.conjugate = conjugate;
+exports.conjugateStrict = conjugateStrict;
 function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     if (aux === 'Potential') {
         const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
@@ -267,7 +267,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         const append = (suffix) => [base1, base2].map(prefix => prefix + suffix);
         switch (conj) {
             case 'Negative':
-                const neg = conjugateAuxiliary(verb, 'Nai', 'Dictionary');
+                const neg = conjugateAuxiliary(verb, 'Nai', 'Dictionary')[0];
                 return [neg + 'らしい'];
             case 'Conjunctive': return append('らしく');
             case 'Dictionary': return append('らしい');
