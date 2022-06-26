@@ -47,7 +47,7 @@ export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective
   throw new Error('unknown conjugation/iAdjective');
 }
 
-interface AdjDeconjugated {
+export interface AdjDeconjugated {
   conjugation: AdjConjugation;
   result: string[];
 }
