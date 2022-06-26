@@ -368,4 +368,5 @@ export {
   AdjConjugation,
   adjConjugate,
   adjDeconjugate,
+  AdjDeconjugated,
 } from './adjective';
