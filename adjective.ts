@@ -8,7 +8,7 @@ function never(x: never) { throw new Error('never?'); }
 
 export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[] {
   if (iAdjective) {
-    let stem = adjective.slice(0, 1);
+    let stem = adjective.slice(0, -1);
     if (adjective === 'いい' || adjective === '良い' || adjective === 'よい') {
       stem = adjective.startsWith('良') ? '良' : 'よ';
     }
@@ -16,8 +16,8 @@ export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective
     case 'Present': return [adjective];
     case 'Prenomial': return [adjective];
     case 'Negative': return [stem + 'くない'];
-    case 'Past': return [stem + 'くなかった'];
-    case 'NegativePast': return [stem + 'かった'];
+    case 'Past': return [stem + 'かった'];
+    case 'NegativePast': return [stem + 'くなかった'];
     case 'ConjunctiveTe': return [stem + 'く', stem + 'くて'];
     case 'Adverbial': return [stem + 'く'];
     case 'Conditional': return [stem + 'ければ'];
@@ -29,8 +29,8 @@ export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective
   }
   // na-adjective
   switch (conj) {
-  case 'Present': return [adjective + 'な'];
-  case 'Prenomial': return ['だ', 'です', 'でございます'].map(suffix => adjective + suffix);
+  case 'Prenomial': return [adjective + 'な'];
+  case 'Present': return ['だ', 'です', 'でございます'].map(suffix => adjective + suffix);
   case 'Negative': return ['ではない', 'でない', 'じゃない', 'ではありません'].map(suffix => adjective + suffix);
   case 'Past': return ['だった', 'でした'].map(suffix => adjective + suffix);
   case 'NegativePast':

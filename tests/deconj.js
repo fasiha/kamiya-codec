@@ -1,8 +1,9 @@
 "use strict";
-const {adjDeconjugate, verbDeconjugate} = require('../index');
+const {verbDeconjugate} = require('../index');
 const test = require('tape');
 
 test('just deconjugate', t => {
+  // same as some tests for the conjugator
   t.ok(verbDeconjugate('あるかせます', 'あるく').length > 0);
   t.ok(verbDeconjugate('あるかせれば', 'あるく').length > 0);
 

@@ -357,7 +357,7 @@ export function deconjugateAuxiliary(conjugated: string, dictionaryForm: string,
   return hits;
 }
 
-export function deconjugateVerb(conjugated: string, dictionaryForm: string,
+export function verbDeconjugate(conjugated: string, dictionaryForm: string,
                                 typeII = false): (DeconjugatedAuxiliary|Deconjugated)[] {
   return deconjugate(conjugated, dictionaryForm, typeII)
       .concat(deconjugateAuxiliary(conjugated, dictionaryForm, typeII))
