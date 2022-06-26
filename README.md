@@ -17,6 +17,21 @@ gives us what we want: 書きたくない, or, “doesn’t want to write”.
 
 This library will make most sense if you have the book(s) for reference. It currently implements the first part of each book.
 
+Table of contents—
+- [kamiya-codec](#kamiya-codec)
+  - [Install](#install)
+  - [Usage for verbs](#usage-for-verbs)
+    - [`conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateverb-string-conj-conjugation-typeii-boolean--false-string)
+    - [`conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateauxiliaryverb-string-aux-auxiliary-conj-conjugation-typeii-boolean--false-string)
+    - [`type Conjugation` and `conjugations`](#type-conjugation-and-conjugations)
+    - [`type Auxiliary` and `auxiliaries`](#type-auxiliary-and-auxiliaries)
+    - [`deconjugate`, `deconjugateAuxiliary`, and `verbDeconjugate`](#deconjugate-deconjugateauxiliary-and-verbdeconjugate)
+  - [Usage for adjectives](#usage-for-adjectives)
+    - [`adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[]`](#adjconjugateadjective-string-conj-adjconjugation-iadjective-boolean-string)
+    - [`type AdjConjugation` and `adjConjugations`](#type-adjconjugation-and-adjconjugations)
+    - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
+  - [Development](#development)
+
 ## Install
 
 Node.js developers: `npm install --save kamiya-codec` will add this package to your current project.
