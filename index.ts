@@ -323,11 +323,11 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
   }
 }
 
-interface Deconjugated {
+export interface Deconjugated {
   conjugation: Conjugation;
   result: string[];
 }
-export function deconjugate(conjugated: string, dictionaryForm: string, typeII: boolean): Deconjugated[] {
+export function deconjugate(conjugated: string, dictionaryForm: string, typeII = false): Deconjugated[] {
   const hits: Deconjugated[] = [];
   for (const conjugation of conjugations) {
     try {
@@ -338,13 +338,13 @@ export function deconjugate(conjugated: string, dictionaryForm: string, typeII: 
   return hits;
 }
 
-interface DeconjugatedAuxiliary {
-  conjugation: Conjugation;
+export interface DeconjugatedAuxiliary {
   auxiliary: Auxiliary;
+  conjugation: Conjugation;
   result: string[]
 }
 export function deconjugateAuxiliary(conjugated: string, dictionaryForm: string,
-                                     typeII: boolean): DeconjugatedAuxiliary[] {
+                                     typeII = false): DeconjugatedAuxiliary[] {
   const hits: DeconjugatedAuxiliary[] = [];
   for (const aux of auxiliaries) {
     for (const conj of conjugations) {
@@ -355,6 +355,12 @@ export function deconjugateAuxiliary(conjugated: string, dictionaryForm: string,
     }
   }
   return hits;
+}
+
+export function deconjugateVerb(conjugated: string, dictionaryForm: string,
+                                typeII = false): (DeconjugatedAuxiliary|Deconjugated)[] {
+  return deconjugate(conjugated, dictionaryForm, typeII)
+      .concat(deconjugateAuxiliary(conjugated, dictionaryForm, typeII))
 }
 
 export {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
+exports.deconjugateVerb = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
@@ -371,7 +371,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     }
 }
 exports.conjugateAuxiliary = conjugateAuxiliary;
-function deconjugate(conjugated, dictionaryForm, typeII) {
+function deconjugate(conjugated, dictionaryForm, typeII = false) {
     const hits = [];
     for (const conjugation of exports.conjugations) {
         try {
@@ -385,7 +385,7 @@ function deconjugate(conjugated, dictionaryForm, typeII) {
     return hits;
 }
 exports.deconjugate = deconjugate;
-function deconjugateAuxiliary(conjugated, dictionaryForm, typeII) {
+function deconjugateAuxiliary(conjugated, dictionaryForm, typeII = false) {
     const hits = [];
     for (const aux of exports.auxiliaries) {
         for (const conj of exports.conjugations) {
@@ -401,6 +401,11 @@ function deconjugateAuxiliary(conjugated, dictionaryForm, typeII) {
     return hits;
 }
 exports.deconjugateAuxiliary = deconjugateAuxiliary;
+function deconjugateVerb(conjugated, dictionaryForm, typeII = false) {
+    return deconjugate(conjugated, dictionaryForm, typeII)
+        .concat(deconjugateAuxiliary(conjugated, dictionaryForm, typeII));
+}
+exports.deconjugateVerb = deconjugateVerb;
 var adjective_1 = require("./adjective");
 Object.defineProperty(exports, "adjConjugations", { enumerable: true, get: function () { return adjective_1.adjConjugations; } });
 Object.defineProperty(exports, "adjConjugate", { enumerable: true, get: function () { return adjective_1.adjConjugate; } });
