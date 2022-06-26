@@ -31,6 +31,12 @@ codec.conjugateAuxiliary('書く', 'Tai', 'Negative')
 ```
 gives us what we want: 書きたくない, or, “doesn’t want to write”.
 
+Similarly, you can ask the library to attempt to reverse this conjugation:
+```js
+codec.verbDeconjugate('書きたくない', '書く')
+// [ { conjugation: 'Negative', auxiliary: 'Tai', result: [ '書きたくない' ] } ]
+```
+
 This library will make most sense if you have the book(s) for reference. It currently implements the first part of each book.
 
 ## Install
@@ -136,6 +142,8 @@ interface DeconjugatedAuxiliary {
 
 Given a `conjugated` phrase, its dictionary form (ending in る or one of the other うくぐ⋯), and whether the verb is type I or II, returns an array of conjugations that seem to produce it.
 
+As you might imagine, given the inputs required, I expect you to use this alongside a morphological parser like MeCab that can give you the lemma (dictionary form) and whether or not your conjugated phrase is type I or II, etc.
+
 This is very brute-force. `verbDeconjugate` simply runs both the other ones.
 
 ## Usage for adjectives
@@ -168,7 +176,7 @@ interface AdjDeconjugated {
   result: string[];
 }
 ```
-this function attempts to deconjugate a string given its dictionary form and its い vs な status. Brute force.
+this function attempts to deconjugate a string given its dictionary form and its い vs な status. Brute force. Again, the expectation is you would use this with MeCab or similar.
 
 ## Development
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
