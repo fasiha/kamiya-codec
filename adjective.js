@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.adjDeconjugate = exports.adjConjugate = exports.adjConjugations = void 0;
 exports.adjConjugations = [
     'Present', 'Prenomial', 'Negative', 'Past', 'NegativePast', 'ConjunctiveTe', 'Adverbial', 'Conditional',
     'TaraConditional', 'Tari', 'Noun'

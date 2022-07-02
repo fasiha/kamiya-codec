@@ -6,8 +6,27 @@ export const conjugations =
 export type Conjugation = typeof conjugations[number];
 
 export const auxiliaries = [
-  'Potential', 'Masu', 'Nai', 'Tai', 'Tagaru', 'Hoshii', 'Rashii', 'SoudaHearsay', 'SoudaConjecture', 'SeruSaseru',
-  'ShortenedCausative', 'ReruRareu', 'CausativePassive', 'ShortenedCausativePassive'
+  'Potential',
+  'Masu',
+  'Nai',
+  'Tai',
+  'Tagaru',
+  'Hoshii',
+  'Rashii',
+  'SoudaHearsay',
+  'SoudaConjecture',
+  'SeruSaseru',
+  'ShortenedCausative',
+  'ReruRareu',
+  'CausativePassive',
+  'ShortenedCausativePassive',
+  'Ageru', // Kamiya ection 7.15
+  'Sashiageru',
+  'Yaru',
+  'Morau', // Kamiya ection 7.16
+  'Itadaku',
+  'Kureru', // Kamiya ection 7.17
+  'Kudasaru'
 ] as const;
 export type Auxiliary = typeof auxiliaries[number];
 
@@ -318,10 +337,24 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
   } else if (aux === 'ShortenedCausativePassive') {
     const newverb = conjugateAuxiliary(verb, 'ShortenedCausative', 'Negative', typeII)[0] + 'れる';
     return conjugate(newverb, conj, true);
-  } else {
-    throw new Error('Unhandled auxiliary');
+  } else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
+             aux === 'Kureru' || aux === 'Kudasaru') {
+    const vte = conjugate(verb, 'Te', typeII)[0];
+    const endings: string[] = aux === 'Ageru'        ? ['あげる']
+                              : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
+                              : aux === 'Yaru'       ? ['やる']
+                              : aux === 'Morau'      ? ['もらう']
+                              : aux === 'Itadaku'    ? ['いただく']
+                              : aux === 'Kureru'     ? ['くれる']
+                                                     : ['くださる'];
+    const endingTypeII: boolean = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru';
+    const newVerbs = endings.map(ending => vte + ending);
+    return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
   }
+  isNever(aux);
+  throw new Error('Unhandled auxiliary')
 }
+function isNever(x: never) { return x; }
 
 export interface Deconjugated {
   conjugation: Conjugation;

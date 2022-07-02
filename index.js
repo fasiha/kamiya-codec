@@ -1,10 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
-    'Potential', 'Masu', 'Nai', 'Tai', 'Tagaru', 'Hoshii', 'Rashii', 'SoudaHearsay', 'SoudaConjecture', 'SeruSaseru',
-    'ShortenedCausative', 'ReruRareu', 'CausativePassive', 'ShortenedCausativePassive'
+    'Potential',
+    'Masu',
+    'Nai',
+    'Tai',
+    'Tagaru',
+    'Hoshii',
+    'Rashii',
+    'SoudaHearsay',
+    'SoudaConjecture',
+    'SeruSaseru',
+    'ShortenedCausative',
+    'ReruRareu',
+    'CausativePassive',
+    'ShortenedCausativePassive',
+    'Ageru',
+    'Sashiageru',
+    'Yaru',
+    'Morau',
+    'Itadaku',
+    'Kureru',
+    'Kudasaru'
 ];
 const specialCasesRaw = [
     ['ある', 'Negative', ''],
@@ -365,11 +385,25 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         const newverb = conjugateAuxiliary(verb, 'ShortenedCausative', 'Negative', typeII)[0] + 'れる';
         return conjugate(newverb, conj, true);
     }
-    else {
-        throw new Error('Unhandled auxiliary');
+    else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
+        aux === 'Kureru' || aux === 'Kudasaru') {
+        const vte = conjugate(verb, 'Te', typeII)[0];
+        const endings = aux === 'Ageru' ? ['あげる']
+            : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
+                : aux === 'Yaru' ? ['やる']
+                    : aux === 'Morau' ? ['もらう']
+                        : aux === 'Itadaku' ? ['いただく']
+                            : aux === 'Kureru' ? ['くれる']
+                                : ['くださる'];
+        const endingTypeII = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru';
+        const newVerbs = endings.map(ending => vte + ending);
+        return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
     }
+    isNever(aux);
+    throw new Error('Unhandled auxiliary');
 }
 exports.conjugateAuxiliary = conjugateAuxiliary;
+function isNever(x) { return x; }
 function deconjugate(conjugated, dictionaryForm, typeII = false) {
     const hits = [];
     for (const conjugation of exports.conjugations) {
@@ -406,6 +440,6 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false) {
 }
 exports.verbDeconjugate = verbDeconjugate;
 var adjective_1 = require("./adjective");
-exports.adjConjugations = adjective_1.adjConjugations;
-exports.adjConjugate = adjective_1.adjConjugate;
-exports.adjDeconjugate = adjective_1.adjDeconjugate;
+Object.defineProperty(exports, "adjConjugations", { enumerable: true, get: function () { return adjective_1.adjConjugations; } });
+Object.defineProperty(exports, "adjConjugate", { enumerable: true, get: function () { return adjective_1.adjConjugate; } });
+Object.defineProperty(exports, "adjDeconjugate", { enumerable: true, get: function () { return adjective_1.adjDeconjugate; } });
