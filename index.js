@@ -67,6 +67,17 @@ function conjugateTypeI(verb, conj) {
         else if (verb === 'くる' || verb === '来る') {
             return conjugateKuru(verb, conj);
         }
+        else if (verb.endsWith('くださる')) {
+            if (conj === 'Dictionary') {
+                return [verb];
+            }
+            else if (conj === 'Conjunctive') {
+                return [verb.slice(0, -2) + 'さい'];
+            }
+            else {
+                throw new Error('unknown conjugation for -kudasaru');
+            }
+        }
         const specialHit = specialCases.get(verb);
         if (specialHit && specialHit.has(conj)) {
             return [specialHit.get(conj) || ''];
@@ -199,7 +210,18 @@ function conjugate(verb, conj, typeII = false) {
     return ret;
 }
 exports.conjugate = conjugate;
-function conjugateAuxiliary(verb, aux, conj, typeII = false) {
+function conjugateAuxiliary(verb, aux, conj, typeII = false, { secondaryAux } = {}) {
+    if (secondaryAux) {
+        if (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
+            aux === 'SoudaConjecture' || aux === 'SoudaHearsay') {
+            throw new Error('this cannot be secondary auxiliary');
+        }
+        const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
+        const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
+            aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
+            aux === 'Sashiageru' || aux === 'Kureru';
+        return dictionaryForms.flatMap(d => conjugateAuxiliary(d, secondaryAux, conj, dictionaryTypeII));
+    }
     if (aux === 'Potential') {
         const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
         return conjugateTypeII(newverb, conj);
@@ -340,7 +362,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         }
         let newverb;
         if (verb === '来る' || verb === 'くる') {
-            newverb = verb[0] + 'させる';
+            newverb = (verb[0] === '来' ? '来' : 'こ') + 'させる';
         }
         else if (verb === 'する') {
             newverb = 'させる';
@@ -364,7 +386,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         }
         let newverb;
         if (verb === '来る' || verb === 'くる') {
-            newverb = verb[0] + 'られる';
+            newverb = (verb[0] === '来' ? '来' : 'こ') + 'られる';
         }
         else if (verb === 'する') {
             newverb = 'される';

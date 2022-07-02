@@ -69,6 +69,14 @@ export function conjugateTypeI(verb: string, conj: Conjugation): string[] {
       return conjugateSuru(verb, conj);
     } else if (verb === 'くる' || verb === '来る') {
       return conjugateKuru(verb, conj);
+    } else if (verb.endsWith('くださる')) {
+      if (conj === 'Dictionary') {
+        return [verb];
+      } else if (conj === 'Conjunctive') {
+        return [verb.slice(0, -2) + 'さい'];
+      } else {
+        throw new Error('unknown conjugation for -kudasaru');
+      }
     }
     const specialHit = specialCases.get(verb);
     if (specialHit && specialHit.has(conj)) { return [specialHit.get(conj) || '']; }
@@ -174,7 +182,19 @@ export function conjugate(verb: string, conj: Conjugation, typeII = false): stri
   return ret;
 }
 
-export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
+export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false,
+                                   {secondaryAux}: {secondaryAux?: Auxiliary} = {}): string[] {
+  if (secondaryAux) {
+    if (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
+        aux === 'SoudaConjecture' || aux === 'SoudaHearsay') {
+      throw new Error('this cannot be secondary auxiliary');
+    }
+    const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
+    const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
+                             aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
+                             aux === 'Sashiageru' || aux === 'Kureru';
+    return dictionaryForms.flatMap(d => conjugateAuxiliary(d, secondaryAux, conj, dictionaryTypeII));
+  }
   if (aux === 'Potential') {
     const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
     return conjugateTypeII(newverb, conj);
@@ -302,7 +322,7 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     if (conj === 'Tara' || conj === 'Tari') { throw new Error('Unhandled conjugation'); }
     let newverb;
     if (verb === '来る' || verb === 'くる') {
-      newverb = verb[0] + 'させる';
+      newverb = (verb[0] === '来' ? '来' : 'こ') + 'させる';
     } else if (verb === 'する') {
       newverb = 'させる';
     } else if (typeII) {
@@ -322,7 +342,7 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     }
     let newverb;
     if (verb === '来る' || verb === 'くる') {
-      newverb = verb[0] + 'られる';
+      newverb = (verb[0] === '来' ? '来' : 'こ') + 'られる';
     } else if (verb === 'する') {
       newverb = 'される';
     } else if (typeII) {
