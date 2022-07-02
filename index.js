@@ -24,7 +24,14 @@ exports.auxiliaries = [
     'Morau',
     'Itadaku',
     'Kureru',
-    'Kudasaru'
+    'Kudasaru',
+    'TeIruNoun',
+    'TeAruNoun',
+    'Miru',
+    'Iku',
+    'Kuru',
+    'Oku',
+    'Shimau',
 ];
 const specialCasesRaw = [
     ['ある', 'Negative', ''],
@@ -48,9 +55,9 @@ const tteRaw = [
     ['く', ['いて', 'いた', 'いたら', 'いたり']],
     ['ぐ', ['いで', 'いだ', 'いだら', 'いだり']],
     ['す', ['して', 'した', 'したら', 'したり']],
-    ['ぬ', ['んて', 'んだ', 'んだら', 'んだり']],
-    ['ぶ', ['んて', 'んだ', 'んだら', 'んだり']],
-    ['む', ['んて', 'んだ', 'んだら', 'んだり']],
+    ['ぬ', ['んで', 'んだ', 'んだら', 'んだり']],
+    ['ぶ', ['んで', 'んだ', 'んだら', 'んだり']],
+    ['む', ['んで', 'んだ', 'んだら', 'んだり']],
     ['つ', ['って', 'った', 'ったら', 'ったり']],
     ['る', ['って', 'った', 'ったら', 'ったり']],
     ['う', ['って', 'った', 'ったら', 'ったり']],
@@ -213,13 +220,13 @@ exports.conjugate = conjugate;
 function conjugateAuxiliary(verb, aux, conj, typeII = false, { secondaryAux } = {}) {
     if (secondaryAux) {
         if (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
-            aux === 'SoudaConjecture' || aux === 'SoudaHearsay') {
+            aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun') {
             throw new Error('this cannot be secondary auxiliary');
         }
         const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
         const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
             aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
-            aux === 'Sashiageru' || aux === 'Kureru';
+            aux === 'Sashiageru' || aux === 'Kureru' || aux === 'Miru';
         return dictionaryForms.flatMap(d => conjugateAuxiliary(d, secondaryAux, conj, dictionaryTypeII));
     }
     if (aux === 'Potential') {
@@ -408,7 +415,8 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false, { secondaryAux } = 
         return conjugate(newverb, conj, true);
     }
     else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
-        aux === 'Kureru' || aux === 'Kudasaru') {
+        aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIruNoun' || aux === 'TeAruNoun' || aux === 'Miru' ||
+        aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau') {
         const vte = conjugate(verb, 'Te', typeII)[0];
         const endings = aux === 'Ageru' ? ['あげる']
             : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
@@ -416,8 +424,19 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false, { secondaryAux } = 
                     : aux === 'Morau' ? ['もらう']
                         : aux === 'Itadaku' ? ['いただく']
                             : aux === 'Kureru' ? ['くれる']
-                                : ['くださる'];
-        const endingTypeII = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru';
+                                : aux === 'Kudasaru' ? ['くださる']
+                                    : aux === 'TeIruNoun' ? ['いる']
+                                        : aux === 'TeAruNoun' ? ['ある']
+                                            : aux === 'Miru' ? ['みる']
+                                                : aux === 'Iku' ? ['いく']
+                                                    : aux === 'Kuru' ? ['くる']
+                                                        : aux === 'Oku' ? ['おく']
+                                                            : aux === 'Shimau' ? ['しまう']
+                                                                : [aux];
+        if (!endings[0]) {
+            throw new Error('missing ternary');
+        }
+        const endingTypeII = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIruNoun' || aux === 'Miru';
         const newVerbs = endings.map(ending => vte + ending);
         return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
     }

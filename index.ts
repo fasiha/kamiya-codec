@@ -25,8 +25,15 @@ export const auxiliaries = [
   'Yaru',
   'Morau', // Kamiya ection 7.16
   'Itadaku',
-  'Kureru', // Kamiya ection 7.17
-  'Kudasaru'
+  'Kureru', // Kamiya section 7.17
+  'Kudasaru',
+  'TeIruNoun', // 7.21
+  'TeAruNoun', // 7.21
+  'Miru',      // 7.22
+  'Iku',       // 7.23
+  'Kuru',      // 7.24
+  'Oku',       // 7.25
+  'Shimau',    // 7.26
 ] as const;
 export type Auxiliary = typeof auxiliaries[number];
 
@@ -53,9 +60,9 @@ const tteRaw: Array<[string, string[]]> = [
   ['く', ['いて', 'いた', 'いたら', 'いたり']],
   ['ぐ', ['いで', 'いだ', 'いだら', 'いだり']],
   ['す', ['して', 'した', 'したら', 'したり']],
-  ['ぬ', ['んて', 'んだ', 'んだら', 'んだり']],
-  ['ぶ', ['んて', 'んだ', 'んだら', 'んだり']], // same as above
-  ['む', ['んて', 'んだ', 'んだら', 'んだり']], // ditto
+  ['ぬ', ['んで', 'んだ', 'んだら', 'んだり']],
+  ['ぶ', ['んで', 'んだ', 'んだら', 'んだり']], // same as above
+  ['む', ['んで', 'んだ', 'んだら', 'んだり']], // ditto
   ['つ', ['って', 'った', 'ったら', 'ったり']],
   ['る', ['って', 'った', 'ったら', 'ったり']], // same as above and below
   ['う', ['って', 'った', 'ったら', 'ったり']],
@@ -186,13 +193,13 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
                                    {secondaryAux}: {secondaryAux?: Auxiliary} = {}): string[] {
   if (secondaryAux) {
     if (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
-        aux === 'SoudaConjecture' || aux === 'SoudaHearsay') {
+        aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun') {
       throw new Error('this cannot be secondary auxiliary');
     }
     const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
     const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
                              aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
-                             aux === 'Sashiageru' || aux === 'Kureru';
+                             aux === 'Sashiageru' || aux === 'Kureru' || aux === 'Miru';
     return dictionaryForms.flatMap(d => conjugateAuxiliary(d, secondaryAux, conj, dictionaryTypeII));
   }
   if (aux === 'Potential') {
@@ -358,7 +365,8 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
     const newverb = conjugateAuxiliary(verb, 'ShortenedCausative', 'Negative', typeII)[0] + 'れる';
     return conjugate(newverb, conj, true);
   } else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
-             aux === 'Kureru' || aux === 'Kudasaru') {
+             aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIruNoun' || aux === 'TeAruNoun' || aux === 'Miru' ||
+             aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau') {
     const vte = conjugate(verb, 'Te', typeII)[0];
     const endings: string[] = aux === 'Ageru'        ? ['あげる']
                               : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
@@ -366,8 +374,18 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
                               : aux === 'Morau'      ? ['もらう']
                               : aux === 'Itadaku'    ? ['いただく']
                               : aux === 'Kureru'     ? ['くれる']
-                                                     : ['くださる'];
-    const endingTypeII: boolean = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru';
+                              : aux === 'Kudasaru'   ? ['くださる']
+                              : aux === 'TeIruNoun'  ? ['いる']
+                              : aux === 'TeAruNoun'  ? ['ある']
+                              : aux === 'Miru'       ? ['みる']
+                              : aux === 'Iku'        ? ['いく']
+                              : aux === 'Kuru'       ? ['くる']
+                              : aux === 'Oku'        ? ['おく']
+                              : aux === 'Shimau'     ? ['しまう']
+                                                     : [aux];
+    if (!endings[0]) { throw new Error('missing ternary'); }
+    const endingTypeII: boolean =
+        aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIruNoun' || aux === 'Miru';
     const newVerbs = endings.map(ending => vte + ending);
     return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
   }

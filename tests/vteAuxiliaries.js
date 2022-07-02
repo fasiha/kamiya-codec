@@ -57,6 +57,15 @@ test('secondary aux', t => {
   t.ok(conjugateAuxiliary('する', 'Kudasaru', 'Ta', true, {secondaryAux: 'Masu'}).includes('してくださいました'),
        'kudaseru'); // p 164
 
+  const a = conjugateAuxiliary;
+  // p167-8
+  t.ok(a('たつ', 'TeIruNoun', 'Dictionary').includes('たっている'), 'teiru');
+  t.ok(a('する', 'TeAruNoun', 'Dictionary').includes('してある'), 'tearu');
+
+  // p 169-170
+  t.ok(a('飲む', 'Miru', 'Ta', false, {secondaryAux: 'Masu'}).includes('飲んでみました'), 'miru/masu/ta');
+  t.ok(a('こえる', 'Miru', 'Dictionary', true, {secondaryAux: 'Masu'}).includes('こえてみます'), 'miru/masu/dict');
+  t.ok(a('こえる', 'Miru', 'Dictionary', true, {secondaryAux: 'Masu'}).includes('こえてみます'), 'miru/masu/dict');
   t.end();
 });
 
