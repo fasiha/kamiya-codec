@@ -37,6 +37,13 @@ test('secondary aux', t => {
        }).includes('歩かされました'),
        'shortened/masu/ta'); // page 47
 
+  t.ok(conjugateAuxiliary('買う', 'Ageru', 'Ta', false, {secondaryAux: 'Masu'}).includes('買ってあげました'),
+       'ageru masu/ta'); // p 162
+  t.ok(conjugateAuxiliary('見せる', 'Sashiageru', 'Ta', true, {secondaryAux: 'Masu'}).includes('見せて差し上げました'),
+       'Sashiageru kanji masu/ta'); // p 162
+  t.ok(conjugateAuxiliary('する', 'Yaru', 'Ta', false, {secondaryAux: 'Masu'}).includes('してやりました'),
+       'yaru kanji masu/ta'); // p 162
+
   t.ok(conjugateAuxiliary('する', 'Morau', 'Ta', false, {secondaryAux: 'Masu'}).includes('してもらいました'),
        'morau masu/ta'); // p 163
   t.ok(conjugateAuxiliary('おしえる', 'Itadaku', 'Dictionary', true, {
@@ -56,6 +63,8 @@ test('secondary aux', t => {
 tape('vte auxiliaries', t => {
   t.ok(conjugateAuxiliary('洗う', 'Morau', 'Dictionary').includes('洗ってもらう'),
        'morau'); // p 163
+  t.ok(conjugateAuxiliary('焼く', 'Kureru', 'Dictionary').includes('焼いてくれる'),
+       'kureru'); // p 163
 
   t.end();
 });
