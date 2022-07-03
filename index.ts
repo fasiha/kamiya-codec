@@ -189,7 +189,6 @@ export function conjugate(verb: string, conj: Conjugation, typeII = false): stri
   return ret;
 }
 
-// 知る -> SeruSaseru -> Kureru -> Masu -> Ta = 知らせてくれました
 export function conjugateAuxiliaries(initialVerb: string, auxs: Auxiliary[], finalConj: Conjugation,
                                      initialTypeII: boolean = false): string[] {
 

@@ -217,7 +217,6 @@ function conjugate(verb, conj, typeII = false) {
     return ret;
 }
 exports.conjugate = conjugate;
-// 知る -> SeruSaseru -> Kureru -> Masu -> Ta = 知らせてくれました
 function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = false) {
     if (auxs.length === 0) {
         return conjugate(initialVerb, finalConj, initialTypeII);

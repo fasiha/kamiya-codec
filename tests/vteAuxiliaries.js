@@ -50,7 +50,6 @@ test('secondary aux', t => {
   t.ok(a('おしえる', ['Itadaku', 'Masu'], 'Dictionary', true).includes('おしえていただきます'),
        'itadaku'); // p 163
 
-  // FIXME: this is actually  知る -> SeruSaseru -> Kureru -> Masu -> Ta
   t.ok(a('知らせる', ['Kureru', 'Masu'], 'Ta', true).includes('知らせてくれました'),
        'kureru'); // p 164
   t.ok(a('する', ['Kudasaru', 'Masu'], 'Ta', true).includes('してくださいました'),
@@ -95,6 +94,13 @@ tape('vte auxiliaries', t => {
 
   // p 171-172
   t.ok(a('買う', ['Oku'], 'Dictionary').includes('買っておく'));
+
+  t.end();
+});
+
+test('multi-pipeline', t => {
+  // 知る -> SeruSaseru -> Kureru -> Masu -> Ta
+  t.ok(a('知る', ['SeruSaseru', 'Kureru', 'Masu'], 'Ta', false).includes('知らせてくれました')); // p 164
 
   t.end();
 });
