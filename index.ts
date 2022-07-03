@@ -416,43 +416,68 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
 function isNever(x: never) { return x; }
 
 export interface Deconjugated {
+  auxiliaries: Auxiliary[];
   conjugation: Conjugation;
   result: string[];
 }
-export function deconjugate(conjugated: string, dictionaryForm: string, typeII = false): Deconjugated[] {
+export function verbDeconjugate(conjugated: string, dictionaryForm: string, typeII = false,
+                                maxAuxDepth = Infinity): Deconjugated[] {
   const hits: Deconjugated[] = [];
-  for (const conjugation of conjugations) {
+
+  for (const conj of conjugations) {
     try {
-      const result = conjugate(dictionaryForm, conjugation, typeII);
-      if (result.includes(conjugated)) { hits.push({conjugation, result}) }
+      const result = conjugate(dictionaryForm, conj, typeII);
+      if (result.includes(conjugated)) { hits.push({conjugation: conj, auxiliaries: [], result}) }
     } catch {}
   }
-  return hits;
-}
 
-export interface DeconjugatedAuxiliary {
-  auxiliary: Auxiliary;
-  conjugation: Conjugation;
-  result: string[]
-}
-export function deconjugateAuxiliary(conjugated: string, dictionaryForm: string,
-                                     typeII = false): DeconjugatedAuxiliary[] {
-  const hits: DeconjugatedAuxiliary[] = [];
+  if (maxAuxDepth <= 0) { return hits; }
+
   for (const aux of auxiliaries) {
     for (const conj of conjugations) {
       try {
         const result = conjugateAuxiliary(dictionaryForm, aux, conj, typeII);
-        if (result.includes(conjugated)) { hits.push({conjugation: conj, auxiliary: aux, result}) }
+        if (result.includes(conjugated)) { hits.push({conjugation: conj, auxiliaries: [aux], result}) }
       } catch {}
     }
   }
-  return hits;
-}
 
-export function verbDeconjugate(conjugated: string, dictionaryForm: string,
-                                typeII = false): (DeconjugatedAuxiliary|Deconjugated)[] {
-  return deconjugate(conjugated, dictionaryForm, typeII)
-      .concat(deconjugateAuxiliary(conjugated, dictionaryForm, typeII))
+  if (maxAuxDepth <= 1) { return hits; }
+
+  const penultimates: Auxiliary[] =
+      ['Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau'];
+  const depth2Finals: Auxiliary[] = ['Masu'];
+  for (const penultimate of penultimates) {
+    for (const final of depth2Finals) {
+      for (const conj of conjugations) {
+        const auxs = [penultimate, final];
+        try {
+          const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
+          if (result.includes(conjugated)) { hits.push({conjugation: conj, auxiliaries: auxs, result}); }
+        } catch {}
+      }
+    }
+  }
+
+  if (maxAuxDepth <= 2) { return hits; }
+
+  const antepenultimates: Auxiliary[] = ['SeruSaseru', 'ReruRareu'];
+  const depth3Finals: Auxiliary[] = ['Masu'];
+  for (const ante of antepenultimates) {
+    for (const penultimate of penultimates) {
+      for (const final of depth3Finals) {
+        for (const conj of conjugations) {
+          const auxs = [ante, penultimate, final];
+          try {
+            const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
+            if (result.includes(conjugated)) { hits.push({conjugation: conj, auxiliaries: auxs, result}); }
+          } catch {}
+        }
+      }
+    }
+  }
+
+  return hits;
 }
 
 export {

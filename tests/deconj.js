@@ -22,3 +22,11 @@ test('just deconjugate', t => {
 
   t.end();
 });
+
+test('deconj pipeline', t => {
+  t.ok(verbDeconjugate('知らせてくれました', '知る').length > 0);
+  t.ok(verbDeconjugate('知らせてくれました', '知る', false, 1).length === 0);
+  t.ok(verbDeconjugate('知らせてくれました', '知る', false, 2).length === 0);
+
+  t.end();
+});

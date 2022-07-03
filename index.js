@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliaries = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
+exports.verbDeconjugate = exports.conjugateAuxiliaries = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
@@ -464,39 +464,72 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     throw new Error('Unhandled auxiliary');
 }
 function isNever(x) { return x; }
-function deconjugate(conjugated, dictionaryForm, typeII = false) {
+function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth = Infinity) {
     const hits = [];
-    for (const conjugation of exports.conjugations) {
+    for (const conj of exports.conjugations) {
         try {
-            const result = conjugate(dictionaryForm, conjugation, typeII);
+            const result = conjugate(dictionaryForm, conj, typeII);
             if (result.includes(conjugated)) {
-                hits.push({ conjugation, result });
+                hits.push({ conjugation: conj, auxiliaries: [], result });
             }
         }
         catch (_a) { }
     }
-    return hits;
-}
-exports.deconjugate = deconjugate;
-function deconjugateAuxiliary(conjugated, dictionaryForm, typeII = false) {
-    const hits = [];
+    if (maxAuxDepth <= 0) {
+        return hits;
+    }
     for (const aux of exports.auxiliaries) {
         for (const conj of exports.conjugations) {
             try {
                 const result = conjugateAuxiliary(dictionaryForm, aux, conj, typeII);
                 if (result.includes(conjugated)) {
-                    hits.push({ conjugation: conj, auxiliary: aux, result });
+                    hits.push({ conjugation: conj, auxiliaries: [aux], result });
                 }
             }
-            catch (_a) { }
+            catch (_b) { }
+        }
+    }
+    if (maxAuxDepth <= 1) {
+        return hits;
+    }
+    const penultimates = ['Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau'];
+    const depth2Finals = ['Masu'];
+    for (const penultimate of penultimates) {
+        for (const final of depth2Finals) {
+            for (const conj of exports.conjugations) {
+                const auxs = [penultimate, final];
+                try {
+                    const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
+                    if (result.includes(conjugated)) {
+                        hits.push({ conjugation: conj, auxiliaries: auxs, result });
+                    }
+                }
+                catch (_c) { }
+            }
+        }
+    }
+    if (maxAuxDepth <= 2) {
+        return hits;
+    }
+    const antepenultimates = ['SeruSaseru', 'ReruRareu'];
+    const depth3Finals = ['Masu'];
+    for (const ante of antepenultimates) {
+        for (const penultimate of penultimates) {
+            for (const final of depth3Finals) {
+                for (const conj of exports.conjugations) {
+                    const auxs = [ante, penultimate, final];
+                    try {
+                        const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
+                        if (result.includes(conjugated)) {
+                            hits.push({ conjugation: conj, auxiliaries: auxs, result });
+                        }
+                    }
+                    catch (_d) { }
+                }
+            }
         }
     }
     return hits;
-}
-exports.deconjugateAuxiliary = deconjugateAuxiliary;
-function verbDeconjugate(conjugated, dictionaryForm, typeII = false) {
-    return deconjugate(conjugated, dictionaryForm, typeII)
-        .concat(deconjugateAuxiliary(conjugated, dictionaryForm, typeII));
 }
 exports.verbDeconjugate = verbDeconjugate;
 var adjective_1 = require("./adjective");
