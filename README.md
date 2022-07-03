@@ -203,7 +203,7 @@ Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and
 ## Changelog
 ### version 4.0
 Renames
-- `TeAru` → `TeAru`
+- `TeAruNoun` → `TeAru`
 - `TeIruNoun` → `TeIru`
 
 and deconjugates these as well.
