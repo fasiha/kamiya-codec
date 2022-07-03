@@ -99,7 +99,7 @@ tape('vte auxiliaries', t => {
 });
 
 test('multi-pipeline', t => {
-  // 知る -> SeruSaseru -> Kureru -> Masu -> Ta
+  // 知る -> SeruSaseru -> Kureru -> Masu -> Ta, page 164
   t.ok(a('知る', ['SeruSaseru', 'Kureru', 'Masu'], 'Ta', false).includes('知らせてくれました')); // p 164
 
   t.end();

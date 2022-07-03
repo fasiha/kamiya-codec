@@ -182,7 +182,13 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
-**3.0** replaced `conjugateAuxiliary` with the more robust `conjugateAuxiliaries` which can take an array of auxiliaries. Check it out: 知る → causative form (`SeruSaseru`) → "do something (for me or someone, `Kureru`) → polite (`Masu`) → past tense (`Ta`) ➜ 知らせてくれました 💪!
+**3.0** replaced `conjugateAuxiliary` with the more robust `conjugateAuxiliaries` which can take an array of auxiliaries. Check it out: start with 
+1. 知る
+2. → causative form (`SeruSaseru`)
+3. → "do something" (for me or someone, `Kureru`)
+4. → polite (`Masu`)
+5. → past tense (`Ta`)
+6. ➜ 知らせてくれました 💪! (Example from page 164 of *Handbook of Japanese Verbs*, section 7.17, example 2.)
 ```
 conjugateAuxiliaries('知る', ['SeruSaseru', 'Kureru', 'Masu'], 'Ta') // [ '知らせてくれました' ]
 ```
