@@ -25,8 +25,8 @@ exports.auxiliaries = [
     'Itadaku',
     'Kureru',
     'Kudasaru',
-    'TeIruNoun',
-    'TeAruNoun',
+    'TeIru',
+    'TeAru',
     'Miru',
     'Iku',
     'Kuru',
@@ -275,9 +275,8 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
     for (const [auxIdx, aux] of auxs.entries()) {
         const conj = auxIdx === auxs.length - 1 ? finalConj : 'Dictionary';
         const prevAux = auxs[auxIdx - 1];
-        if (auxIdx !== auxs.length - 1 &&
-            (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
-                aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun')) {
+        if (auxIdx !== auxs.length - 1 && (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' ||
+            aux === 'Rashii' || aux === 'SoudaConjecture' || aux === 'SoudaHearsay')) {
             throw new Error('must be final auxiliary');
         }
         if (prevAux === 'Kuru') {
@@ -292,7 +291,7 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
         }
         typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' || aux === 'CausativePassive' ||
             aux === 'ShortenedCausativePassive' || aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' ||
-            aux === 'Miru';
+            aux === 'Miru' || aux === 'TeIru';
     }
     return verbs;
 }
@@ -484,7 +483,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         return conjugate(newverb, conj, true);
     }
     else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
-        aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIruNoun' || aux === 'TeAruNoun' || aux === 'Miru' ||
+        aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIru' || aux === 'TeAru' || aux === 'Miru' ||
         aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau') {
         const vte = conjugate(verb, 'Te', typeII)[0];
         const endings = aux === 'Ageru' ? ['あげる']
@@ -494,8 +493,8 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
                         : aux === 'Itadaku' ? ['いただく']
                             : aux === 'Kureru' ? ['くれる']
                                 : aux === 'Kudasaru' ? ['くださる']
-                                    : aux === 'TeIruNoun' ? ['いる']
-                                        : aux === 'TeAruNoun' ? ['ある']
+                                    : aux === 'TeIru' ? ['いる']
+                                        : aux === 'TeAru' ? ['ある']
                                             : aux === 'Miru' ? ['みる']
                                                 : aux === 'Iku' ? ['いく']
                                                     : aux === 'Kuru' ? ['くる']
@@ -505,7 +504,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         if (!endings[0]) {
             throw new Error('missing ternary');
         }
-        const endingTypeII = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIruNoun' || aux === 'Miru';
+        const endingTypeII = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIru' || aux === 'Miru';
         const newVerbs = endings.map(ending => vte + ending);
         return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
     }
@@ -541,7 +540,10 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     if (maxAuxDepth <= 1) {
         return hits;
     }
-    const penultimates = ['Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau'];
+    const penultimates = [
+        'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
+        'TeIru', 'TeAru'
+    ];
     const depth2Finals = ['Masu'];
     for (const penultimate of penultimates) {
         for (const final of depth2Finals) {

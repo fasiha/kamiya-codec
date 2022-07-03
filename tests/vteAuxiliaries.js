@@ -86,8 +86,8 @@ test('vte auxiliaries', t => {
        'kureru'); // p 163
 
   // p167-8
-  t.ok(a('たつ', ['TeIruNoun'], 'Dictionary').includes('たっている'), 'teiru');
-  t.ok(a('する', ['TeAruNoun'], 'Dictionary').includes('してある'), 'tearu');
+  t.ok(a('たつ', ['TeIru'], 'Dictionary').includes('たっている'), 'teiru');
+  t.ok(a('する', ['TeAru'], 'Dictionary').includes('してある'), 'tearu');
 
   t.ok(a('飛ぶ', ['Iku'], 'Dictionary').includes('飛んでいく'), 'Iku'); // p 170
 
@@ -100,6 +100,20 @@ test('vte auxiliaries', t => {
 test('multi-pipeline', t => {
   // 知る -> SeruSaseru -> Kureru -> Masu -> Ta, page 164
   t.ok(a('知る', ['SeruSaseru', 'Kureru', 'Masu'], 'Ta', false).includes('知らせてくれました')); // p 164
+
+  t.end();
+});
+
+test('vte iru/aru', t => {
+  // p 151-152
+  t.ok(a('歌う', ['TeIru'], 'Dictionary', false).includes('歌っている'));
+  t.ok(a('書く', ['SeruSaseru', 'TeIru', 'Masu'], 'Dictionary', false).includes('書かせています'));
+  t.ok(a('する', ['TeIru', 'Masu'], 'Dictionary', false).includes('しています'));
+
+  // p 153
+  t.ok(a('使う', ['TeAru', 'Masu'], 'Dictionary', false).includes('使ってあります'));
+  t.ok(a('閉める', ['TeAru'], 'Dictionary', true).includes('閉めてある'));
+  t.ok(a('する', ['TeAru', 'Masu'], 'Dictionary', false).includes('してあります'));
 
   t.end();
 });

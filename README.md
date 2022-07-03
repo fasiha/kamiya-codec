@@ -15,6 +15,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.0](#version-40)
     - [version 3.1](#version-31)
     - [version 3.0](#version-30)
     - [version 2.0](#version-20)
@@ -74,9 +75,24 @@ Conjugates a `verb` in dictionary form with a given conjugation (see below for l
 
 This library doesn't yet have a perfect way to tell type I (<ruby>五段<rt>godan</rt></ruby>) verbs from type II (<ruby>一段<rt>ichidan</rt></ruby>) ones, so all functions including `conjugate` accept a `typeII` boolean to let you specify that the incoming verb is or isn't type II. (I'm not very fond of opaque names like type I and type II but to maximally take advantage of Taeko Kamiya's book, we use her notation.)
 
+Irregular verbs
+- する
+- 来る・くる
+
+are handled specially and ignore `typeII`.
+
 ### `conjugateAuxiliaries(verb: string, auxs: Auxiliary[], conj: Conjugation, typeII: boolean = false): string[]`
 
 Given a `verb` as well as an array of auxiliary verbs (`auxs`, see below for list of allowed values), plus the final `conj`ugation and the optional `typeII` boolean (false if 五段 (default), true if 一段), apply each of the auxiliaries to the verb and conjugate the result.
+
+Note that the following two calls are equivalent:
+```ts
+conjugate(verb, conj, typeII)
+// deepEquals
+conjugateAuxiliaries(verb, [], conj, typeII)
+```
+
+As above, する and 来る・くる irregular verbs will be conjugated correctly and will ignore `typeII`.
 
 ### `type Conjugation` and `conjugations`
 Conjugations must be one of the following:
@@ -119,8 +135,8 @@ Auxiliaries must be one of the following:
 | "Itadaku"
 | "Kureru"                    // 7.17
 | "Kudasaru"
-| "TeIruNoun"                 // 7.21
-| "TeAruNoun"                 // 7.21
+| "TeIru"                     // 7.5 - 7.6
+| "TeAru"                     // 7.7
 | "Miru"                      // 7.22
 | "Iku"                       // 7.23
 | "Kuru"                      // 7.24
@@ -185,6 +201,13 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.0
+Renames
+- `TeAru` → `TeAru`
+- `TeIruNoun` → `TeIru`
+
+and deconjugates these as well.
+
 ### version 3.1
 Adds the sparse support for copulas だ and です: pages 34-35 of *Verbs*.
 

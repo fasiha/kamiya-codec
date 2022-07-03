@@ -28,5 +28,14 @@ test('deconj pipeline', t => {
   t.ok(verbDeconjugate('知らせてくれました', '知る', false, 1).length === 0);
   t.ok(verbDeconjugate('知らせてくれました', '知る', false, 2).length === 0);
 
+  t.ok(verbDeconjugate('歌っている', '歌う', false).length > 0);
+  t.ok(verbDeconjugate('書かせています', '書く', false).length > 0);
+  t.ok(verbDeconjugate('しています', 'する', false).length > 0);
+
+  // p 153
+  t.ok(verbDeconjugate('使ってあります', '使う', false).length > 0);
+  t.ok(verbDeconjugate('閉めてある', '閉める', true).length > 0);
+  t.ok(verbDeconjugate('してあります', 'する', false).length > 0);
+
   t.end();
 });
