@@ -15,6 +15,9 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 3.1](#version-31)
+    - [version 3.0](#version-30)
+    - [version 2.0](#version-20)
 
 ![Taeko Kamiya's "The Handbook of Japanese Verbs" and "The Handbook of Japanese Adjectives and Adverbs"](kamiya.jpg)
 
@@ -182,6 +185,10 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 3.1
+Adds the sparse support for copulas だ and です: pages 34-35 of *Verbs*.
+
+### version 3.0
 **3.0** replaced `conjugateAuxiliary` with the more robust `conjugateAuxiliaries` which can take an array of auxiliaries. Check it out: start with 
 1. 知る
 2. → causative form (`SeruSaseru`)
@@ -195,4 +202,5 @@ conjugateAuxiliaries('知る', ['SeruSaseru', 'Kureru', 'Masu'], 'Ta') // [ '知
 
 Consolidated deconjugator also.
 
+### version 2.0
 **2.0** converted from enums to discriminated unions; added adjectives; added brute force deconjugators.
