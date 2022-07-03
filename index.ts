@@ -189,26 +189,41 @@ export function conjugate(verb: string, conj: Conjugation, typeII = false): stri
   return ret;
 }
 
-export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false,
-                                   {secondaryAux}: {secondaryAux?: Auxiliary} = {}): string[] {
-  if (secondaryAux) {
-    if (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
-        aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun') {
-      throw new Error('this cannot be secondary auxiliary');
+// 知る -> SeruSaseru -> Kureru -> Masu -> Ta = 知らせてくれました
+export function pipeline(initialVerb: string, auxs: Auxiliary[], finalConj: Conjugation,
+                         initialTypeII: boolean = false): string[] {
+
+  if (auxs.length === 0) { return conjugate(initialVerb, finalConj, initialTypeII); }
+
+  let verbs: string[] = [initialVerb];
+  let typeII = initialTypeII;
+  for (const [auxIdx, aux] of auxs.entries()) {
+    const conj: Conjugation = auxIdx === auxs.length - 1 ? finalConj : 'Dictionary';
+    const prevAux: Auxiliary|undefined = auxs[auxIdx - 1];
+
+    if (auxIdx !== auxs.length - 1 &&
+        (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
+         aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun')) {
+      throw new Error('must be final auxiliary');
     }
-    const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
-    if (aux === 'Kuru') {
+
+    if (prevAux === 'Kuru') {
       // While `conjugate` looks for with Kudasaru with `endsWith`, it looks for Kuru with exact-compare (because
       // potentially lots of things could end in kuru)
-      const heads = dictionaryForms.map(s => s.slice(0, -2));
-      const tails = conjugateAuxiliary('くる', secondaryAux, conj);
-      return heads.flatMap(prefix => tails.map(t => prefix + t));
+      const heads = verbs.map(s => s.slice(0, -2));
+      const tails = conjugateAuxiliary('くる', aux, conj);
+      verbs = heads.flatMap(prefix => tails.map(t => prefix + t));
+    } else {
+      verbs = verbs.flatMap(verb => conjugateAuxiliary(verb, aux, conj, typeII));
     }
-    const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
-                             aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
-                             aux === 'Sashiageru' || aux === 'Kureru' || aux === 'Miru';
-    return dictionaryForms.flatMap(d => conjugateAuxiliary(d, secondaryAux, conj, dictionaryTypeII));
+    typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' || aux === 'CausativePassive' ||
+             aux === 'ShortenedCausativePassive' || aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' ||
+             aux === 'Miru';
   }
+  return verbs;
+}
+
+export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
   if (aux === 'Potential') {
     const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
     return conjugateTypeII(newverb, conj);

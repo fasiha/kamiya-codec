@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
+exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.pipeline = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
@@ -217,25 +217,39 @@ function conjugate(verb, conj, typeII = false) {
     return ret;
 }
 exports.conjugate = conjugate;
-function conjugateAuxiliary(verb, aux, conj, typeII = false, { secondaryAux } = {}) {
-    if (secondaryAux) {
-        if (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
-            aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun') {
-            throw new Error('this cannot be secondary auxiliary');
+// 知る -> SeruSaseru -> Kureru -> Masu -> Ta = 知らせてくれました
+function pipeline(initialVerb, auxs, finalConj, initialTypeII = false) {
+    if (auxs.length === 0) {
+        return conjugate(initialVerb, finalConj, initialTypeII);
+    }
+    let verbs = [initialVerb];
+    let typeII = initialTypeII;
+    for (const [auxIdx, aux] of auxs.entries()) {
+        const conj = auxIdx === auxs.length - 1 ? finalConj : 'Dictionary';
+        const prevAux = auxs[auxIdx - 1];
+        if (auxIdx !== auxs.length - 1 &&
+            (aux === 'Masu' || aux === 'Nai' || aux === 'Tai' || aux == 'Hoshii' || aux === 'Rashii' ||
+                aux === 'SoudaConjecture' || aux === 'SoudaHearsay' || aux === 'TeIruNoun' || aux === 'TeAruNoun')) {
+            throw new Error('must be final auxiliary');
         }
-        const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
-        if (aux === 'Kuru') {
+        if (prevAux === 'Kuru') {
             // While `conjugate` looks for with Kudasaru with `endsWith`, it looks for Kuru with exact-compare (because
             // potentially lots of things could end in kuru)
-            const heads = dictionaryForms.map(s => s.slice(0, -2));
-            const tails = conjugateAuxiliary('くる', secondaryAux, conj);
-            return heads.flatMap(prefix => tails.map(t => prefix + t));
+            const heads = verbs.map(s => s.slice(0, -2));
+            const tails = conjugateAuxiliary('くる', aux, conj);
+            verbs = heads.flatMap(prefix => tails.map(t => prefix + t));
         }
-        const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
-            aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
-            aux === 'Sashiageru' || aux === 'Kureru' || aux === 'Miru';
-        return dictionaryForms.flatMap(d => conjugateAuxiliary(d, secondaryAux, conj, dictionaryTypeII));
+        else {
+            verbs = verbs.flatMap(verb => conjugateAuxiliary(verb, aux, conj, typeII));
+        }
+        typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' || aux === 'CausativePassive' ||
+            aux === 'ShortenedCausativePassive' || aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' ||
+            aux === 'Miru';
     }
+    return verbs;
+}
+exports.pipeline = pipeline;
+function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     if (aux === 'Potential') {
         const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
         return conjugateTypeII(newverb, conj);
