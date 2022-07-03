@@ -131,6 +131,8 @@ Auxiliaries must be one of the following:
 ### `verbDeconjugate(conjugated: string, dictionaryForm: string, typeII = false, maxAuxDepth = Infinity)`
 Given a `conjugated` form of a verb, and its `dictionaryForm` (ending in る or one of the other うくぐ⋯) and that dictionary form's `typeII` boolean (false if 五段 (default), true if 一段), attempt to deconjugate: find the list of auxiliaries and the final conjugation that produce the first argument when put through `conjugate` or `conjugateAuxliaries` (above).
 
+`maxAuxDepth` can meaningfully be 0 (don't check for auxiliaries), 1, 2, or 3, and for increasing values will look for more and more auxiliaries that might lead from `dictionaryForm` to the `conjugated` form.
+
 The returned object has this type:
 ```ts
 interface Deconjugated {
