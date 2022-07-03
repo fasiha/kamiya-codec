@@ -20,10 +20,10 @@ export const auxiliaries = [
   'ReruRareu',
   'CausativePassive',
   'ShortenedCausativePassive',
-  'Ageru', // Kamiya ection 7.15
+  'Ageru', // Kamiya section 7.15
   'Sashiageru',
   'Yaru',
-  'Morau', // Kamiya ection 7.16
+  'Morau', // Kamiya section 7.16
   'Itadaku',
   'Kureru', // Kamiya section 7.17
   'Kudasaru',
