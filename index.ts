@@ -197,6 +197,13 @@ export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugati
       throw new Error('this cannot be secondary auxiliary');
     }
     const dictionaryForms = conjugateAuxiliary(verb, aux, 'Dictionary', typeII);
+    if (aux === 'Kuru') {
+      // While `conjugate` looks for with Kudasaru with `endsWith`, it looks for Kuru with exact-compare (because
+      // potentially lots of things could end in kuru)
+      const heads = dictionaryForms.map(s => s.slice(0, -2));
+      const tails = conjugateAuxiliary('くる', secondaryAux, conj);
+      return heads.flatMap(prefix => tails.map(t => prefix + t));
+    }
     const dictionaryTypeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' ||
                              aux === 'CausativePassive' || aux === 'ShortenedCausativePassive' || aux === 'Ageru' ||
                              aux === 'Sashiageru' || aux === 'Kureru' || aux === 'Miru';

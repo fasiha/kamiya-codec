@@ -66,6 +66,15 @@ test('secondary aux', t => {
   t.ok(a('飲む', 'Miru', 'Ta', false, {secondaryAux: 'Masu'}).includes('飲んでみました'), 'miru/masu/ta');
   t.ok(a('こえる', 'Miru', 'Dictionary', true, {secondaryAux: 'Masu'}).includes('こえてみます'), 'miru/masu/dict');
   t.ok(a('こえる', 'Miru', 'Dictionary', true, {secondaryAux: 'Masu'}).includes('こえてみます'), 'miru/masu/dict');
+
+  // p 170
+  t.ok(a('逃げる', 'Iku', 'Ta', true, {secondaryAux: 'Masu'}).includes('逃げていきました'), 'iku/masu/ta');
+
+  // p 171
+  t.ok(a('吹く', 'Kuru', 'Ta', false, {secondaryAux: 'Masu'}).includes('吹いてきました'), 'kuru/masu/ta');
+  t.ok(a('流れる', 'Kuru', 'Ta', true, {secondaryAux: 'Masu'}).includes('流れてきました'), 'kuru/masu/ta');
+  t.ok(a('する', 'Kuru', 'Ta', true, {secondaryAux: 'Masu'}).includes('してきました'), 'kuru/masu/ta');
+
   t.end();
 });
 
@@ -74,6 +83,10 @@ tape('vte auxiliaries', t => {
        'morau'); // p 163
   t.ok(conjugateAuxiliary('焼く', 'Kureru', 'Dictionary').includes('焼いてくれる'),
        'kureru'); // p 163
+
+  const a = conjugateAuxiliary;
+
+  t.ok(a('飛ぶ', 'Iku', 'Dictionary').includes('飛んでいく'), 'Iku'); // p 170
 
   t.end();
 });
