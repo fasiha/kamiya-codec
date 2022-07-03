@@ -75,6 +75,16 @@ test('secondary aux', t => {
   t.ok(a('流れる', 'Kuru', 'Ta', true, {secondaryAux: 'Masu'}).includes('流れてきました'), 'kuru/masu/ta');
   t.ok(a('する', 'Kuru', 'Ta', true, {secondaryAux: 'Masu'}).includes('してきました'), 'kuru/masu/ta');
 
+  // p 171-172
+  t.ok(a('買う', 'Oku', 'Dictionary').includes('買っておく'));
+  t.ok(a('調べる', 'Oku', 'Ta', true, {secondaryAux: 'Masu'}).includes('調べておきました'));
+  t.ok(a('する', 'Oku', 'Volitional', true, {secondaryAux: 'Masu'}).includes('しておきましょう'));
+
+  // p 172
+  t.ok(a('話す', 'Shimau', 'Ta', false, {secondaryAux: 'Masu'}).includes('話してしまいました'));
+  t.ok(a('やめる', 'Shimau', 'Ta', true, {secondaryAux: 'Masu'}).includes('やめてしまいました'));
+  t.ok(a('する', 'Shimau', 'Volitional', true, {secondaryAux: 'Masu'}).includes('してしまいましょう'));
+
   t.end();
 });
 
