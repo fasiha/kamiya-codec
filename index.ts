@@ -190,8 +190,8 @@ export function conjugate(verb: string, conj: Conjugation, typeII = false): stri
 }
 
 // 知る -> SeruSaseru -> Kureru -> Masu -> Ta = 知らせてくれました
-export function pipeline(initialVerb: string, auxs: Auxiliary[], finalConj: Conjugation,
-                         initialTypeII: boolean = false): string[] {
+export function conjugateAuxiliaries(initialVerb: string, auxs: Auxiliary[], finalConj: Conjugation,
+                                     initialTypeII: boolean = false): string[] {
 
   if (auxs.length === 0) { return conjugate(initialVerb, finalConj, initialTypeII); }
 
@@ -223,7 +223,7 @@ export function pipeline(initialVerb: string, auxs: Auxiliary[], finalConj: Conj
   return verbs;
 }
 
-export function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
+function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typeII: boolean = false): string[] {
   if (aux === 'Potential') {
     const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
     return conjugateTypeII(newverb, conj);

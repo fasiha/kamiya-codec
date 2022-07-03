@@ -1,11 +1,11 @@
 "use strict";
-const {conjugateAuxiliary, pipeline} = require('../index');
+const {conjugateAuxiliaries} = require('../index');
 const test = require('tape');
 const tape = require('tape');
 
-test('secondary aux', t => {
-  const a = pipeline;
+const a = conjugateAuxiliaries;
 
+test('secondary aux', t => {
   t.ok(a('読む', ['Potential', 'Masu'], 'Ta', false).includes('読めました'),
        'potential/masu/ta'); // page 31
 
@@ -82,21 +82,19 @@ test('secondary aux', t => {
 });
 
 tape('vte auxiliaries', t => {
-  t.ok(conjugateAuxiliary('洗う', 'Morau', 'Dictionary').includes('洗ってもらう'),
+  t.ok(a('洗う', ['Morau'], 'Dictionary').includes('洗ってもらう'),
        'morau'); // p 163
-  t.ok(conjugateAuxiliary('焼く', 'Kureru', 'Dictionary').includes('焼いてくれる'),
+  t.ok(a('焼く', ['Kureru'], 'Dictionary').includes('焼いてくれる'),
        'kureru'); // p 163
 
-  const a = conjugateAuxiliary;
-
   // p167-8
-  t.ok(a('たつ', 'TeIruNoun', 'Dictionary').includes('たっている'), 'teiru');
-  t.ok(a('する', 'TeAruNoun', 'Dictionary').includes('してある'), 'tearu');
+  t.ok(a('たつ', ['TeIruNoun'], 'Dictionary').includes('たっている'), 'teiru');
+  t.ok(a('する', ['TeAruNoun'], 'Dictionary').includes('してある'), 'tearu');
 
-  t.ok(a('飛ぶ', 'Iku', 'Dictionary').includes('飛んでいく'), 'Iku'); // p 170
+  t.ok(a('飛ぶ', ['Iku'], 'Dictionary').includes('飛んでいく'), 'Iku'); // p 170
 
   // p 171-172
-  t.ok(a('買う', 'Oku', 'Dictionary').includes('買っておく'));
+  t.ok(a('買う', ['Oku'], 'Dictionary').includes('買っておく'));
 
   t.end();
 });

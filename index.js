@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliary = exports.pipeline = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
+exports.verbDeconjugate = exports.deconjugateAuxiliary = exports.deconjugate = exports.conjugateAuxiliaries = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
 exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
 exports.auxiliaries = [
@@ -218,7 +218,7 @@ function conjugate(verb, conj, typeII = false) {
 }
 exports.conjugate = conjugate;
 // 知る -> SeruSaseru -> Kureru -> Masu -> Ta = 知らせてくれました
-function pipeline(initialVerb, auxs, finalConj, initialTypeII = false) {
+function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = false) {
     if (auxs.length === 0) {
         return conjugate(initialVerb, finalConj, initialTypeII);
     }
@@ -248,7 +248,7 @@ function pipeline(initialVerb, auxs, finalConj, initialTypeII = false) {
     }
     return verbs;
 }
-exports.pipeline = pipeline;
+exports.conjugateAuxiliaries = conjugateAuxiliaries;
 function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     if (aux === 'Potential') {
         const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
@@ -464,7 +464,6 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     isNever(aux);
     throw new Error('Unhandled auxiliary');
 }
-exports.conjugateAuxiliary = conjugateAuxiliary;
 function isNever(x) { return x; }
 function deconjugate(conjugated, dictionaryForm, typeII = false) {
     const hits = [];
