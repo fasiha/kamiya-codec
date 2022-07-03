@@ -1,7 +1,6 @@
 "use strict";
 const {conjugateAuxiliaries} = require('../index');
 const test = require('tape');
-const tape = require('tape');
 
 const a = conjugateAuxiliaries;
 
@@ -80,7 +79,7 @@ test('secondary aux', t => {
   t.end();
 });
 
-tape('vte auxiliaries', t => {
+test('vte auxiliaries', t => {
   t.ok(a('洗う', ['Morau'], 'Dictionary').includes('洗ってもらう'),
        'morau'); // p 163
   t.ok(a('焼く', ['Kureru'], 'Dictionary').includes('焼いてくれる'),

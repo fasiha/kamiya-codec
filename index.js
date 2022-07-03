@@ -74,6 +74,12 @@ function conjugateTypeI(verb, conj) {
         else if (verb === 'くる' || verb === '来る') {
             return conjugateKuru(verb, conj);
         }
+        else if (verb === 'だ') {
+            return conjugateDa(verb, conj);
+        }
+        else if (verb === 'です') {
+            return conjugateDesu(verb, conj);
+        }
         else if (verb.endsWith('くださる')) {
             if (conj === 'Dictionary') {
                 return [verb];
@@ -121,6 +127,12 @@ function conjugateTypeII(verb, conj) {
     }
     else if (verb === 'くる' || verb === '来る') {
         return conjugateKuru(verb, conj);
+    }
+    else if (verb === 'だ') {
+        return conjugateDa(verb, conj);
+    }
+    else if (verb === 'です') {
+        return conjugateDesu(verb, conj);
     }
     const head = verb.slice(0, -1);
     switch (conj) {
@@ -197,12 +209,38 @@ function conjugateSuru(verb, conj) {
         default: throw new Error('Unhandled conjugation');
     }
 }
+function conjugateDa(_verb, conj) {
+    switch (conj) {
+        case 'Negative': return ['でない', 'ではない', 'じゃない'];
+        case 'Dictionary': return ['だ'];
+        case 'Conditional': return ['なら'];
+        // case 'Presumptive': return ['だろう']; // omitting this
+        case 'Te': return ['で'];
+        case 'Ta': return ['だった'];
+        case 'Tara': return ['だったら'];
+        case 'Tari': return ['だったり'];
+        default: throw new Error('Unhandled conjugation');
+    }
+}
+function conjugateDesu(_verb, conj) {
+    switch (conj) {
+        case 'Negative': return ['でありません', 'ではありません'];
+        case 'Dictionary': return ['です'];
+        // case 'Presumptive': return ['でそう']; // omitting this
+        case 'Te': return ['でして'];
+        case 'Ta': return ['でした'];
+        case 'Tara': return ['でしたら'];
+        case 'Tari': return ['でしたり'];
+        default: throw new Error('Unhandled conjugation');
+    }
+}
 function conjugateStrict(verb, conj, typeII = false) {
     return ((verb.slice(-1) === 'る' && typeII) ? conjugateTypeII : conjugateTypeI)(verb, conj);
 }
 function conjugate(verb, conj, typeII = false) {
     const ret = conjugateStrict(verb, conj, typeII);
-    if (conj === 'Negative') {
+    if (conj === 'Negative' && (verb !== 'だ' && verb !== 'です')) {
+        // Don't do this for da/desu because their negatives are baked in
         ret.push(ret[0] + 'ない');
     }
     else if (conj === 'Conjunctive') {
@@ -220,6 +258,17 @@ exports.conjugate = conjugate;
 function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = false) {
     if (auxs.length === 0) {
         return conjugate(initialVerb, finalConj, initialTypeII);
+    }
+    if (initialVerb === 'だ' || initialVerb === 'です') {
+        if (auxs.length === 1 && auxs[0] === 'Nai' && finalConj === 'Ta') {
+            if (initialVerb === 'だ') {
+                return ['ではなかった', 'じゃなかった'];
+            }
+            else {
+                return ['ではありませんでした', 'でありませんでした'];
+            }
+        }
+        throw new Error('unhandled copula auxiliaries/conjugation');
     }
     let verbs = [initialVerb];
     let typeII = initialTypeII;
