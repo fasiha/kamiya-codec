@@ -32,6 +32,7 @@ exports.auxiliaries = [
     'Kuru',
     'Oku',
     'Shimau',
+    'TeOru',
 ];
 const specialCasesRaw = [
     ['ある', 'Negative', ''],
@@ -484,7 +485,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     }
     else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
         aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIru' || aux === 'TeAru' || aux === 'Miru' ||
-        aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau') {
+        aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau' || aux === 'TeOru') {
         const vte = conjugate(verb, 'Te', typeII)[0];
         const endings = aux === 'Ageru' ? ['あげる']
             : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
@@ -500,7 +501,8 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
                                                     : aux === 'Kuru' ? ['くる']
                                                         : aux === 'Oku' ? ['おく']
                                                             : aux === 'Shimau' ? ['しまう']
-                                                                : [aux];
+                                                                : aux === 'TeOru' ? ['おる']
+                                                                    : [aux];
         if (!endings[0]) {
             throw new Error('missing ternary');
         }
@@ -542,7 +544,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     }
     const penultimates = [
         'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
-        'TeIru', 'TeAru'
+        'TeIru', 'TeAru', 'TeOru'
     ];
     const depth2Finals = ['Masu'];
     for (const penultimate of penultimates) {

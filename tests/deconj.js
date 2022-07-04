@@ -37,5 +37,7 @@ test('deconj pipeline', t => {
   t.ok(verbDeconjugate('閉めてある', '閉める', true).length > 0);
   t.ok(verbDeconjugate('してあります', 'する', false).length > 0);
 
+  t.ok(verbDeconjugate('まっておりました', 'まつ', false).length > 0);
+
   t.end();
 });

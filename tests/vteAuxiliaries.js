@@ -117,3 +117,8 @@ test('vte iru/aru', t => {
 
   t.end();
 });
+
+test('vte oru', t => {
+  t.ok(a('まつ', ['TeOru', 'Masu'], 'Ta').includes('まっておりました'))
+  t.end();
+});

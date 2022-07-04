@@ -34,6 +34,7 @@ export const auxiliaries = [
   'Kuru',   // 7.24
   'Oku',    // 7.25
   'Shimau', // 7.26
+  'TeOru',  // Not in Kamiya
 ] as const;
 export type Auxiliary = typeof auxiliaries[number];
 
@@ -431,7 +432,7 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
     return conjugate(newverb, conj, true);
   } else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
              aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIru' || aux === 'TeAru' || aux === 'Miru' ||
-             aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau') {
+             aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau' || aux === 'TeOru') {
     const vte = conjugate(verb, 'Te', typeII)[0];
     const endings: string[] = aux === 'Ageru'        ? ['あげる']
                               : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
@@ -447,6 +448,7 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
                               : aux === 'Kuru'       ? ['くる']
                               : aux === 'Oku'        ? ['おく']
                               : aux === 'Shimau'     ? ['しまう']
+                              : aux === 'TeOru'      ? ['おる']
                                                      : [aux];
     if (!endings[0]) { throw new Error('missing ternary'); }
     const endingTypeII: boolean =
@@ -490,7 +492,7 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
 
   const penultimates: Auxiliary[] = [
     'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
-    'TeIru', 'TeAru'
+    'TeIru', 'TeAru', 'TeOru'
   ];
   const depth2Finals: Auxiliary[] = ['Masu'];
   for (const penultimate of penultimates) {

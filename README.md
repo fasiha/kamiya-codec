@@ -15,6 +15,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.1](#version-41)
     - [version 4.0](#version-40)
     - [version 3.1](#version-31)
     - [version 3.0](#version-30)
@@ -142,7 +143,7 @@ Auxiliaries must be one of the following:
 | "Kuru"                      // 7.24
 | "Oku"                       // 7.25
 | "Shimau"                    // 7.26
-
+| "TeOru"                     // Not in Kamiya
 ```
 
 `auxiliaries` is an array of all allowed values.
@@ -201,6 +202,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.1
+This isn't in Kamiya's verbs book, but I added `TeOru`, 居る, a kenjougo (humble) synonym for いる.
+
 ### version 4.0
 Renames
 - `TeAruNoun` → `TeAru`
