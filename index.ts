@@ -451,6 +451,7 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
                               : aux === 'TeOru'      ? ['おる']
                                                      : [aux];
     if (!endings[0]) { throw new Error('missing ternary'); }
+    if (aux === 'Kuru') { return conjugate(endings[0], conj).map(suffix => vte + suffix); }
     const endingTypeII: boolean =
         aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIru' || aux === 'Miru';
     const newVerbs = endings.map(ending => vte + ending);

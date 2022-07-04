@@ -11,6 +11,7 @@ test('check some type I (godan) conjugations', t => {
   t.ok(has(conjugateTypeI('行く', 'Te'), '行って'));
   t.ok(has(conjugateTypeI('いく', 'Te'), 'いって'));
   t.ok(has(conjugateTypeI('話す', 'Ta'), '話した'));
+  t.ok(has(conjugateTypeI('取る', 'Te'), '取って'));
   t.end();
 });
 

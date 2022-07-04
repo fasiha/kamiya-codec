@@ -66,6 +66,7 @@ test('secondary aux', t => {
   t.ok(a('吹く', ['Kuru', 'Masu'], 'Ta', false).includes('吹いてきました'), 'kuru/masu/ta');
   t.ok(a('流れる', ['Kuru', 'Masu'], 'Ta', true).includes('流れてきました'), 'kuru/masu/ta');
   t.ok(a('する', ['Kuru', 'Masu'], 'Ta', true).includes('してきました'), 'kuru/masu/ta');
+  t.ok(a('やる', ['Kuru'], 'Ta', false).includes('やってきた'));
 
   // p 171-172
   t.ok(a('調べる', ['Oku', 'Masu'], 'Ta', true).includes('調べておきました'));
