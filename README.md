@@ -15,6 +15,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.2](#version-42)
     - [version 4.1](#version-41)
     - [version 4.0](#version-40)
     - [version 3.1](#version-31)
@@ -202,6 +203,13 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.2
+Kamiya only mentions one form of ない's て-form: on page 37, e.g., (買わ)なくて. But we also encounter (買わ)ないで, see, e.g., this from [JapanesePod101](https://www.japanesepod101.com/forum/viewtopic.php?t=7095):
+
+> Nakute indicates “cause and effect”. Naide means “without”.
+
+This version adds this second nai+te form.
+
 ### version 4.1
 This isn't in Kamiya's verbs book, but I added `TeOru`, 居る, a kenjougo (humble) synonym for いる.
 

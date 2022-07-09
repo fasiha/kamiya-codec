@@ -123,3 +123,10 @@ test('vte oru', t => {
   t.ok(a('まつ', ['TeOru', 'Masu'], 'Ta').includes('まっておりました'))
   t.end();
 });
+
+test('nai+te', t => {
+  const res = a('食べる', ['Nai'], 'Te', true);
+  t.ok(res.includes('食べなくて'));
+  t.ok(res.includes('食べないで'));
+  t.end();
+});

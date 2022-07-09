@@ -39,5 +39,7 @@ test('deconj pipeline', t => {
 
   t.ok(verbDeconjugate('まっておりました', 'まつ', false).length > 0);
 
+  t.ok(verbDeconjugate('食べないで', '食べる', true).length > 0);
+
   t.end();
 });

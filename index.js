@@ -327,7 +327,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
             case 'Conditional': return [base + 'なければ'];
             // case 'Imperative':
             // case 'Volitional':
-            case 'Te': return [base + 'なくて'];
+            case 'Te': return [base + 'なくて', base + 'ないで']; // only the first is in Kamiya
             case 'Ta': return [base + 'なかった'];
             case 'Tara': return [base + 'なかったら'];
             // case 'Tari':
