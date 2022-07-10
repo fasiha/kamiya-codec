@@ -441,7 +441,7 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
                               : aux === 'Itadaku'    ? ['いただく']
                               : aux === 'Kureru'     ? ['くれる']
                               : aux === 'Kudasaru'   ? ['くださる']
-                              : aux === 'TeIru'      ? ['いる']
+                              : aux === 'TeIru'      ? ['いる', 'る']
                               : aux === 'TeAru'      ? ['ある']
                               : aux === 'Miru'       ? ['みる']
                               : aux === 'Iku'        ? ['いく']

@@ -130,3 +130,10 @@ test('nai+te', t => {
   t.ok(res.includes('食べないで'));
   t.end();
 });
+
+test('teru', t => {
+  const res = a('知る', ['TeIru'], 'Dictionary');
+  t.ok(res.includes('知っている'));
+  t.ok(res.includes('知ってる'));
+  t.end();
+});
