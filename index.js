@@ -485,7 +485,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     }
     else if (aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Yaru' || aux === 'Morau' || aux === 'Itadaku' ||
         aux === 'Kureru' || aux === 'Kudasaru' || aux === 'TeIru' || aux === 'TeAru' || aux === 'Miru' ||
-        aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'Shimau' || aux === 'TeOru') {
+        aux === 'Iku' || aux === 'Kuru' || aux === 'Oku' || aux === 'TeOru') {
         const vte = conjugate(verb, 'Te', typeII)[0];
         const endings = aux === 'Ageru' ? ['あげる']
             : aux === 'Sashiageru' ? ['差し上げる', 'さしあげる']
@@ -500,9 +500,8 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
                                                 : aux === 'Iku' ? ['いく']
                                                     : aux === 'Kuru' ? ['くる']
                                                         : aux === 'Oku' ? ['おく']
-                                                            : aux === 'Shimau' ? ['しまう']
-                                                                : aux === 'TeOru' ? ['おる']
-                                                                    : [aux];
+                                                            : aux === 'TeOru' ? ['おる']
+                                                                : [];
         if (!endings[0]) {
             throw new Error('missing ternary');
         }
@@ -512,6 +511,21 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         const endingTypeII = aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIru' || aux === 'Miru';
         const newVerbs = endings.map(ending => vte + ending);
         return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
+    }
+    else if (aux === 'Shimau') {
+        const vte = conjugate(verb, 'Te', typeII)[0];
+        const shimau = conjugate(vte + 'しまう', conj);
+        const noTe = vte.slice(0, -1);
+        // see https://www.sljfaq.org/afaq/colloquial-contractions.html
+        if (vte.endsWith('て')) {
+            // no rendaku
+            const chau = conjugate(noTe + 'ちゃう', conj);
+            const chimau = conjugate(noTe + 'ちまう', conj);
+            return shimau.concat(chau).concat(chimau);
+        }
+        const jimau = conjugate(noTe + 'じまう', conj);
+        const dimau = conjugate(noTe + 'ぢまう', conj);
+        return shimau.concat(jimau).concat(dimau);
     }
     isNever(aux);
     throw new Error('Unhandled auxiliary');

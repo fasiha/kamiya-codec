@@ -137,3 +137,18 @@ test('teru', t => {
   t.ok(res.includes('知ってる'));
   t.end();
 });
+
+test('shimau abbreviations', t => {
+  {
+    const res = a('負ける', ['Shimau'], 'Ta', true);
+    t.ok(res.includes('負けてしまった'));
+    t.ok(res.includes('負けちゃった'));
+    t.ok(res.includes('負けちまった'));
+  }
+  {
+    const res = a('死ぬ', ['Shimau'], 'Imperative');
+    t.ok(res.includes('死んでしまえ'));
+    t.ok(res.includes('死んじまえ'));
+  }
+  t.end();
+});
