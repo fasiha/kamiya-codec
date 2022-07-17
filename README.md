@@ -210,6 +210,8 @@ Add a few contractions of the `Shimau` auxiliary, ～てしまう:
 - ～ちゃう (chau)
 - ～ちまう (chimau; or ～じまう and ～ぢまう (jimau/dimau) with rendaku when て becomes で)
 
+See [SLJ FAQ](https://www.sljfaq.org/afaq/colloquial-contractions.html) on this topic.
+
 ### version 4.3
 Add the てる contraction of ている
 
