@@ -15,6 +15,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.5](#version-45)
     - [version 4.4](#version-44)
     - [version 4.3](#version-43)
     - [version 4.2](#version-42)
@@ -205,6 +206,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.5
+Added polite です endings to `SoudaConjecture`, so we can do 読む + Potential + SoudaConjecture (polite) + Ta (past tense) = 読めそうでした. (I haven't added it to `SoudaHearsay`, I haven't encountered that yet.)
+
 ### version 4.4
 Add a few contractions of the `Shimau` auxiliary, ～てしまう:
 - ～ちゃう (chau)

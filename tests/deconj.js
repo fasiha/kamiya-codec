@@ -42,5 +42,8 @@ test('deconj pipeline', t => {
   t.ok(verbDeconjugate('食べないで', '食べる', true).length > 0);
 
   t.ok(verbDeconjugate('死んじまえ', '死ぬ').length > 0);
+
+  t.ok(verbDeconjugate('読めそうです', '読む').length > 0);
+  t.ok(verbDeconjugate('読めそうでした', '読む').length > 0);
   t.end();
 });

@@ -103,6 +103,7 @@ test('Souda, both Hearsay and Conjecture', t => {
   t.ok(has(conjugateAuxiliaries('倒れる', ['SoudaConjecture'], 'Dictionary', true), '倒れそうだ'));
   t.ok(has(conjugateAuxiliaries('倒れる', ['SoudaConjecture'], 'Conditional', true), '倒れそうなら'));
   t.ok(has(conjugateAuxiliaries('倒れる', ['SoudaConjecture'], 'Ta', true), '倒れそうだった'));
+  t.ok(has(conjugateAuxiliaries('読む', ['Potential', 'SoudaConjecture'], 'Ta'), '読めそうでした'));
   t.end();
 });
 

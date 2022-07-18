@@ -417,16 +417,15 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     }
     else if (aux === 'SoudaConjecture') {
         const base = conjugate(verb, 'Conjunctive', typeII)[0];
-        const append = (suffix) => [base + suffix];
         switch (conj) {
             // case 'Negative':
             // case 'Conjunctive':
-            case 'Dictionary': return append('そうだ');
-            case 'Conditional': return append('そうなら');
+            case 'Dictionary': return [base + 'そうだ', base + 'そうです'];
+            case 'Conditional': return [base + 'そうなら'];
             // case 'Imperative':
             // case 'Volitional':
             // case 'Te':
-            case 'Ta': return append('そうだった');
+            case 'Ta': return [base + 'そうだった', base + 'そうでした'];
             // case 'Tara':
             // case 'Tari':
             default: throw new Error('Unhandled conjugation');
@@ -561,9 +560,9 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     }
     const penultimates = [
         'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
-        'TeIru', 'TeAru', 'TeOru'
+        'TeIru', 'TeAru', 'TeOru', 'Potential'
     ];
-    const depth2Finals = ['Masu'];
+    const depth2Finals = ['Masu', 'SoudaConjecture', 'SoudaHearsay'];
     for (const penultimate of penultimates) {
         for (const final of depth2Finals) {
             for (const conj of exports.conjugations) {
