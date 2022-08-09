@@ -1,8 +1,12 @@
 "use strict";
+var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verbDeconjugate = exports.conjugateAuxiliaries = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
 const hiragana_1 = require("./hiragana");
-exports.conjugations = ['Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari'];
+exports.conjugations = [
+    'Negative', 'Conjunctive', 'Dictionary', 'Conditional', 'Imperative', 'Volitional', 'Te', 'Ta', 'Tara', 'Tari',
+    'Zu',
+];
 exports.auxiliaries = [
     'Potential',
     'Masu',
@@ -52,6 +56,7 @@ for (const [verb, conj, result] of specialCasesRaw) {
     }
 }
 const conjToIdx = new Map(exports.conjugations.filter(x => x !== 'Imperative').map((x, i) => [x, i]));
+conjToIdx.set('Zu', (_a = conjToIdx.get('Negative')) !== null && _a !== void 0 ? _a : -1);
 const tteRaw = [
     ['く', ['いて', 'いた', 'いたら', 'いたり']],
     ['ぐ', ['いで', 'いだ', 'いだら', 'いだり']],
@@ -137,7 +142,8 @@ function conjugateTypeII(verb, conj) {
     }
     const head = verb.slice(0, -1);
     switch (conj) {
-        case 'Negative': return [head];
+        case 'Negative':
+        case 'Zu': return [head];
         case 'Conjunctive': return [head];
         case 'Dictionary': return [verb];
         case 'Conditional': return [head + 'れ'];
@@ -155,6 +161,7 @@ function conjugateKuru(verb, conj) {
     let ret = '';
     switch (conj) {
         case 'Negative':
+        case 'Zu':
             ret = 'こ';
             break;
         case 'Conjunctive':
@@ -207,6 +214,7 @@ function conjugateSuru(verb, conj) {
         case 'Ta': return ['した'];
         case 'Tara': return ['したら'];
         case 'Tari': return ['したり'];
+        case 'Zu': return ['せず'];
         default: throw new Error('Unhandled conjugation');
     }
 }
@@ -240,9 +248,9 @@ function conjugateStrict(verb, conj, typeII = false) {
 }
 function conjugate(verb, conj, typeII = false) {
     const ret = conjugateStrict(verb, conj, typeII);
-    if (conj === 'Negative' && (verb !== 'だ' && verb !== 'です')) {
+    if ((conj === 'Negative' || conj === 'Zu') && (verb !== 'だ' && verb !== 'です')) {
         // Don't do this for da/desu because their negatives are baked in
-        ret.push(ret[0] + 'ない');
+        ret.push(ret[0] + (conj === 'Negative' ? 'ない' : 'ず'));
     }
     else if (conj === 'Conjunctive') {
         ret.push(ret[0] + 'ます');
