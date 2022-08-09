@@ -543,8 +543,11 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
 
 export {
   adjConjugations,
-  AdjConjugation,
   adjConjugate,
   adjDeconjugate,
+} from './adjective';
+
+export type{
+  AdjConjugation,
   AdjDeconjugated,
 } from './adjective';
