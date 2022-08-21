@@ -48,6 +48,7 @@ test('deconj pipeline', t => {
 
   // my own test
   t.ok(verbDeconjugate('慕われている', '慕う').length > 0);
+  t.ok(verbDeconjugate('離せない', '離す').length > 0);
 
   t.end();
 });

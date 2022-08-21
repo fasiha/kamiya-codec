@@ -160,6 +160,9 @@ test('Potential', t => {
   t.ok(has(conjugateAuxiliaries('読む', ['Potential'], 'Dictionary'), '読める'));
   t.ok(has(conjugateAuxiliaries('読む', ['Potential'], 'Negative'), '読め'));
   t.ok(has(conjugateAuxiliaries('読む', ['Potential'], 'Te'), '読めて'));
+
+  // also check we add extra things like nai after Negative
+  t.ok(has(conjugateAuxiliaries('離す', ['Potential'], 'Negative'), '離せない'));
   t.end();
 });
 

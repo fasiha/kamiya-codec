@@ -308,7 +308,7 @@ exports.conjugateAuxiliaries = conjugateAuxiliaries;
 function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     if (aux === 'Potential') {
         const newverb = conjugateTypeI(verb, 'Conditional')[0] + 'る';
-        return conjugateTypeII(newverb, conj);
+        return conjugate(newverb, conj, true);
     }
     else if (aux === 'Masu') {
         const base = conjugate(verb, 'Conjunctive', typeII)[0];
