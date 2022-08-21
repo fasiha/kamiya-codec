@@ -510,9 +510,9 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
 
   const penultimates: Auxiliary[] = [
     'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
-    'TeIru', 'TeAru', 'TeOru', 'Potential'
+    'TeIru', 'TeAru', 'TeOru', 'Potential', 'ReruRareu', 'SeruSaseru'
   ];
-  const depth2Finals: Auxiliary[] = ['Masu', 'SoudaConjecture', 'SoudaHearsay'];
+  const depth2Finals: Auxiliary[] = ['Masu', 'SoudaConjecture', 'SoudaHearsay', 'TeIru'];
   for (const penultimate of penultimates) {
     for (const final of depth2Finals) {
       for (const conj of conjugations) {

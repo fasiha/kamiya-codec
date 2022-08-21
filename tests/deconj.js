@@ -45,5 +45,9 @@ test('deconj pipeline', t => {
 
   t.ok(verbDeconjugate('読めそうです', '読む').length > 0);
   t.ok(verbDeconjugate('読めそうでした', '読む').length > 0);
+
+  // my own test
+  t.ok(verbDeconjugate('慕われている', '慕う').length > 0);
+
   t.end();
 });
