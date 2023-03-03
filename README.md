@@ -15,6 +15,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.7](#version-47)
     - [version 4.6](#version-46)
     - [version 4.5](#version-45)
     - [version 4.4](#version-44)
@@ -192,9 +193,13 @@ Adjective conjugations must be one of the following:
 | "Adverbial"
 | "TaraConditional"
 | "Noun"
+| "StemSou" .       // Section 4.5
+| "StemNegativeSou" // Section 4.5
 ```
 
 `adjConjugations` is an array of all valid values.
+
+**`StemSou`** and **`StemNegativeSou`** are from §4.5 "Adj stem + sō da" of *Handbook of Japanese Adjectives and Adverbs*, and mean "look" or "look like". They are separated into positive vs negative forms because they are quite irregular and both yield な-adjectives.
 
 ### `adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`
 With
@@ -210,6 +215,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.7
+Added `StemSou` and `StemNegativeSou` conjugations to adjectives.
+
 ### version 4.6
 Added `Zu` conjugation (old form of `Negative`).
 

@@ -1,6 +1,6 @@
 export const adjConjugations = [
   'Present', 'Prenomial', 'Negative', 'Past', 'NegativePast', 'ConjunctiveTe', 'Adverbial', 'Conditional',
-  'TaraConditional', 'Tari', 'Noun'
+  'TaraConditional', 'Tari', 'Noun', 'StemSou', 'StemNegativeSou'
 ] as const;
 export type AdjConjugation = typeof adjConjugations[number];
 
@@ -9,8 +9,10 @@ function never(x: never) { throw new Error('never?'); }
 export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective: boolean): string[] {
   if (iAdjective) {
     let stem = adjective.slice(0, -1);
+    let ii = false;
     if (adjective === 'いい' || adjective === '良い' || adjective === 'よい') {
       stem = adjective.startsWith('良') ? '良' : 'よ';
+      ii = true;
     }
     switch (conj) {
     case 'Present': return [adjective];
@@ -24,6 +26,12 @@ export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective
     case 'TaraConditional': return [stem + 'かったら'];
     case 'Tari': return [stem + 'かったり'];
     case 'Noun': return [stem + 'さ'];
+    case 'StemSou': return [ii ? stem + 'さそう' : stem + 'そう'];
+    case 'StemNegativeSou': {
+      const negativeStem = stem + 'くな';
+      // basically conjugate adjective with 'Negative' and redo stem
+      return [negativeStem + 'さそう'];
+    }
     default: never(conj);
     }
   }
@@ -41,6 +49,8 @@ export function adjConjugate(adjective: string, conj: AdjConjugation, iAdjective
   case 'TaraConditional': return ['だったら'].map(suffix => adjective + suffix);
   case 'Tari': return ['だったり', 'でしたり'].map(suffix => adjective + suffix);
   case 'Noun': return [adjective + 'さ'];
+  case 'StemSou': return [adjective + 'そう'];
+  case 'StemNegativeSou': return [adjective + 'じゃなさそう'];
   default: never(conj);
   }
 
