@@ -57,3 +57,11 @@ test('ii yoi kanji', t => {
   t.ok(res[0].conjugation === 'StemSou');
   t.end();
 });
+
+test('nai', t=>{
+  t.ok(adjConjugate('美味しい', 'StemNegativeSou', true).includes('美味しくなさそう'))
+  const res = adjDeconjugate('美味しくなさそう', '美味しい', true);
+  t.ok(res.length > 0);
+  t.ok(res[0].conjugation === 'StemNegativeSou');
+  t.end();
+});

@@ -9,10 +9,13 @@ function never(x) { throw new Error('never?'); }
 function adjConjugate(adjective, conj, iAdjective) {
     if (iAdjective) {
         let stem = adjective.slice(0, -1);
-        let ii = false;
+        let addSa = false;
         if (adjective === 'いい' || adjective === '良い' || adjective === 'よい') {
             stem = adjective.startsWith('良') ? '良' : 'よ';
-            ii = true;
+            addSa = true;
+        }
+        else if (adjective.endsWith('ない')) {
+            addSa = true;
         }
         switch (conj) {
             case 'Present': return [adjective];
@@ -26,7 +29,7 @@ function adjConjugate(adjective, conj, iAdjective) {
             case 'TaraConditional': return [stem + 'かったら'];
             case 'Tari': return [stem + 'かったり'];
             case 'Noun': return [stem + 'さ'];
-            case 'StemSou': return [ii ? stem + 'さそう' : stem + 'そう'];
+            case 'StemSou': return [addSa ? stem + 'さそう' : stem + 'そう'];
             case 'StemNegativeSou': {
                 const negativeStem = stem + 'くな';
                 // basically conjugate adjective with 'Negative' and redo stem
