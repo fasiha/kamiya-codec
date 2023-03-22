@@ -19,3 +19,8 @@ test('nai/past', t => {
   t.ok(conjugateAuxiliaries('です', ['Nai'], 'Ta').includes('ではありませんでした'));
   t.end();
 });
+
+test('nai/te', t => {
+  t.ok(conjugateAuxiliaries('だ', ['Nai'], 'Te').includes('じゃなくて'));
+  t.end();
+});

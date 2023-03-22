@@ -269,12 +269,17 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
         return conjugate(initialVerb, finalConj, initialTypeII);
     }
     if (initialVerb === 'だ' || initialVerb === 'です') {
-        if (auxs.length === 1 && auxs[0] === 'Nai' && finalConj === 'Ta') {
-            if (initialVerb === 'だ') {
-                return ['ではなかった', 'じゃなかった'];
+        if (auxs.length === 1 && auxs[0] === 'Nai') {
+            if (finalConj === 'Ta') {
+                if (initialVerb === 'だ') {
+                    return ['ではなかった', 'じゃなかった'];
+                }
+                else {
+                    return ['ではありませんでした', 'でありませんでした'];
+                }
             }
-            else {
-                return ['ではありませんでした', 'でありませんでした'];
+            else if (finalConj === 'Te' && initialVerb === 'だ') {
+                return ['じゃなくて'];
             }
         }
         throw new Error('unhandled copula auxiliaries/conjugation');
