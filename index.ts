@@ -18,7 +18,7 @@ export const auxiliaries = [
   'SoudaConjecture',
   'SeruSaseru',
   'ShortenedCausative',
-  'ReruRareu',
+  'ReruRareru',
   'CausativePassive',
   'ShortenedCausativePassive',
   'Ageru', // Kamiya section 7.15
@@ -269,7 +269,7 @@ export function conjugateAuxiliaries(initialVerb: string, auxs: Auxiliary[], fin
     } else {
       verbs = verbs.flatMap(verb => conjugateAuxiliary(verb, aux, conj, typeII));
     }
-    typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' || aux === 'CausativePassive' ||
+    typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareru' || aux === 'CausativePassive' ||
              aux === 'ShortenedCausativePassive' || aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' ||
              aux === 'Miru' || aux === 'TeIru';
   }
@@ -416,7 +416,7 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
       return conjugate(newverb, conj, false);
     }
     return conjugate(newverb, conj, true);
-  } else if (aux === 'ReruRareu') {
+  } else if (aux === 'ReruRareru') {
     if (conj === 'Conditional' || conj === 'Imperative' || conj === 'Volitional' || conj === 'Tara' ||
         conj === 'Tari') {
       throw new Error('Unhandled conjugation');
@@ -515,7 +515,7 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
 
   const penultimates: Auxiliary[] = [
     'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
-    'TeIru', 'TeAru', 'TeOru', 'Potential', 'ReruRareu', 'SeruSaseru'
+    'TeIru', 'TeAru', 'TeOru', 'Potential', 'ReruRareru', 'SeruSaseru'
   ];
   const depth2Finals: Auxiliary[] = ['Masu', 'SoudaConjecture', 'SoudaHearsay', 'TeIru'];
   for (const penultimate of penultimates) {
@@ -532,7 +532,7 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
 
   if (maxAuxDepth <= 2) { return hits; }
 
-  const antepenultimates: Auxiliary[] = ['SeruSaseru', 'ReruRareu'];
+  const antepenultimates: Auxiliary[] = ['SeruSaseru', 'ReruRareru'];
   const depth3Finals: Auxiliary[] = ['Masu'];
   for (const ante of antepenultimates) {
     for (const penultimate of penultimates) {

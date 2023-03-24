@@ -15,6 +15,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.9.1](#version-491)
     - [version 4.9](#version-49)
     - [version 4.8](#version-48)
     - [version 4.7](#version-47)
@@ -137,7 +138,7 @@ Auxiliaries must be one of the following:
 | "SoudaConjecture"
 | "SeruSaseru"
 | "ShortenedCausative"
-| "ReruRareu"
+| "ReruRareru"
 | "CausativePassive"
 | "ShortenedCausativePassive"
 | "Ageru"                     // Kamiya section 7.15
@@ -217,6 +218,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.9.1
+Ugh I had a typo all this time: instead of `ReruRareru` I was missing an `r`. I know this is a breaking change but I cannot even.
+
 ### version 4.9
 The `Oku` auxiliary's ～ておく can be colloquially shortened to ～とく per [mattb](https://japanese.stackexchange.com/q/18157) on Japanese Stack Exchange.
 

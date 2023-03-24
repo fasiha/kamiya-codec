@@ -1,6 +1,6 @@
 {
   "name": "kamiya-codec",
-  "version": "4.9.0",
+  "version": "4.9.1",
   "description": "Japanese verb/adjective conjugator/deconjugator library based on Taeko Kamiya's *The Handbook of Japanese Verbs* and *The Handbook of Japanese Adjectives and Adverbs*",
   "main": "index.js",
   "scripts": {

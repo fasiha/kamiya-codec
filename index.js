@@ -19,7 +19,7 @@ exports.auxiliaries = [
     'SoudaConjecture',
     'SeruSaseru',
     'ShortenedCausative',
-    'ReruRareu',
+    'ReruRareru',
     'CausativePassive',
     'ShortenedCausativePassive',
     'Ageru',
@@ -303,7 +303,7 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
         else {
             verbs = verbs.flatMap(verb => conjugateAuxiliary(verb, aux, conj, typeII));
         }
-        typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareu' || aux === 'CausativePassive' ||
+        typeII = aux === 'Potential' || aux === 'SeruSaseru' || aux === 'ReruRareru' || aux === 'CausativePassive' ||
             aux === 'ShortenedCausativePassive' || aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' ||
             aux === 'Miru' || aux === 'TeIru';
     }
@@ -467,7 +467,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         }
         return conjugate(newverb, conj, true);
     }
-    else if (aux === 'ReruRareu') {
+    else if (aux === 'ReruRareru') {
         if (conj === 'Conditional' || conj === 'Imperative' || conj === 'Volitional' || conj === 'Tara' ||
             conj === 'Tari') {
             throw new Error('Unhandled conjugation');
@@ -576,7 +576,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     }
     const penultimates = [
         'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
-        'TeIru', 'TeAru', 'TeOru', 'Potential', 'ReruRareu', 'SeruSaseru'
+        'TeIru', 'TeAru', 'TeOru', 'Potential', 'ReruRareru', 'SeruSaseru'
     ];
     const depth2Finals = ['Masu', 'SoudaConjecture', 'SoudaHearsay', 'TeIru'];
     for (const penultimate of penultimates) {
@@ -596,7 +596,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     if (maxAuxDepth <= 2) {
         return hits;
     }
-    const antepenultimates = ['SeruSaseru', 'ReruRareu'];
+    const antepenultimates = ['SeruSaseru', 'ReruRareru'];
     const depth3Finals = ['Masu'];
     for (const ante of antepenultimates) {
         for (const penultimate of penultimates) {

@@ -20,15 +20,15 @@ test('secondary aux', t => {
   t.ok(a('する', ['SeruSaseru', 'Masu'], 'Ta', true).includes('させました'),
        'suru seru/masu/ta'); // page 43
 
-  t.ok(a('読む', ['ReruRareu', 'Masu'], 'Ta', false).includes('読まれました'),
+  t.ok(a('読む', ['ReruRareru', 'Masu'], 'Ta', false).includes('読まれました'),
        'godan reru/masu/ta'); // page 44
-  t.ok(a('ほめる', ['ReruRareu', 'Masu'], 'Ta', true).includes('ほめられました'),
+  t.ok(a('ほめる', ['ReruRareru', 'Masu'], 'Ta', true).includes('ほめられました'),
        'ichidan reru/masu/ta'); // page 45
-  t.ok(a('くる', ['ReruRareu', 'Masu'], 'Ta', true).includes('こられました'),
+  t.ok(a('くる', ['ReruRareru', 'Masu'], 'Ta', true).includes('こられました'),
        'kuru reru/masu/ta'); // page 45 table b
-  t.ok(a('来る', ['ReruRareu', 'Masu'], 'Ta', true).includes('来られました'),
+  t.ok(a('来る', ['ReruRareru', 'Masu'], 'Ta', true).includes('来られました'),
        'kuru/kanji reru/masu/ta'); // page 45 table c
-  t.ok(a('する', ['ReruRareu', 'Masu'], 'Ta', true).includes('されました'),
+  t.ok(a('する', ['ReruRareru', 'Masu'], 'Ta', true).includes('されました'),
        'suru reru/masu/ta'); // page 46
 
   t.ok(a('書く', ['CausativePassive', 'Masu'], 'Ta', false).includes('書かせられました'),

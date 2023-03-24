@@ -130,10 +130,10 @@ test('Shortened causative seru', t => {
 });
 
 test('Rareru/reru', t => {
-  t.ok(has(conjugateAuxiliaries('読む', ['ReruRareu'], 'Dictionary'), '読まれる'));
-  t.ok(has(conjugateAuxiliaries('ほめる', ['ReruRareu'], 'Dictionary', true), 'ほめられる'));
-  t.ok(has(conjugateAuxiliaries('来る', ['ReruRareu'], 'Dictionary'), '来られる'));
-  t.ok(has(conjugateAuxiliaries('する', ['ReruRareu'], 'Dictionary'), 'される'));
+  t.ok(has(conjugateAuxiliaries('読む', ['ReruRareru'], 'Dictionary'), '読まれる'));
+  t.ok(has(conjugateAuxiliaries('ほめる', ['ReruRareru'], 'Dictionary', true), 'ほめられる'));
+  t.ok(has(conjugateAuxiliaries('来る', ['ReruRareru'], 'Dictionary'), '来られる'));
+  t.ok(has(conjugateAuxiliaries('する', ['ReruRareru'], 'Dictionary'), 'される'));
   t.end();
 });
 
