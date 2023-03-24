@@ -98,6 +98,17 @@ test('vte auxiliaries', t => {
   t.end();
 });
 
+test('Oku -> toku', t => {
+  {
+    // see https://japanese.stackexchange.com/q/18157
+    const v = a('する', ['Oku'], 'Dictionary');
+    t.ok(v.includes('しとく'))
+    t.ok(v.includes('しておく'))
+  }
+  t.ok(a('やめる', ['Oku'], 'Ta', true).includes('やめといた'));
+  t.end();
+});
+
 test('multi-pipeline', t => {
   // 知る -> SeruSaseru -> Kureru -> Masu -> Ta, page 164
   t.ok(a('知る', ['SeruSaseru', 'Kureru', 'Masu'], 'Ta', false).includes('知らせてくれました')); // p 164

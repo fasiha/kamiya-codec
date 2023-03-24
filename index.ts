@@ -462,6 +462,7 @@ function conjugateAuxiliary(verb: string, aux: Auxiliary, conj: Conjugation, typ
     const endingTypeII: boolean =
         aux === 'Ageru' || aux === 'Sashiageru' || aux === 'Kureru' || aux === 'TeIru' || aux === 'Miru';
     const newVerbs = endings.map(ending => vte + ending);
+    if (aux === 'Oku') { newVerbs.push(vte.slice(0, -1) + 'とく'); }
     return newVerbs.flatMap(v => conjugate(v, conj, endingTypeII));
   } else if (aux === 'Shimau') {
     const vte = conjugate(verb, 'Te', typeII)[0];
