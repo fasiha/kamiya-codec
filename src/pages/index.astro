@@ -1,0 +1,125 @@
+---
+import Conj from "../components/verb/Conj";
+import Auxs from "../components/verb/Auxs";
+import InputVerb from "../components/verb/InputVerb";
+import Result from "../components/verb/Result";
+
+import InputAdj from "../components/adj/Input";
+import ConjAdj from "../components/adj/Conj";
+import ResultAdj from "../components/adj/Result";
+
+import InputDeconj from "../components/verbDeconj/Input";
+import ResultDeconj from "../components/verbDeconj/Result";
+
+import InputAdjDeconj from "../components/adjDeconj/Input";
+import ResultAdjDeconj from "../components/adjDeconj/Result";
+
+import numbered from "../components/Numbered";
+---
+
+<head>
+  <meta charset="utf-8" />
+  <title>Kamiya-Codec for Japanese verbs and adjectives</title>
+  <style>
+    body {
+      padding: 0 10px;
+      font: 18px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      color: #444;
+    }
+    article {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: 2em;
+    }
+    article section {
+      width: 30em;
+    }
+  </style>
+</head>
+
+<h1>Kamiya-Codec for Japanese verbs and adjectives</h1>
+<article>
+  <section id="conjugate-verb">
+    <h2>§1 I want to conjugate a verb!</h2>
+    <InputVerb client:only="preact" />
+
+    <p>
+      <label
+        >{numbered(2)} I want its final conjugation to be: <Conj
+          client:only="preact"
+        /></label
+      >
+    </p>
+
+    <p>
+      <label>
+        {numbered(3)}
+        <em>Optional!</em> I want the following auxiliary verbs!
+        <Auxs client:only="preact" />
+      </label>
+    </p>
+
+    <Result client:only="preact" />
+  </section>
+
+  <section>
+    <h2>§2 I want to <em>deconjugate</em> a verb!</h2>
+
+    <InputDeconj client:only="preact" />
+    <ResultDeconj client:only="preact" />
+  </section>
+
+  <section>
+    <h2>§3 I want to conjugate an <em>adjective</em>!</h2>
+
+    <InputAdj client:only="preact" />
+
+    <p>
+      <label
+        >{numbered(2)} I want it’s final conjugation to be: <ConjAdj
+          client:only="preact"
+        /></label
+      >
+    </p>
+
+    <ResultAdj client:only="preact" />
+  </section>
+
+  <section>
+    <h2>
+      §4 Final trick! I want to <em>deconjugate</em> an adjective!
+    </h2>
+    <InputAdjDeconj client:only="preact" />
+    <ResultAdjDeconj client:only="preact" />
+  </section>
+
+  <section>
+    <h2>§ Bibliography</h2>
+    <p>
+      This web app is based on the open-source <a
+        href="https://github.com/fasiha/kamiya-codec">Kamiya-Codec</a
+      > JavaScript/Node.js library which is in turn an implementation of the rules
+      in two of Taeko Kamiya’s textbooks, <cite
+        >The Handbook of Japanese Verbs</cite
+      > (<a href="https://kodansha.us/book/the-handbook-of-japanese-verbs/"
+        >Kodansha</a
+      >) and <cite>The Handbook of Japanese Adjectives and Adverbs</cite> (<a
+        href="https://kodansha.us/book/the-handbook-of-japanese-adjectives-and-adverbs/"
+        >Kodansha</a
+      >).
+    </p>
+    <p>
+      You may <a href="https://github.com/fasiha/kamiya-codec/issues"
+        >file an issue</a
+      > or <a href="https://fasiha.github.io/#contact">get in touch</a>.
+    </p>
+    <p>
+      Coders—if you pop open your browser’s JavaScript Dev Console, this library
+      has been loaded as <code>kamiya</code>. Happy conjugating/deconjugating!
+    </p>
+  </section>
+</article>
+
+<script async src="node_modules/kamiya-codec/dist/kamiya.min.js"></script>
