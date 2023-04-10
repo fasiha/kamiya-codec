@@ -1,10 +1,22 @@
 {
   "name": "kamiya-codec",
-  "version": "4.9.1",
+  "version": "4.9.2",
   "description": "Japanese verb/adjective conjugator/deconjugator library based on Taeko Kamiya's *The Handbook of Japanese Verbs* and *The Handbook of Japanese Adjectives and Adverbs*",
   "main": "index.js",
+  "module": "dist/godanIchidan.min.mjs",
+  "exports": {
+    ".": {
+      "browser": "./dist/kamiya.min.mjs",
+      "node": {
+        "import": "./dist/kamiya.min.mjs",
+        "require": "./index.js"
+      },
+      "import": "./dist/kamiya.min.mjs"
+    }
+  },
   "scripts": {
     "test": "tape tests/*",
+    "bundle": "npm run build && node esbuild.mjs",
     "build": "tsc -p ."
   },
   "keywords": [
@@ -22,7 +34,9 @@
   "bugs": "https://github.com/fasiha/kamiya-codec/issues",
   "license": "Unlicense",
   "devDependencies": {
+    "@chialab/esbuild-plugin-commonjs": "^0.17.2",
     "@types/node": "^10.17.60",
+    "esbuild": "^0.17.15",
     "tape": "^4.15.1",
     "typescript": "^3.9.10"
   }
