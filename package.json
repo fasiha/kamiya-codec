@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "publish": "rm -fr docs && npm run build && mv dist docs && touch docs/.nojekyll && git add docs"
   },
   "dependencies": {
     "@astrojs/preact": "^2.1.0",

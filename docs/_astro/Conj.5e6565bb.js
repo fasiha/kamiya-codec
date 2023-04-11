@@ -1,1 +1,0 @@
-import{u as a,o,c as t}from"./jsxRuntime.module.5b307390.js";import{r as c}from"./kamiya.min.0366543e.js";import"./hooks.module.ee390651.js";import"./preact.module.e54f245b.js";function l(){const n=a(t);return o("select",{name:"conj",value:n.conj,onChange:e=>{const r=e.target.value;t.setKey("conj",r)},children:c.map(e=>o("option",{value:e,children:e}))})}export{l as default};

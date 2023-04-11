@@ -122,4 +122,7 @@ import numbered from "../components/Numbered";
   </section>
 </article>
 
-<script async src="node_modules/kamiya-codec/dist/kamiya.min.js"></script>
+<script>
+  import * as kamiya from "kamiya-codec";
+  (window as any).kamiya = kamiya;
+</script>
