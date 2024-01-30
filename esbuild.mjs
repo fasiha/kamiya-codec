@@ -23,3 +23,10 @@ await build({
   format: 'esm',
   target: ['es2021'],
 });
+
+// Build Node commonjs
+await build({
+  entryPoints: ["index.js"],
+  outfile: "dist/kamiya.cjs",
+  format: "cjs",
+});
