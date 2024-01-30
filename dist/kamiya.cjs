@@ -1,9 +1,188 @@
 "use strict";
-var _a;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.verbDeconjugate = exports.conjugateAuxiliaries = exports.conjugate = exports.conjugateTypeII = exports.conjugateTypeI = exports.auxiliaries = exports.conjugations = void 0;
-const hiragana_1 = require("./hiragana");
-exports.conjugations = [
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// index.ts
+var kamiya_conjugator_exports = {};
+__export(kamiya_conjugator_exports, {
+  adjConjugate: () => adjConjugate,
+  adjConjugations: () => adjConjugations,
+  adjDeconjugate: () => adjDeconjugate,
+  auxiliaries: () => auxiliaries,
+  conjugate: () => conjugate,
+  conjugateAuxiliaries: () => conjugateAuxiliaries,
+  conjugateTypeI: () => conjugateTypeI,
+  conjugateTypeII: () => conjugateTypeII,
+  conjugations: () => conjugations,
+  verbDeconjugate: () => verbDeconjugate
+});
+module.exports = __toCommonJS(kamiya_conjugator_exports);
+
+// hiragana.ts
+var split = (s) => s.split("");
+var vec = [
+  split("\u3042\u3044\u3046\u3048\u304A"),
+  split("\u304B\u304D\u304F\u3051\u3053"),
+  split("\u304C\u304E\u3050\u3052\u3054"),
+  split("\u3055\u3057\u3059\u305B\u305D"),
+  split("\u3056\u3058\u305A\u305C\u305E"),
+  split("\u305F\u3061\u3064\u3066\u3068"),
+  split("\u3060\u3062\u3065\u3067\u3069"),
+  split("\u306A\u306B\u306C\u306D\u306E"),
+  split("\u306F\u3072\u3075\u3078\u307B"),
+  split("\u3070\u3073\u3076\u3079\u307C"),
+  split("\u3071\u3074\u3077\u307A\u307D"),
+  split("\u307E\u307F\u3080\u3081\u3082"),
+  ["\u3084", "", "\u3086", "", "\u3088"],
+  split("\u3089\u308A\u308B\u308C\u308D"),
+  ["\u308F", "", "", "", "\u3092"],
+  ["\u3093", "", "", "", ""]
+];
+var charToVecIndex = /* @__PURE__ */ new Map([]);
+vec.forEach((row, rowidx) => {
+  row.forEach((char) => {
+    if (char.length > 0) {
+      charToVecIndex.set(char, rowidx);
+    }
+  });
+});
+function lookup(character, vowel) {
+  if (vowel < 0 || vowel > 4) {
+    throw new Error("vowel must be between 0 and 4");
+  }
+  const idx = charToVecIndex.get(character);
+  if (typeof idx === "undefined") {
+    throw new Error("unknown character");
+  }
+  const ret = vec[idx][vowel];
+  if (ret.length === 0) {
+    throw new Error("vowel for kana does not exist");
+  }
+  return ret;
+}
+
+// adjective.ts
+var adjConjugations = [
+  "Present",
+  "Prenomial",
+  "Negative",
+  "Past",
+  "NegativePast",
+  "ConjunctiveTe",
+  "Adverbial",
+  "Conditional",
+  "TaraConditional",
+  "Tari",
+  "Noun",
+  "StemSou",
+  "StemNegativeSou"
+];
+function never(x) {
+  throw new Error("never?");
+}
+function adjConjugate(adjective, conj, iAdjective) {
+  if (iAdjective) {
+    let stem = adjective.slice(0, -1);
+    let addSa = false;
+    if (adjective === "\u3044\u3044" || adjective === "\u826F\u3044" || adjective === "\u3088\u3044") {
+      stem = adjective.startsWith("\u826F") ? "\u826F" : "\u3088";
+      addSa = true;
+    } else if (adjective.endsWith("\u306A\u3044")) {
+      addSa = true;
+    }
+    switch (conj) {
+      case "Present":
+        return [adjective];
+      case "Prenomial":
+        return [adjective];
+      case "Negative":
+        return [stem + "\u304F\u306A\u3044"];
+      case "Past":
+        return [stem + "\u304B\u3063\u305F"];
+      case "NegativePast":
+        return [stem + "\u304F\u306A\u304B\u3063\u305F"];
+      case "ConjunctiveTe":
+        return [stem + "\u304F", stem + "\u304F\u3066"];
+      case "Adverbial":
+        return [stem + "\u304F"];
+      case "Conditional":
+        return [stem + "\u3051\u308C\u3070"];
+      case "TaraConditional":
+        return [stem + "\u304B\u3063\u305F\u3089"];
+      case "Tari":
+        return [stem + "\u304B\u3063\u305F\u308A"];
+      case "Noun":
+        return [stem + "\u3055"];
+      case "StemSou":
+        return [addSa ? stem + "\u3055\u305D\u3046" : stem + "\u305D\u3046"];
+      case "StemNegativeSou": {
+        const negativeStem = stem + "\u304F\u306A";
+        return [negativeStem + "\u3055\u305D\u3046"];
+      }
+      default:
+        never(conj);
+    }
+  }
+  switch (conj) {
+    case "Prenomial":
+      return [adjective + "\u306A"];
+    case "Present":
+      return ["\u3060", "\u3067\u3059", "\u3067\u3054\u3056\u3044\u307E\u3059"].map((suffix) => adjective + suffix);
+    case "Negative":
+      return ["\u3067\u306F\u306A\u3044", "\u3067\u306A\u3044", "\u3058\u3083\u306A\u3044", "\u3067\u306F\u3042\u308A\u307E\u305B\u3093"].map((suffix) => adjective + suffix);
+    case "Past":
+      return ["\u3060\u3063\u305F", "\u3067\u3057\u305F"].map((suffix) => adjective + suffix);
+    case "NegativePast":
+      return ["\u3067\u306F\u306A\u304B\u3063\u305F", "\u3067\u306A\u304B\u3063\u305F", "\u3058\u3083\u306A\u304B\u3063\u305F", "\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3067\u3057\u305F"].map((suffix) => adjective + suffix);
+    case "ConjunctiveTe":
+      return [adjective + "\u3067"];
+    case "Adverbial":
+      return [adjective + "\u306B"];
+    case "Conditional":
+      return ["\u306A\u3089", "\u306A\u3089\u3070"].map((suffix) => adjective + suffix);
+    case "TaraConditional":
+      return ["\u3060\u3063\u305F\u3089"].map((suffix) => adjective + suffix);
+    case "Tari":
+      return ["\u3060\u3063\u305F\u308A", "\u3067\u3057\u305F\u308A"].map((suffix) => adjective + suffix);
+    case "Noun":
+      return [adjective + "\u3055"];
+    case "StemSou":
+      return [adjective + "\u305D\u3046"];
+    case "StemNegativeSou":
+      return [adjective + "\u3058\u3083\u306A\u3055\u305D\u3046"];
+    default:
+      never(conj);
+  }
+  throw new Error("unknown conjugation/iAdjective");
+}
+function adjDeconjugate(conjugated, dictionary, iAdjective) {
+  const hits = [];
+  for (const conj of adjConjugations) {
+    const result = adjConjugate(dictionary, conj, iAdjective);
+    if (result.includes(conjugated)) {
+      hits.push({ conjugation: conj, result });
+    }
+  }
+  return hits;
+}
+
+// index.ts
+var conjugations = [
   "Negative",
   "Conjunctive",
   "Dictionary",
@@ -15,8 +194,9 @@ exports.conjugations = [
   "Tara",
   "Tari",
   "Zu"
+  // Not in Kamiya
 ];
-exports.auxiliaries = [
+var auxiliaries = [
   "Potential",
   "Masu",
   "Nai",
@@ -32,29 +212,41 @@ exports.auxiliaries = [
   "CausativePassive",
   "ShortenedCausativePassive",
   "Ageru",
+  // Kamiya section 7.15
   "Sashiageru",
   "Yaru",
   "Morau",
+  // Kamiya section 7.16
   "Itadaku",
   "Kureru",
+  // Kamiya section 7.17
   "Kudasaru",
   "TeIru",
+  // 7.5 - 7.6
   "TeAru",
+  // 7.7
   "Miru",
+  // 7.22
   "Iku",
+  // 7.23
   "Kuru",
+  // 7.24
   "Oku",
+  // 7.25
   "Shimau",
+  // 7.26
   "TeOru"
+  // Not in Kamiya
 ];
-const specialCasesRaw = [
+var specialCasesRaw = [
   ["\u3042\u308B", "Negative", ""],
+  // fully negative conjugation would be ''+nai
   ["\u3054\u3056\u308B", "Conjunctive", "\u3054\u3056\u3044"],
   ["\u3044\u3089\u3063\u3057\u3083\u308B", "Conjunctive", "\u3044\u3089\u3063\u3057\u3083\u3044"],
   ["\u3044\u3089\u3063\u3057\u3083\u308B", "Conditional", "\u3044\u3089\u3063\u3057\u3083\u3044"],
   ["\u3044\u3089\u3063\u3057\u3083\u308B", "Imperative", "\u3044\u3089\u3063\u3057\u3083\u3044"]
 ];
-let specialCases = /* @__PURE__ */ new Map([]);
+var specialCases = /* @__PURE__ */ new Map([]);
 for (const [verb, conj, result] of specialCasesRaw) {
   let outer = specialCases.get(verb);
   if (outer) {
@@ -63,20 +255,24 @@ for (const [verb, conj, result] of specialCasesRaw) {
     specialCases.set(verb, /* @__PURE__ */ new Map([[conj, result]]));
   }
 }
-const conjToIdx = new Map(exports.conjugations.filter((x) => x !== "Imperative").map((x, i) => [x, i]));
-conjToIdx.set("Zu", (_a = conjToIdx.get("Negative")) !== null && _a !== void 0 ? _a : -1);
-const tteRaw = [
+var conjToIdx = new Map(conjugations.filter((x) => x !== "Imperative").map((x, i) => [x, i]));
+var _a;
+conjToIdx.set("Zu", (_a = conjToIdx.get("Negative")) != null ? _a : -1);
+var tteRaw = [
   ["\u304F", ["\u3044\u3066", "\u3044\u305F", "\u3044\u305F\u3089", "\u3044\u305F\u308A"]],
   ["\u3050", ["\u3044\u3067", "\u3044\u3060", "\u3044\u3060\u3089", "\u3044\u3060\u308A"]],
   ["\u3059", ["\u3057\u3066", "\u3057\u305F", "\u3057\u305F\u3089", "\u3057\u305F\u308A"]],
   ["\u306C", ["\u3093\u3067", "\u3093\u3060", "\u3093\u3060\u3089", "\u3093\u3060\u308A"]],
   ["\u3076", ["\u3093\u3067", "\u3093\u3060", "\u3093\u3060\u3089", "\u3093\u3060\u308A"]],
+  // same as above
   ["\u3080", ["\u3093\u3067", "\u3093\u3060", "\u3093\u3060\u3089", "\u3093\u3060\u308A"]],
+  // ditto
   ["\u3064", ["\u3063\u3066", "\u3063\u305F", "\u3063\u305F\u3089", "\u3063\u305F\u308A"]],
   ["\u308B", ["\u3063\u3066", "\u3063\u305F", "\u3063\u305F\u3089", "\u3063\u305F\u308A"]],
+  // same as above and below
   ["\u3046", ["\u3063\u3066", "\u3063\u305F", "\u3063\u305F\u3089", "\u3063\u305F\u308A"]]
 ];
-let tte = /* @__PURE__ */ new Map([]);
+var tte = /* @__PURE__ */ new Map([]);
 for (const [tail, quad] of tteRaw) {
   tte.set(tail, quad);
 }
@@ -115,9 +311,9 @@ function conjugateTypeI(verb, conj) {
       if (idx === 0) {
         return [head + "\u308F"];
       }
-      return [head + hiragana_1.lookup("\u3042", idx)];
+      return [head + lookup("\u3042", idx)];
     }
-    return [head + hiragana_1.lookup(tail, idx)];
+    return [head + lookup(tail, idx)];
   }
   const tidx = idx - 5;
   const tteHit = tte.get(verb === "\u884C\u304F" || verb === "\u3044\u304F" ? "\u3064" : tail);
@@ -126,7 +322,6 @@ function conjugateTypeI(verb, conj) {
   }
   return [head + tteHit[tidx]];
 }
-exports.conjugateTypeI = conjugateTypeI;
 function conjugateTypeII(verb, conj) {
   if (verb === "\u3059\u308B") {
     return conjugateSuru(verb, conj);
@@ -164,7 +359,6 @@ function conjugateTypeII(verb, conj) {
       throw new Error("Unhandled conjugation");
   }
 }
-exports.conjugateTypeII = conjugateTypeII;
 function conjugateKuru(verb, conj) {
   let ret = "";
   switch (conj) {
@@ -292,7 +486,6 @@ function conjugate(verb, conj, typeII = false) {
   }
   return ret;
 }
-exports.conjugate = conjugate;
 function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = false) {
   if (auxs.length === 0) {
     return conjugate(initialVerb, finalConj, initialTypeII);
@@ -330,7 +523,6 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
   }
   return verbs;
 }
-exports.conjugateAuxiliaries = conjugateAuxiliaries;
 function conjugateAuxiliary(verb, aux, conj, typeII = false) {
   if (aux === "Potential") {
     const newverb = conjugateTypeI(verb, "Conditional")[0] + "\u308B";
@@ -543,26 +735,26 @@ function isNever(x) {
 }
 function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth = Infinity) {
   const hits = [];
-  for (const conj of exports.conjugations) {
+  for (const conj of conjugations) {
     try {
       const result = conjugate(dictionaryForm, conj, typeII);
       if (result.includes(conjugated)) {
         hits.push({ conjugation: conj, auxiliaries: [], result });
       }
-    } catch (_a2) {
+    } catch (e) {
     }
   }
   if (maxAuxDepth <= 0) {
     return hits;
   }
-  for (const aux of exports.auxiliaries) {
-    for (const conj of exports.conjugations) {
+  for (const aux of auxiliaries) {
+    for (const conj of conjugations) {
       try {
         const result = conjugateAuxiliary(dictionaryForm, aux, conj, typeII);
         if (result.includes(conjugated)) {
           hits.push({ conjugation: conj, auxiliaries: [aux], result });
         }
-      } catch (_b) {
+      } catch (e) {
       }
     }
   }
@@ -592,14 +784,14 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
   const depth2Finals = ["Masu", "SoudaConjecture", "SoudaHearsay", "TeIru"];
   for (const penultimate of penultimates) {
     for (const final of depth2Finals) {
-      for (const conj of exports.conjugations) {
+      for (const conj of conjugations) {
         const auxs = [penultimate, final];
         try {
           const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
           if (result.includes(conjugated)) {
             hits.push({ conjugation: conj, auxiliaries: auxs, result });
           }
-        } catch (_c) {
+        } catch (e) {
         }
       }
     }
@@ -612,14 +804,14 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
   for (const ante of antepenultimates) {
     for (const penultimate of penultimates) {
       for (const final of depth3Finals) {
-        for (const conj of exports.conjugations) {
+        for (const conj of conjugations) {
           const auxs = [ante, penultimate, final];
           try {
             const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
             if (result.includes(conjugated)) {
               hits.push({ conjugation: conj, auxiliaries: auxs, result });
             }
-          } catch (_d) {
+          } catch (e) {
           }
         }
       }
@@ -627,14 +819,4 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
   }
   return hits;
 }
-exports.verbDeconjugate = verbDeconjugate;
-var adjective_1 = require("./adjective");
-Object.defineProperty(exports, "adjConjugations", { enumerable: true, get: function() {
-  return adjective_1.adjConjugations;
-} });
-Object.defineProperty(exports, "adjConjugate", { enumerable: true, get: function() {
-  return adjective_1.adjConjugate;
-} });
-Object.defineProperty(exports, "adjDeconjugate", { enumerable: true, get: function() {
-  return adjective_1.adjDeconjugate;
-} });
+//# sourceMappingURL=kamiya.cjs.map

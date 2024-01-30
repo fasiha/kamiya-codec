@@ -3,6 +3,9 @@
 Table of contents—
 - [kamiya-codec](#kamiya-codec)
   - [Install](#install)
+    - [Node.js](#nodejs)
+    - [Browser](#browser)
+    - [Playing around](#playing-around)
   - [Usage for verbs](#usage-for-verbs)
     - [`conjugate(verb: string, conj: Conjugation, typeII: boolean = false): string[]`](#conjugateverb-string-conj-conjugation-typeii-boolean--false-string)
     - [`conjugateAuxiliaries(verb: string, auxs: Auxiliary[], conj: Conjugation, typeII: boolean = false): string[]`](#conjugateauxiliariesverb-string-auxs-auxiliary-conj-conjugation-typeii-boolean--false-string)
@@ -56,8 +59,49 @@ This library will make most sense if you have the book(s) for reference. It curr
 
 ## Install
 
+### Node.js
 Node.js developers: `npm install --save kamiya-codec` will add this package to your current project.
 
+Depending on what module system you use, you can either `require` (CommonJS):
+```js
+var codec = require("kamiya-codec");
+console.log(codec.conjugateAuxiliaries("書く", ["Tai"], "Negative"));
+```
+or you can `import` (ESM, i.e., EcmaScript Modules), which will work for TypeScript:
+```js
+import codec from "kamiya-codec";
+console.log(codec.conjugateAuxiliaries("書く", ["Tai"], "Negative"));
+```
+
+### Browser
+Similarly for the browser you have two choices: ESM (EcmaScript modules) or a globally-defined variable.
+
+If you use ESM (widely supported by modern browsers), drop
+- [`kamiya.min.mjs`](./dist/kamiya.min.mjs) and
+- [`kamiya.min.mjs.map`](./dist/kamiya.min.mjs.map)
+
+somewhere your HTML can see and then
+```html
+<script type="module">
+  import * as codec from "./kamiya.min.mjs";
+  console.log(codec.conjugateAuxiliaries("書く", ["Tai"], "Negative"));
+</script>
+```
+
+Alternatively, if you want just a plain JavaScript file defining a global variable, then put
+- [`kamiya.min.js`](./dist/kamiya.min.js) and
+- [`kamiya.min.js.map`](./dist/kamiya.min.js.map)
+
+(so with `.js` instead of `.mjs`) somewhere your HTML can see, then
+```html
+<script src="kamiya.min.js"></script>
+<script>
+  console.log(kamiya.conjugateAuxiliaries("書く", ["Tai"], "Negative"));
+</script>
+```
+The first `<script>` will load this library under the `kamiya` global varible name.
+
+### Playing around
 For everyone else who just want to poke around:
 
 1. Install [Git](https://git-scm.com/).
