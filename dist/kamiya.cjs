@@ -781,7 +781,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     "ReruRareru",
     "SeruSaseru"
   ];
-  const depth2Finals = ["Masu", "SoudaConjecture", "SoudaHearsay", "TeIru"];
+  const depth2Finals = ["Masu", "SoudaConjecture", "SoudaHearsay", "TeIru", "Tai"];
   for (const penultimate of penultimates) {
     for (const final of depth2Finals) {
       for (const conj of conjugations) {

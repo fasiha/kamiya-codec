@@ -263,6 +263,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.10.0
+Allow deconjugator to work with "してもらいたい", i.e., Morau + Tai auxiliaries. We might need to think of a more long-term solution than the bandaid I used but for now, this is a quick tactical fix.
+
 ### version 4.9.2
 This is only a housekeeping update for nerds: using esbuild to export IIFE and ESM things for others to use. Hopefully this breaks nothing.
 
