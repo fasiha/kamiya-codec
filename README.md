@@ -18,6 +18,8 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.11.0](#version-4110)
+    - [version 4.10.0](#version-4100)
     - [version 4.9.2](#version-492)
     - [version 4.9.1](#version-491)
     - [version 4.9](#version-49)
@@ -263,6 +265,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.11.0
+Allow deconjugator to work with "かいていただけません", i.e., Itadaku + Potential + Masu (and finally Negative).
+
 ### version 4.10.0
 Allow deconjugator to work with "してもらいたい", i.e., Morau + Tai auxiliaries. We might need to think of a more long-term solution than the bandaid I used but for now, this is a quick tactical fix.
 

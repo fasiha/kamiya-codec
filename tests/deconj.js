@@ -55,6 +55,7 @@ test('deconj pipeline', t => {
 
 test('more deconj', t => {
   t.ok(verbDeconjugate('してもらいたい', 'する').length > 0);
+  t.ok(verbDeconjugate('かいていただけませ', 'かく').length > 0);
 
   t.end();
 });

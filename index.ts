@@ -532,7 +532,11 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
 
   if (maxAuxDepth <= 2) { return hits; }
 
-  const antepenultimates: Auxiliary[] = ['SeruSaseru', 'ReruRareru'];
+  const antepenultimates: Auxiliary[] = [
+    'SeruSaseru',
+    'ReruRareru',
+    'Itadaku',
+  ];
   const depth3Finals: Auxiliary[] = ['Masu'];
   for (const ante of antepenultimates) {
     for (const penultimate of penultimates) {

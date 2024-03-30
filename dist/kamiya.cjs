@@ -799,7 +799,11 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
   if (maxAuxDepth <= 2) {
     return hits;
   }
-  const antepenultimates = ["SeruSaseru", "ReruRareru"];
+  const antepenultimates = [
+    "SeruSaseru",
+    "ReruRareru",
+    "Itadaku"
+  ];
   const depth3Finals = ["Masu"];
   for (const ante of antepenultimates) {
     for (const penultimate of penultimates) {
