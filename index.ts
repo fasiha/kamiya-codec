@@ -517,7 +517,7 @@ export function verbDeconjugate(conjugated: string, dictionaryForm: string, type
     'Ageru', 'Sashiageru', 'Yaru', 'Morau', 'Itadaku', 'Kureru', 'Kudasaru', 'Miru', 'Iku', 'Kuru', 'Oku', 'Shimau',
     'TeIru', 'TeAru', 'TeOru', 'Potential', 'ReruRareru', 'SeruSaseru'
   ];
-  const depth2Finals: Auxiliary[] = ['Masu', 'SoudaConjecture', 'SoudaHearsay', 'TeIru', 'Tai', 'Nai'];
+  const depth2Finals: Auxiliary[] = ['Masu', 'SoudaConjecture', 'SoudaHearsay', 'TeIru', 'Tai', 'Nai', 'Yaru'];
   for (const penultimate of penultimates) {
     for (const final of depth2Finals) {
       for (const conj of conjugations) {
@@ -561,7 +561,7 @@ export {
   adjDeconjugate,
 } from './adjective';
 
-export type{
+export type {
   AdjConjugation,
   AdjDeconjugated,
 } from './adjective';

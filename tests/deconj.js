@@ -60,5 +60,7 @@ test('more deconj', t => {
   // allow ReruRareru + Nai + Conjunctive
   t.ok(verbDeconjugate('おさえられなく', 'おさえる', true).length > 0);
 
+  t.ok(verbDeconjugate('させてやる', 'する').length > 0);
+
   t.end();
 });
