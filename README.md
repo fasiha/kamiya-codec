@@ -18,6 +18,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.13.1](#version-4131)
     - [version 4.13.0](#version-4130)
     - [version 4.12.0](#version-4120)
     - [version 4.11.0](#version-4110)
@@ -73,8 +74,11 @@ console.log(codec.conjugateAuxiliaries("書く", ["Tai"], "Negative"));
 ```
 or you can `import` (ESM, i.e., EcmaScript Modules), which will work for TypeScript:
 ```js
-import codec from "kamiya-codec";
+import * as codec from "kamiya-codec";
 console.log(codec.conjugateAuxiliaries("書く", ["Tai"], "Negative"));
+// or alternatively
+import {conjugateAuxiliaries} from "kamiya-codec";
+console.log(conjugateAuxiliaries("書く", ["Tai"], "Negative"));
 ```
 
 ### Browser
@@ -267,6 +271,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.13.1
+Just cleaning up JavaScript/Node/TypeScript export behavior.
+
 ### version 4.13.0
 Let `Yaru` be the final auxiliary when deconjugating, e.g., handle させてやる (する + `SeruSaseru` + `Yaru` in `Dictionary` form).
 
