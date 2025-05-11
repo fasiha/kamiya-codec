@@ -33,7 +33,7 @@
   "license": "Unlicense",
   "devDependencies": {
     "@types/node": "^10.17.60",
-    "esbuild": "^0.17.15",
+    "esbuild": "^0.25.4",
     "tape": "^4.15.1",
     "typescript": "^3.9.10"
   }

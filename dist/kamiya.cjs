@@ -18,8 +18,8 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // index.ts
-var kamiya_conjugator_exports = {};
-__export(kamiya_conjugator_exports, {
+var index_exports = {};
+__export(index_exports, {
   adjConjugate: () => adjConjugate,
   adjConjugations: () => adjConjugations,
   adjDeconjugate: () => adjDeconjugate,
@@ -31,7 +31,7 @@ __export(kamiya_conjugator_exports, {
   conjugations: () => conjugations,
   verbDeconjugate: () => verbDeconjugate
 });
-module.exports = __toCommonJS(kamiya_conjugator_exports);
+module.exports = __toCommonJS(index_exports);
 
 // hiragana.ts
 var split = (s) => s.split("");
@@ -256,8 +256,7 @@ for (const [verb, conj, result] of specialCasesRaw) {
   }
 }
 var conjToIdx = new Map(conjugations.filter((x) => x !== "Imperative").map((x, i) => [x, i]));
-var _a;
-conjToIdx.set("Zu", (_a = conjToIdx.get("Negative")) != null ? _a : -1);
+conjToIdx.set("Zu", conjToIdx.get("Negative") ?? -1);
 var tteRaw = [
   ["\u304F", ["\u3044\u3066", "\u3044\u305F", "\u3044\u305F\u3089", "\u3044\u305F\u308A"]],
   ["\u3050", ["\u3044\u3067", "\u3044\u3060", "\u3044\u3060\u3089", "\u3044\u3060\u308A"]],
@@ -440,6 +439,7 @@ function conjugateDa(_verb, conj) {
       return ["\u3060"];
     case "Conditional":
       return ["\u306A\u3089"];
+    // case 'Presumptive': return ['だろう']; // omitting this
     case "Te":
       return ["\u3067"];
     case "Ta":
@@ -458,6 +458,7 @@ function conjugateDesu(_verb, conj) {
       return ["\u3067\u3042\u308A\u307E\u305B\u3093", "\u3067\u306F\u3042\u308A\u307E\u305B\u3093"];
     case "Dictionary":
       return ["\u3067\u3059"];
+    // case 'Presumptive': return ['でそう']; // omitting this
     case "Te":
       return ["\u3067\u3057\u3066"];
     case "Ta":
@@ -532,12 +533,14 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     switch (conj) {
       case "Negative":
         return [base + "\u307E\u305B\u3093", base + "\u307E\u305B\u3093\u3067\u3057\u305F"];
+      // case 'Conjunctive':
       case "Dictionary":
         return [base + "\u307E\u3059"];
       case "Conditional":
         return [base + "\u307E\u3059\u308C\u3070"];
       case "Imperative":
         return [base + "\u307E\u305B", base + "\u307E\u3057"];
+      // latter only for nasaru and ossharu
       case "Volitional":
         return [base + "\u307E\u3057\u3087\u3046"];
       case "Te":
@@ -546,6 +549,7 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         return [base + "\u307E\u3057\u305F"];
       case "Tara":
         return [base + "\u307E\u3057\u305F\u3089"];
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
@@ -560,12 +564,16 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         return [base + "\u306A\u3044"];
       case "Conditional":
         return [base + "\u306A\u3051\u308C\u3070"];
+      // case 'Imperative':
+      // case 'Volitional':
       case "Te":
         return [base + "\u306A\u304F\u3066", base + "\u306A\u3044\u3067"];
+      // only the first is in Kamiya
       case "Ta":
         return [base + "\u306A\u304B\u3063\u305F"];
       case "Tara":
         return [base + "\u306A\u304B\u3063\u305F\u3089"];
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
@@ -580,12 +588,15 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         return [base + "\u305F\u3044"];
       case "Conditional":
         return [base + "\u305F\u3051\u308C\u3070"];
+      // case 'Imperative':
+      // case 'Volitional':
       case "Te":
         return [base + "\u305F\u304F\u3066"];
       case "Ta":
         return [base + "\u305F\u304B\u3063\u305F"];
       case "Tara":
         return [base + "\u305F\u304B\u3063\u305F\u3089"];
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
@@ -611,12 +622,15 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         return [base + "\u307B\u3057\u3044"];
       case "Conditional":
         return [base + "\u307B\u3057\u3051\u308C\u3070"];
+      // case 'Imperative':
+      // case 'Volitional':
       case "Te":
         return [base + "\u307B\u3057\u304F\u3066"];
       case "Ta":
         return [base + "\u307B\u3057\u304B\u3063\u305F"];
       case "Tara":
         return [base + "\u307B\u3057\u304B\u3063\u305F\u3089"];
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
@@ -632,8 +646,14 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
         return append("\u3089\u3057\u304F");
       case "Dictionary":
         return append("\u3089\u3057\u3044");
+      // case 'Conditional':
+      // case 'Imperative':
+      // case 'Volitional':
       case "Te":
         return append("\u3089\u3057\u304F\u3066");
+      // case 'Ta':
+      // case 'Tara':
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
@@ -642,20 +662,36 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     const base2 = verb;
     const append = (suffix) => [base1, base2].map((prefix) => prefix + suffix);
     switch (conj) {
+      // case 'Negative':
+      // case 'Conjunctive':
       case "Dictionary":
         return append("\u305D\u3046\u3060");
+      // case 'Conditional':
+      // case 'Imperative':
+      // case 'Volitional':
+      // case 'Te':
+      // case 'Ta':
+      // case 'Tara':
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
   } else if (aux === "SoudaConjecture") {
     const base = conjugate(verb, "Conjunctive", typeII)[0];
     switch (conj) {
+      // case 'Negative':
+      // case 'Conjunctive':
       case "Dictionary":
         return [base + "\u305D\u3046\u3060", base + "\u305D\u3046\u3067\u3059"];
       case "Conditional":
         return [base + "\u305D\u3046\u306A\u3089"];
+      // case 'Imperative':
+      // case 'Volitional':
+      // case 'Te':
       case "Ta":
         return [base + "\u305D\u3046\u3060\u3063\u305F", base + "\u305D\u3046\u3067\u3057\u305F"];
+      // case 'Tara':
+      // case 'Tari':
       default:
         throw new Error("Unhandled conjugation");
     }
@@ -741,7 +777,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
       if (result.includes(conjugated)) {
         hits.push({ conjugation: conj, auxiliaries: [], result });
       }
-    } catch (e) {
+    } catch {
     }
   }
   if (maxAuxDepth <= 0) {
@@ -754,7 +790,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
         if (result.includes(conjugated)) {
           hits.push({ conjugation: conj, auxiliaries: [aux], result });
         }
-      } catch (e) {
+      } catch {
       }
     }
   }
@@ -791,7 +827,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
           if (result.includes(conjugated)) {
             hits.push({ conjugation: conj, auxiliaries: auxs, result });
           }
-        } catch (e) {
+        } catch {
         }
       }
     }
@@ -815,7 +851,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
             if (result.includes(conjugated)) {
               hits.push({ conjugation: conj, auxiliaries: auxs, result });
             }
-          } catch (e) {
+          } catch {
           }
         }
       }
