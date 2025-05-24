@@ -7,8 +7,9 @@
   "types": "index.ts",
   "typings": "index.ts",
   "scripts": {
-    "test": "tape tests/*",
-    "bundle": "npm run build && node esbuild.mjs",
+    "test": "npm run build && tape tests/*",
+    "format": "prettier --write .",
+    "bundle": "node esbuild.mjs",
     "build": "tsc -p ."
   },
   "exports": {
@@ -34,6 +35,7 @@
   "devDependencies": {
     "@types/node": "^10.17.60",
     "esbuild": "^0.25.4",
+    "prettier": "3.5.3",
     "tape": "^4.15.1",
     "typescript": "^3.9.10"
   }
