@@ -144,11 +144,18 @@ function adjConjugate(adjective, conj, iAdjective) {
     case "Present":
       return ["\u3060", "\u3067\u3059", "\u3067\u3054\u3056\u3044\u307E\u3059"].map((suffix) => adjective + suffix);
     case "Negative":
-      return ["\u3067\u306F\u306A\u3044", "\u3067\u306A\u3044", "\u3058\u3083\u306A\u3044", "\u3067\u306F\u3042\u308A\u307E\u305B\u3093"].map((suffix) => adjective + suffix);
+      return ["\u3067\u306F\u306A\u3044", "\u3067\u306A\u3044", "\u3058\u3083\u306A\u3044", "\u3067\u306F\u3042\u308A\u307E\u305B\u3093"].map(
+        (suffix) => adjective + suffix
+      );
     case "Past":
       return ["\u3060\u3063\u305F", "\u3067\u3057\u305F"].map((suffix) => adjective + suffix);
     case "NegativePast":
-      return ["\u3067\u306F\u306A\u304B\u3063\u305F", "\u3067\u306A\u304B\u3063\u305F", "\u3058\u3083\u306A\u304B\u3063\u305F", "\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3067\u3057\u305F"].map((suffix) => adjective + suffix);
+      return [
+        "\u3067\u306F\u306A\u304B\u3063\u305F",
+        "\u3067\u306A\u304B\u3063\u305F",
+        "\u3058\u3083\u306A\u304B\u3063\u305F",
+        "\u3067\u306F\u3042\u308A\u307E\u305B\u3093\u3067\u3057\u305F"
+      ].map((suffix) => adjective + suffix);
     case "ConjunctiveTe":
       return [adjective + "\u3067"];
     case "Adverbial":
@@ -193,8 +200,10 @@ var conjugations = [
   "Ta",
   "Tara",
   "Tari",
-  "Zu"
-  // Not in Kamiya
+  "Zu",
+  // Not in Kamiya: classical negative
+  "Nu"
+  // Not in Kamiya: classical negative (attributive form of Zu)
 ];
 var auxiliaries = [
   "Potential",
@@ -255,8 +264,11 @@ for (const [verb, conj, result] of specialCasesRaw) {
     specialCases.set(verb, /* @__PURE__ */ new Map([[conj, result]]));
   }
 }
-var conjToIdx = new Map(conjugations.filter((x) => x !== "Imperative").map((x, i) => [x, i]));
+var conjToIdx = new Map(
+  conjugations.filter((x) => x !== "Imperative").map((x, i) => [x, i])
+);
 conjToIdx.set("Zu", conjToIdx.get("Negative") ?? -1);
+conjToIdx.set("Nu", conjToIdx.get("Negative") ?? -1);
 var tteRaw = [
   ["\u304F", ["\u3044\u3066", "\u3044\u305F", "\u3044\u305F\u3089", "\u3044\u305F\u308A"]],
   ["\u3050", ["\u3044\u3067", "\u3044\u3060", "\u3044\u3060\u3089", "\u3044\u3060\u308A"]],
@@ -335,6 +347,7 @@ function conjugateTypeII(verb, conj) {
   switch (conj) {
     case "Negative":
     case "Zu":
+    case "Nu":
       return [head];
     case "Conjunctive":
       return [head];
@@ -363,6 +376,7 @@ function conjugateKuru(verb, conj) {
   switch (conj) {
     case "Negative":
     case "Zu":
+    case "Nu":
       ret = "\u3053";
       break;
     case "Conjunctive":
@@ -427,6 +441,8 @@ function conjugateSuru(verb, conj) {
       return ["\u3057\u305F\u308A"];
     case "Zu":
       return ["\u305B\u305A"];
+    case "Nu":
+      return ["\u305B\u306C"];
     default:
       throw new Error("Unhandled conjugation");
   }
@@ -472,12 +488,21 @@ function conjugateDesu(_verb, conj) {
   }
 }
 function conjugateStrict(verb, conj, typeII = false) {
-  return (verb.slice(-1) === "\u308B" && typeII ? conjugateTypeII : conjugateTypeI)(verb, conj);
+  return (verb.slice(-1) === "\u308B" && typeII ? conjugateTypeII : conjugateTypeI)(
+    verb,
+    conj
+  );
 }
 function conjugate(verb, conj, typeII = false) {
   const ret = conjugateStrict(verb, conj, typeII);
-  if ((conj === "Negative" || conj === "Zu") && (verb !== "\u3060" && verb !== "\u3067\u3059")) {
-    ret.push(ret[0] + (conj === "Negative" ? "\u306A\u3044" : "\u305A"));
+  if ((conj === "Negative" || conj === "Zu" || conj === "Nu") && verb !== "\u3060" && verb !== "\u3067\u3059") {
+    if (conj === "Negative") {
+      ret.push(ret[0] + "\u306A\u3044");
+    } else if (conj === "Zu") {
+      ret.push(ret[0] + "\u305A");
+    } else if (conj === "Nu") {
+      ret.push(ret[0] + "\u306C");
+    }
   } else if (conj === "Conjunctive") {
     ret.push(ret[0] + "\u307E\u3059");
   } else if (conj === "Conditional") {
@@ -518,7 +543,9 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
       const tails = conjugateAuxiliary("\u304F\u308B", aux, conj);
       verbs = heads.flatMap((prefix) => tails.map((t) => prefix + t));
     } else {
-      verbs = verbs.flatMap((verb) => conjugateAuxiliary(verb, aux, conj, typeII));
+      verbs = verbs.flatMap(
+        (verb) => conjugateAuxiliary(verb, aux, conj, typeII)
+      );
     }
     typeII = aux === "Potential" || aux === "SeruSaseru" || aux === "ReruRareru" || aux === "CausativePassive" || aux === "ShortenedCausativePassive" || aux === "Ageru" || aux === "Sashiageru" || aux === "Kureru" || aux === "Miru" || aux === "TeIru";
   }
@@ -817,13 +844,26 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
     "ReruRareru",
     "SeruSaseru"
   ];
-  const depth2Finals = ["Masu", "SoudaConjecture", "SoudaHearsay", "TeIru", "Tai", "Nai", "Yaru"];
+  const depth2Finals = [
+    "Masu",
+    "SoudaConjecture",
+    "SoudaHearsay",
+    "TeIru",
+    "Tai",
+    "Nai",
+    "Yaru"
+  ];
   for (const penultimate of penultimates) {
     for (const final of depth2Finals) {
       for (const conj of conjugations) {
         const auxs = [penultimate, final];
         try {
-          const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
+          const result = conjugateAuxiliaries(
+            dictionaryForm,
+            auxs,
+            conj,
+            typeII
+          );
           if (result.includes(conjugated)) {
             hits.push({ conjugation: conj, auxiliaries: auxs, result });
           }
@@ -835,11 +875,7 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
   if (maxAuxDepth <= 2) {
     return hits;
   }
-  const antepenultimates = [
-    "SeruSaseru",
-    "ReruRareru",
-    "Itadaku"
-  ];
+  const antepenultimates = ["SeruSaseru", "ReruRareru", "Itadaku"];
   const depth3Finals = ["Masu"];
   for (const ante of antepenultimates) {
     for (const penultimate of penultimates) {
@@ -847,7 +883,12 @@ function verbDeconjugate(conjugated, dictionaryForm, typeII = false, maxAuxDepth
         for (const conj of conjugations) {
           const auxs = [ante, penultimate, final];
           try {
-            const result = conjugateAuxiliaries(dictionaryForm, auxs, conj, typeII);
+            const result = conjugateAuxiliaries(
+              dictionaryForm,
+              auxs,
+              conj,
+              typeII
+            );
             if (result.includes(conjugated)) {
               hits.push({ conjugation: conj, auxiliaries: auxs, result });
             }
