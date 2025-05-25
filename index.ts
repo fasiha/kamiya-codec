@@ -11,7 +11,8 @@ export const conjugations = [
   "Ta",
   "Tara",
   "Tari",
-  "Zu", // Not in Kamiya
+  "Zu", // Not in Kamiya: classical negative
+  "Nu", // Not in Kamiya: classical negative (attributive form of Zu)
 ] as const;
 export type Conjugation = (typeof conjugations)[number];
 
@@ -70,6 +71,7 @@ const conjToIdx: Map<Conjugation, number> = new Map(
   >,
 );
 conjToIdx.set("Zu", conjToIdx.get("Negative") ?? -1);
+conjToIdx.set("Nu", conjToIdx.get("Negative") ?? -1);
 
 const tteRaw: Array<[string, string[]]> = [
   ["く", ["いて", "いた", "いたら", "いたり"]],
@@ -150,6 +152,7 @@ export function conjugateTypeII(verb: string, conj: Conjugation): string[] {
   switch (conj) {
     case "Negative":
     case "Zu":
+    case "Nu":
       return [head];
     case "Conjunctive":
       return [head];
@@ -179,6 +182,7 @@ function conjugateKuru(verb: string, conj: Conjugation): string[] {
   switch (conj) {
     case "Negative":
     case "Zu":
+    case "Nu":
       ret = "こ";
       break;
     case "Conjunctive":
@@ -244,6 +248,8 @@ function conjugateSuru(verb: string, conj: Conjugation): string[] {
       return ["したり"];
     case "Zu":
       return ["せず"];
+    case "Nu":
+      return ["せぬ"];
     default:
       throw new Error("Unhandled conjugation");
   }
@@ -308,12 +314,18 @@ export function conjugate(
   const ret = conjugateStrict(verb, conj, typeII);
 
   if (
-    (conj === "Negative" || conj === "Zu") &&
+    (conj === "Negative" || conj === "Zu" || conj === "Nu") &&
     verb !== "だ" &&
     verb !== "です"
   ) {
     // Don't do this for da/desu because their negatives are baked in
-    ret.push(ret[0] + (conj === "Negative" ? "ない" : "ず"));
+    if (conj === "Negative") {
+      ret.push(ret[0] + "ない");
+    } else if (conj === "Zu") {
+      ret.push(ret[0] + "ず");
+    } else if (conj === "Nu") {
+      ret.push(ret[0] + "ぬ");
+    }
   } else if (conj === "Conjunctive") {
     ret.push(ret[0] + "ます");
   } else if (conj === "Conditional") {

@@ -18,6 +18,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.14.0](#version-4140)
     - [version 4.13.1](#version-4131)
     - [version 4.13.0](#version-4130)
     - [version 4.12.0](#version-4120)
@@ -271,6 +272,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.14.0
+Add `Nu`, the classical/literary negative like `Zu` (see [Bunpro](https://bunpro.jp/grammar_points/ぬ) and [JLPTSensei](https://jlptsensei.com/learn-japanese-grammar/ぬ-nu-negative-verb-meaning/))
+
 ### version 4.13.1
 Just cleaning up JavaScript/Node/TypeScript export behavior.
 
