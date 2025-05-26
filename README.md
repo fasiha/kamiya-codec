@@ -179,7 +179,7 @@ Conjugations must be one of the following:
 
 `conjugations` is an array containing all allowed values (for looping, etc.).
 
-> Note that `Zu` (the traditional variant of `Negative`) is not included in Kamiya's book but I have included it here. (I have *not* yet added the ぬ-form of ず.)
+> Note that `Zu` (the traditional variant of `Negative`) is not included in Kamiya's book but I have included it here. (~I have *not* yet added the ぬ-form of ず~ I have also added `Nu`.)
 
 ### `type Auxiliary` and `auxiliaries`
 Auxiliaries must be one of the following:
