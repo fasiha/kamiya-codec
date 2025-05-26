@@ -357,6 +357,8 @@ export function conjugateAuxiliaries(
         }
       } else if (finalConj === "Te" && initialVerb === "だ") {
         return ["じゃなくて"];
+      } else if (finalConj === "Conjunctive" && initialVerb === "だ") {
+        return ["じゃなく"];
       }
     }
     throw new Error("unhandled copula auxiliaries/conjugation");

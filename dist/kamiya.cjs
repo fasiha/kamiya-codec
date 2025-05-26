@@ -526,6 +526,8 @@ function conjugateAuxiliaries(initialVerb, auxs, finalConj, initialTypeII = fals
         }
       } else if (finalConj === "Te" && initialVerb === "\u3060") {
         return ["\u3058\u3083\u306A\u304F\u3066"];
+      } else if (finalConj === "Conjunctive" && initialVerb === "\u3060") {
+        return ["\u3058\u3083\u306A\u304F"];
       }
     }
     throw new Error("unhandled copula auxiliaries/conjugation");

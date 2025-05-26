@@ -24,7 +24,8 @@ test("nai/past", (t) => {
   t.end();
 });
 
-test("nai/te", (t) => {
+test("nai + te/conjunctive", (t) => {
   t.ok(conjugateAuxiliaries("だ", ["Nai"], "Te").includes("じゃなくて"));
+  t.ok(conjugateAuxiliaries("だ", ["Nai"], "Conjunctive").includes("じゃなく"));
   t.end();
 });
