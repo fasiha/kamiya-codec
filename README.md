@@ -18,6 +18,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.16.1](#version-4161)
     - [version 4.16.0](#version-4160)
     - [version 4.15.0](#version-4150)
     - [version 4.14.0](#version-4140)
@@ -275,6 +276,9 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+### version 4.16.1
+Neverending TypeScript woes 😅
+
 ### version 4.16.0
 "じゃなく" is correctly identified as the copula だ + `Nai` negative auxiliary + `Conjunctive` connective final conjugation.
 
