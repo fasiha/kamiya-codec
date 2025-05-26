@@ -696,7 +696,11 @@ function conjugateAuxiliary(
       aux === "Miru";
     const newVerbs = endings.map((ending) => vte + ending);
     if (aux === "Oku") {
-      newVerbs.push(vte.slice(0, -1) + "とく");
+      newVerbs.push(
+        vte.slice(0, -1) + (vte.slice(-1) === "で" ? "どく" : "とく"),
+      );
+    } else if (aux === "Iku") {
+      newVerbs.push(vte + "く");
     }
     return newVerbs.flatMap((v) => conjugate(v, conj, endingTypeII));
   } else if (aux === "Shimau") {

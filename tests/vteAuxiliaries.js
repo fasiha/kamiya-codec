@@ -184,7 +184,30 @@ test("Oku -> toku", (t) => {
     t.ok(v.includes("しとく"));
     t.ok(v.includes("しておく"));
   }
+  {
+    // rendaku (teku to deku)
+    const v = a("汲む", ["Oku"], "Dictionary");
+    t.ok(v.includes("汲んでおく"));
+    t.ok(v.includes("汲んどく")); // see https://bunpro.jp/grammar_points/%E3%81%A6%E3%81%8A%E3%81%8F
+  }
   t.ok(a("やめる", ["Oku"], "Ta", true).includes("やめといた"));
+  t.end();
+});
+
+test("Iku -> teku/deku", (t) => {
+  {
+    // see https://jisho.org/word/%E3%81%A6%E3%81%8F
+    const v = a("食べる", ["Iku"], "Dictionary", true);
+    t.ok(v.includes("食べていく"));
+    t.ok(v.includes("食べてく"));
+  }
+  {
+    // rendaku: teku -> deku
+    const v = a("読む", ["Iku"], "Dictionary");
+    t.ok(v.includes("読んでいく"));
+    console.log(v);
+    t.ok(v.includes("読んでく"));
+  }
   t.end();
 });
 

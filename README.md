@@ -18,6 +18,7 @@ Table of contents—
     - [`adjDeconjugate(conjugated: string, dictionary: string, iAdjective: boolean): AdjDeconjugated[]`](#adjdeconjugateconjugated-string-dictionary-string-iadjective-boolean-adjdeconjugated)
   - [Development](#development)
   - [Changelog](#changelog)
+    - [version 4.15.0](#version-4150)
     - [version 4.14.0](#version-4140)
     - [version 4.13.1](#version-4131)
     - [version 4.13.0](#version-4130)
@@ -171,7 +172,8 @@ Conjugations must be one of the following:
 | "Ta"
 | "Tara"
 | "Tari"
-| "Zu"
+| "Zu" // not in Kamiya
+| "Nu" // Not in Kamiya
 ```
 
 `conjugations` is an array containing all allowed values (for looping, etc.).
@@ -272,6 +274,11 @@ this function attempts to deconjugate a string given its dictionary form and its
 Run tests with `npm test`. We use [`tape`](https://github.com/substack/tape) and all exported functions have tests in the [`tests/`](./tests) directory. Tests currently happen to all be in JavaScript.
 
 ## Changelog
+
+### version 4.15.0
+1. `Oku`: "verb + ておく"'s abbreviation, "とく", can undergo <ruby>連濁<rt>rendaku</rt></ruby> to become "どく" (see e.g., [Bunpro](https://bunpro.jp/grammar_points/%E3%81%A6%E3%81%8A%E3%81%8F#:~:text=Caution,to%20%E3%81%A8%E3%81%8F))
+2. `Iku`: similarly, てく (でく) is an abbreviation for "verb + ていく" (see, e.g., [Jisho.org](https://jisho.org/word/%E3%81%A6%E3%81%8F))
+
 ### version 4.14.0
 Add `Nu`, the classical/literary negative like `Zu` (see [Bunpro](https://bunpro.jp/grammar_points/ぬ) and [JLPTSensei](https://jlptsensei.com/learn-japanese-grammar/ぬ-nu-negative-verb-meaning/))
 
