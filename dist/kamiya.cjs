@@ -774,7 +774,11 @@ function conjugateAuxiliary(verb, aux, conj, typeII = false) {
     const endingTypeII = aux === "Ageru" || aux === "Sashiageru" || aux === "Kureru" || aux === "TeIru" || aux === "Miru";
     const newVerbs = endings.map((ending) => vte + ending);
     if (aux === "Oku") {
-      newVerbs.push(vte.slice(0, -1) + "\u3068\u304F");
+      newVerbs.push(
+        vte.slice(0, -1) + (vte.slice(-1) === "\u3067" ? "\u3069\u304F" : "\u3068\u304F")
+      );
+    } else if (aux === "Iku") {
+      newVerbs.push(vte + "\u304F");
     }
     return newVerbs.flatMap((v) => conjugate(v, conj, endingTypeII));
   } else if (aux === "Shimau") {
